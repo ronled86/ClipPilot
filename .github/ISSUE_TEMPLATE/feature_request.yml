@@ -1,0 +1,61 @@
+name: Feature Request
+description: Suggest an idea for ClipPilot
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: Describe what the problem is. Ex. I'm always frustrated when [...]
+      placeholder: Describe the problem...
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: What would you like to see happen?
+      placeholder: Describe your solution...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: What alternative solutions have you considered?
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Critical (Blocking my use of the app)
+        - High (Would significantly improve my experience)
+        - Medium (Would be nice to have)
+        - Low (Just an idea)
+    validations:
+      required: true
+  - type: checkboxes
+    id: area
+    attributes:
+      label: Feature Area
+      description: What area(s) of the app does this feature relate to?
+      options:
+        - label: Search functionality
+        - label: Download capabilities
+        - label: User interface
+        - label: Settings/Configuration
+        - label: Performance
+        - label: Security
+        - label: Documentation
+        - label: Other
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context, screenshots, or mockups about the feature request here.

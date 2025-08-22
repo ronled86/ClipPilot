@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+
+const fs = require('fs')
+const path = require('path')
+
+const versionFile = path.join(__dirname, '..', 'src', 'version.ts')
+const packageFile = path.join(__dirname, '..', 'package.json')
+
+function updateVersion(type = 'patch') {
+  // Read current package.json
+  const pkg = JSON.parse(fs.readFileSync(packageFile, 'utf8'))
+  const [major, minor, patch] = pkg.version.split('.').map(Number)
+
+  let newMajor = major
+  let newMinor = minor  
+  let newPatch = patch
+
+  switch (type) {
+    case 'major':
+      newMajor++
+      newMinor = 0
+      newPatch = 0
+      break
+    case 'minor':
+      newMinor++
+      newPatch = 0
+      break
+    case 'patch':
+    default:
+      newPatch++
+      break
+  }
+
+  const newVersion = `${newMajor}.${newMinor}.${newPatch}`
+  
+  // Update package.json
+  pkg.version = newVersion
+  fs.writeFileSync(packageFile, JSON.stringify(pkg, null, 2))
+
+  // Update version.ts
+  const versionContent = `/**
+ * ClipPilot Version Information
+ * Auto-generated version file - do not edit manually
+ */
+
+export const VERSION = {
+  major: ${newMajor},
+  minor: ${newMinor},
+  patch: ${newPatch},
+  build: ${Date.now()},
+  tag: 'stable',
+  fullVersion: '${newVersion}',
+  buildDate: '${new Date().toISOString()}',
+  features: [
+    'YouTube Search & Preview',
+    'Intelligent Search Autocomplete',
+    'Multi-format Downloads (MP3, MP4, AAC, FLAC, etc.)',
+    'Custom Download Settings',
+    'Real-time Download Progress',
+    'Multilingual Support (English, Hebrew)',
+    'License-aware Content Filtering',
+    'Modern Electron + React Architecture'
+  ]
+} as const
+
+export const getVersionString = (): string => {
+  return \`\${VERSION.fullVersion}-\${VERSION.tag}\`
+}
+
+export const getBuildInfo = (): string => {
+  return \`Build \${VERSION.build} (\${new Date(VERSION.buildDate).toLocaleDateString()})\`
+}
+
+export const getAppInfo = () => ({
+  name: 'ClipPilot',
+  version: VERSION.fullVersion,
+  build: VERSION.build,
+  buildDate: VERSION.buildDate,
+  features: VERSION.features
+})`
+
+  fs.writeFileSync(versionFile, versionContent)
+
+  console.log(`✅ Version updated to ${newVersion}`)
+  console.log(`📦 Updated package.json and src/version.ts`)
+  return newVersion
+}
+
+// CLI usage
+if (require.main === module) {
+  const type = process.argv[2] || 'patch'
+  
+  if (!['major', 'minor', 'patch'].includes(type)) {
+    console.error('❌ Invalid version type. Use: major, minor, or patch')
+    process.exit(1)
+  }
+
+  updateVersion(type)
+}
+
+module.exports = { updateVersion }

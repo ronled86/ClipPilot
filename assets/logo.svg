@@ -1,0 +1,19 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ClipPilot">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6EE7F9"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+  </defs>
+  <circle cx="40" cy="40" r="36" fill="url(#g)" opacity="0.15"/>
+  <polygon id="p" points="32,26 56,40 32,54" fill="url(#g)">
+    <animate attributeName="points" dur="1.4s" repeatCount="indefinite"
+      values="32,26 56,40 32,54; 30,28 50,40 30,52; 32,26 56,40 32,54"/>
+  </polygon>
+  <path d="M40 28 v16" stroke="#A78BFA" stroke-width="3" stroke-linecap="round">
+    <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite"/>
+  </path>
+  <path d="M36 44 l4 4 l4 -4" fill="none" stroke="#A78BFA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="0 3" dur="1.4s" repeatCount="indefinite"/>
+  </path>
+</svg>

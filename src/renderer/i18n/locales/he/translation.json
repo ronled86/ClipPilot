@@ -1,0 +1,15 @@
+{
+  "search_placeholder": "חפש סרטונים",
+  "download_policy": "כברירת מחדל ניתן להוריד רק את ההעלאות שלך או סרטונים ברישיון קריאטיב קומנס",
+  "language": "שפה",
+  "settings": "הגדרות",
+  "results": "תוצאות",
+  "allowed": "מותר",
+  "blocked": "חסום",
+  "license_cc": "קריאטיב קומנס",
+  "license_mine": "העלאות שלי",
+  "license_standard": "רישיון רגיל",
+  "theme": "ערכת נושא",
+  "grid": "רשת",
+  "list": "רשימה"
+}

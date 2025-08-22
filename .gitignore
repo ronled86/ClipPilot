@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+release/
+build/
+
+# Development tools
+tools/ffmpeg/ffmpeg.exe
+tools/yt-dlp/yt-dlp.exe
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Electron specific
+.electron-builder.env
+
+# Debug files
+debug/
+.debug/
+
+# Certificates
+*.pem
+*.key
+*.crt
+
+# User-specific files
+*.user
+*.userprefs
+*.lock
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+!start_clippilot.bat

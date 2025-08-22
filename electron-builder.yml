@@ -1,0 +1,18 @@
+appId: com.ronled.clippilot
+productName: ClipPilot
+# icon: assets/icon.png  # Commented out for now, will use default
+files:
+  - dist/**
+  - package.json
+directories:
+  output: release
+win:
+  # icon: assets/icon.png  # Commented out for now, will use default
+  target:
+    - nsis
+  forceCodeSigning: false  # Disable code signing requirement
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true

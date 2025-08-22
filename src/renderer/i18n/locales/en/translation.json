@@ -1,0 +1,15 @@
+{
+  "search_placeholder": "Search videos",
+  "download_policy": "By default you can download only your uploads or Creative Commons licensed videos",
+  "language": "Language",
+  "settings": "Settings",
+  "results": "Results",
+  "allowed": "Allowed",
+  "blocked": "Blocked",
+  "license_cc": "Creative Commons",
+  "license_mine": "My uploads",
+  "license_standard": "Standard license",
+  "theme": "Theme",
+  "grid": "Grid",
+  "list": "List"
+}

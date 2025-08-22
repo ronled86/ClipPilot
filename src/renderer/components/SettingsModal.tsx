@@ -1,0 +1,208 @@
+import React, { useState, useEffect } from 'react'
+
+interface SettingsModalProps {
+  isOpen: boolean
+  onClose: () => void
+  onSave: (settings: DownloadSettings) => void
+  currentSettings: DownloadSettings
+}
+
+export interface DownloadSettings {
+  downloadFolder: string
+  defaultFormat: 'mp3' | 'mp4'
+  defaultQuality: string
+  audioFormat: string
+  audioBitrate: string
+  videoFormat: string
+  videoQuality: string
+  videoCodec: string
+}
+
+export default function SettingsModal({ isOpen, onClose, onSave, currentSettings }: SettingsModalProps) {
+  const [settings, setSettings] = useState<DownloadSettings>(currentSettings)
+
+  useEffect(() => {
+    setSettings(currentSettings)
+  }, [currentSettings])
+
+  const handleSave = () => {
+    onSave(settings)
+    onClose()
+  }
+
+  const handleSelectFolder = async () => {
+    if (!window.clippilot?.selectFolder) return
+    
+    try {
+      const result = await window.clippilot.selectFolder()
+      if (result.success && result.path) {
+        setSettings(prev => ({ ...prev, downloadFolder: result.path }))
+      }
+    } catch (error) {
+      console.error('Failed to select folder:', error)
+    }
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 w-[800px] max-w-90vw max-h-90vh overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold">Download Settings</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          {/* Download Folder - Top Section */}
+          <div className="border rounded-lg p-4 bg-gray-50">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              📁 Download Folder
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={settings.downloadFolder}
+                readOnly
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-white"
+                placeholder="Choose download folder..."
+              />
+              <button
+                onClick={handleSelectFolder}
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                Browse
+              </button>
+            </div>
+          </div>
+
+          {/* Audio and Video Settings - Side by Side */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* Audio Settings */}
+            <div className="border rounded-lg p-4 bg-blue-50">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">🎵 Audio Download Settings</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Audio Format
+                  </label>
+                  <select
+                    value={settings.audioFormat}
+                    onChange={(e) => setSettings(prev => ({ ...prev, audioFormat: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  >
+                    <option value="mp3">MP3 (Most Compatible)</option>
+                    <option value="aac">AAC (High Quality, Small Size)</option>
+                    <option value="flac">FLAC (Lossless, Large Size)</option>
+                    <option value="wav">WAV (Uncompressed, Huge Size)</option>
+                    <option value="ogg">OGG (Open Source)</option>
+                    <option value="m4a">M4A (Apple Devices)</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Audio Bitrate
+                  </label>
+                  <select
+                    value={settings.audioBitrate}
+                    onChange={(e) => setSettings(prev => ({ ...prev, audioBitrate: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  >
+                    <option value="96k">96 kbps (Low Quality, Small File)</option>
+                    <option value="128k">128 kbps (Standard Quality)</option>
+                    <option value="192k">192 kbps (High Quality) ⭐</option>
+                    <option value="256k">256 kbps (Very High Quality)</option>
+                    <option value="320k">320 kbps (Maximum Quality)</option>
+                    <option value="best">Best Available</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Video Settings */}
+            <div className="border rounded-lg p-4 bg-green-50">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">🎥 Video Download Settings</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Video Format
+                  </label>
+                  <select
+                    value={settings.videoFormat}
+                    onChange={(e) => setSettings(prev => ({ ...prev, videoFormat: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  >
+                    <option value="mp4">MP4 (Most Compatible) ⭐</option>
+                    <option value="webm">WebM (Modern, Smaller)</option>
+                    <option value="mkv">MKV (High Quality)</option>
+                    <option value="avi">AVI (Classic)</option>
+                    <option value="mov">MOV (Apple QuickTime)</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Video Quality
+                  </label>
+                  <select
+                    value={settings.videoQuality}
+                    onChange={(e) => setSettings(prev => ({ ...prev, videoQuality: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  >
+                    <option value="360p">360p (Mobile, Small File)</option>
+                    <option value="480p">480p (SD, Moderate File)</option>
+                    <option value="720p">720p (HD, Good Quality) ⭐</option>
+                    <option value="1080p">1080p (Full HD, High Quality)</option>
+                    <option value="1440p">1440p (2K, Very High Quality)</option>
+                    <option value="2160p">2160p (4K, Maximum Quality)</option>
+                    <option value="best">Best Available</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Video Codec
+                  </label>
+                  <select
+                    value={settings.videoCodec}
+                    onChange={(e) => setSettings(prev => ({ ...prev, videoCodec: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  >
+                    <option value="h264">H.264 (Most Compatible) ⭐</option>
+                    <option value="h265">H.265 (Smaller Files)</option>
+                    <option value="vp9">VP9 (Google, WebM)</option>
+                    <option value="av1">AV1 (Next-Gen, New)</option>
+                    <option value="best">Best Available</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-2 mt-6">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSave}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
