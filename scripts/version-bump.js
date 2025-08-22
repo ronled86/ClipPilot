@@ -14,6 +14,7 @@ function updateVersion(type = 'patch') {
   let newMajor = major
   let newMinor = minor  
   let newPatch = patch
+  let versionChanged = true
 
   switch (type) {
     case 'major':
@@ -26,6 +27,12 @@ function updateVersion(type = 'patch') {
       newPatch = 0
       break
     case 'patch':
+      newPatch++
+      break
+    case 'build':
+      // Only update build number, not version
+      versionChanged = false
+      break
     default:
       newPatch++
       break
@@ -33,11 +40,13 @@ function updateVersion(type = 'patch') {
 
   const newVersion = `${newMajor}.${newMinor}.${newPatch}`
   
-  // Update package.json
-  pkg.version = newVersion
-  fs.writeFileSync(packageFile, JSON.stringify(pkg, null, 2))
+  // Update package.json only if version changed
+  if (versionChanged) {
+    pkg.version = newVersion
+    fs.writeFileSync(packageFile, JSON.stringify(pkg, null, 2))
+  }
 
-  // Update version.ts
+  // Always update version.ts with new build timestamp
   const versionContent = `/**
  * ClipPilot Version Information
  * Auto-generated version file - do not edit manually
@@ -81,8 +90,13 @@ export const getAppInfo = () => ({
 
   fs.writeFileSync(versionFile, versionContent)
 
-  console.log(`✅ Version updated to ${newVersion}`)
-  console.log(`📦 Updated package.json and src/version.ts`)
+  if (versionChanged) {
+    console.log(`✅ Version updated to ${newVersion}`)
+    console.log(`📦 Updated package.json and src/version.ts`)
+  } else {
+    console.log(`✅ Build number updated for version ${newVersion}`)
+    console.log(`📦 Updated src/version.ts with new build timestamp`)
+  }
   return newVersion
 }
 
@@ -90,8 +104,8 @@ export const getAppInfo = () => ({
 if (require.main === module) {
   const type = process.argv[2] || 'patch'
   
-  if (!['major', 'minor', 'patch'].includes(type)) {
-    console.error('❌ Invalid version type. Use: major, minor, or patch')
+  if (!['major', 'minor', 'patch', 'build'].includes(type)) {
+    console.error('❌ Invalid version type. Use: major, minor, patch, or build')
     process.exit(1)
   }
 
