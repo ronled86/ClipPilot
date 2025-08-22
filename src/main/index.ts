@@ -202,48 +202,17 @@ function formatPublishedDate(publishedAt: string): string {
   return `${Math.floor(diffDays / 365)} years ago`
 }
 
-ipcMain.handle('search', async (_evt, q: string, apiKey?: string, enhancedSearch?: boolean): Promise<any> => {
+ipcMain.handle('search', async (_evt, q: string, apiKey?: string): Promise<any> => {
   try {
     // Check if API key is available (from settings or env)
     const availableApiKey = apiKey || process.env.YOUTUBE_API_KEY
     
-    // Use enhanced search if API key is available (regardless of the enhancedSearch flag)
-    // The enhancedSearch flag is just a user preference, but if they have an API key, use it
-    const useEnhancedSearch = !!availableApiKey
-    
-    console.log(`Search request: query="${q}", hasApiKey=${!!availableApiKey}, useEnhanced=${useEnhancedSearch}`)
-    
-    if (!useEnhancedSearch) {
-      console.log('Using free search method (basic search)')
-      
-      // Free tier: Use a simple approach to get real video data
-      try {
-        const results = await getBasicYouTubeResults(q)
-        cachedResults = results
-        return { items: results, nextPageToken: null }
-        
-      } catch (error) {
-        console.warn('Free tier search failed:', error)
-        
-        // Return a more helpful message but still functional
-        const fallbackResults: SearchResult[] = [
-          {
-            id: 'search-info',
-            title: `Free search for "${q}" - Add API key in Settings for enhanced results`,
-            channel: 'ClipPilot Free Tier',
-            duration: '0:00',
-            thumbnail: '',
-            license: 'standard',
-            publishedAt: 'Info'
-          }
-        ]
-        
-        cachedResults = fallbackResults
-        return { items: fallbackResults, nextPageToken: null }
-      }
+    if (!availableApiKey) {
+      throw new Error('YouTube API key is required for search functionality')
     }
-
-    console.log('Using enhanced search with API key')
+    
+    console.log(`Search request: query="${q}"`)
+    
     // Initialize YouTube API with the provided key
     const { google } = require('googleapis')
     const youtubeApi = google.youtube({
@@ -320,20 +289,16 @@ ipcMain.handle('search', async (_evt, q: string, apiKey?: string, enhancedSearch
   }
 })
 
-ipcMain.handle('search-more', async (_evt, q: string, pageToken: string, apiKey?: string, enhancedSearch?: boolean): Promise<any> => {
+ipcMain.handle('search-more', async (_evt, q: string, pageToken: string, apiKey?: string): Promise<any> => {
   try {
     // Check if API key is available (from settings or env)
     const availableApiKey = apiKey || process.env.YOUTUBE_API_KEY
     
-    // Use enhanced search if API key is available (regardless of the enhancedSearch flag)
-    const useEnhancedSearch = !!availableApiKey
-    
-    console.log(`Search-more request: query="${q}", hasApiKey=${!!availableApiKey}, useEnhanced=${useEnhancedSearch}`)
-    
-    if (!useEnhancedSearch) {
-      // No more data to load without enhanced search
-      return { items: [], nextPageToken: null }
+    if (!availableApiKey) {
+      throw new Error('YouTube API key is required for search functionality')
     }
+    
+    console.log(`Search-more request: query="${q}"`)
 
     // Initialize YouTube API with the provided key
     const { google } = require('googleapis')
@@ -397,58 +362,21 @@ ipcMain.handle('search-more', async (_evt, q: string, pageToken: string, apiKey?
 })
 
 // Handler for getting trending/popular videos
-ipcMain.handle('get-trending', async (_evt, apiKey?: string, enhancedSearch?: boolean): Promise<any> => {
+ipcMain.handle('get-trending', async (_evt, apiKey?: string): Promise<any> => {
   try {
     // Check if API key is available (from settings or env)
     const availableApiKey = apiKey || process.env.YOUTUBE_API_KEY
     
-    // Use enhanced search if API key is available (regardless of the enhancedSearch flag)
-    const useEnhancedSearch = !!availableApiKey
-    
-    console.log(`Trending request: hasApiKey=${!!availableApiKey}, useEnhanced=${useEnhancedSearch}`)
-    
-    if (!useEnhancedSearch) {
-      console.log('Using free method (no enhanced trending without API key)')
-      // Return demo trending data to show app capabilities
-      const demoTrending: SearchResult[] = [
-        {
-          id: 'trending1',
-          title: '🔥 Free Tier Demo - Real trending videos appear with API key',
-          channel: 'ClipPilot Demo',
-          duration: '0:00',
-          thumbnail: '',
-          license: 'standard',
-          publishedAt: 'Demo mode'
-        },
-        {
-          id: 'trending2',
-          title: '⚙️ Add your YouTube API key in Settings for full functionality',
-          channel: 'ClipPilot Help',
-          duration: '0:00',
-          thumbnail: '',
-          license: 'standard',
-          publishedAt: 'Setup info'
-        },
-        {
-          id: 'trending3',
-          title: '🔍 Search suggestions work without API key - try searching above!',
-          channel: 'ClipPilot Features',
-          duration: '0:00',
-          thumbnail: '',
-          license: 'standard',
-          publishedAt: 'Feature info'
-        }
-      ]
-      cachedResults = demoTrending
-      return { items: demoTrending }
+    if (!availableApiKey) {
+      throw new Error('YouTube API key is required for trending videos')
     }
-
-    console.log('Using enhanced trending with API key')
+    
+    console.log('Trending request with API key')
+    
     // Initialize YouTube API with the provided key
     const { google } = require('googleapis')
     const youtubeApi = google.youtube({
       version: 'v3',
-      auth: availableApiKey
     })
 
     // Get trending videos using YouTube Data API
@@ -479,22 +407,15 @@ ipcMain.handle('get-trending', async (_evt, apiKey?: string, enhancedSearch?: bo
     
     return { items: results }
 
-  } catch (error) {
-    console.error('YouTube API trending failed:', error)
-    // Return demo trending data on error
-    const errorTrending: SearchResult[] = [
-      {
-        id: 'error-trending1',
-        title: '❌ Trending API Error - Add YouTube API key for real trending videos',
-        channel: 'ClipPilot',
-        duration: '0:00',
-        thumbnail: '',
-        license: 'standard',
-        publishedAt: 'Error info'
-      }
-    ]
-    cachedResults = errorTrending
-    return { items: errorTrending }
+  } catch (error: any) {
+    // Sanitize error to prevent API key exposure in logs
+    const sanitizedError = {
+      status: error?.status,
+      code: error?.code,
+      message: error?.message?.replace(/key=[^&\s]*/g, 'key=***')
+    }
+    console.error('YouTube API trending failed:', sanitizedError)
+    throw error
   }
 })
 
@@ -503,14 +424,12 @@ ipcMain.handle('get-more-trending', async (_evt, apiKey?: string, offset: number
   try {
     // Check if API key is available (from settings or env)
     const availableApiKey = apiKey || process.env.YOUTUBE_API_KEY
-    const useEnhancedSearch = !!availableApiKey
     
-    console.log(`More trending request: hasApiKey=${!!availableApiKey}, offset=${offset}`)
-    
-    if (!useEnhancedSearch) {
-      // No more trending data without API key
-      return { items: [] }
+    if (!availableApiKey) {
+      throw new Error('YouTube API key is required for trending videos')
     }
+    
+    console.log(`More trending request with API key, offset=${offset}`)
 
     // Initialize YouTube API with the provided key
     const { google } = require('googleapis')
@@ -657,15 +576,23 @@ ipcMain.handle('can-download', async (_evt, id: string) => {
 
 ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
   try {
-    // First check if download is allowed
-    const videoInfo = cachedResults.find(v => v.id === id)
-    if (!videoInfo) {
-      return { success: false, error: 'Video not found' }
+    // Check if this is a direct URL download
+    const isUrlDownload = opts.url && opts.url.startsWith('http')
+    
+    if (!isUrlDownload) {
+      // For video ID downloads, check if video info exists
+      const videoInfo = cachedResults.find(v => v.id === id)
+      if (!videoInfo) {
+        return { success: false, error: 'Video not found' }
+      }
+      
+      console.log(`Download request for: "${videoInfo.title}" with license: ${videoInfo.license}`)
+    } else {
+      console.log(`Direct URL download request for: ${opts.url}`)
     }
 
-    // Temporarily allow all downloads for testing
-    // Note: This is for personal use only. Users are responsible for respecting copyright laws.
-    console.log(`Download request for: "${videoInfo.title}" with license: ${videoInfo.license}`)
+    // Allow all downloads for personal use
+    // Note: Users are responsible for respecting copyright laws.
     
     // For now, allow all downloads
     // const titleLower = videoInfo.title.toLowerCase()
@@ -689,9 +616,15 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
     // }
 
     // Real yt-dlp download implementation
-    console.log(`Starting download for video: ${id}`)
-    console.log(`Video title: ${videoInfo.title}`)
-    console.log(`License: ${videoInfo.license}`)
+    const videoInfo = isUrlDownload ? null : cachedResults.find(v => v.id === id)
+    
+    console.log(`Starting download for: ${isUrlDownload ? 'URL' : 'video'} ${id}`)
+    if (videoInfo) {
+      console.log(`Video title: ${videoInfo.title}`)
+      console.log(`License: ${videoInfo.license}`)
+    } else if (isUrlDownload) {
+      console.log(`URL: ${opts.url}`)
+    }
     console.log(`Download type: ${opts.format}`)
     console.log(`User settings:`, {
       audioFormat: opts.audioFormat,
@@ -713,8 +646,20 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
     }
 
     // Build yt-dlp arguments based on format and user settings
+    // Determine the URL to download
+    let downloadUrl = ''
+    if (opts.url) {
+      // Direct URL provided
+      downloadUrl = opts.url
+      console.log(`Using direct URL: ${downloadUrl}`)
+    } else {
+      // Video ID provided, construct YouTube URL
+      downloadUrl = `https://www.youtube.com/watch?v=${id}`
+      console.log(`Using YouTube video ID: ${id}`)
+    }
+    
     const args = [
-      `https://www.youtube.com/watch?v=${id}`,
+      downloadUrl,
       '-o', path.join(outputPath, '%(title)s.%(ext)s'),
     ]
 
@@ -829,11 +774,12 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
 
       // Return immediately with job info, download continues in background
       child.on('close', (code) => {
+        const title = videoInfo?.title || opts.url || id
         if (code === 0) {
-          console.log(`Download completed successfully for: ${videoInfo.title}`)
+          console.log(`Download completed successfully for: ${title}`)
           // Could emit an event to notify the renderer of completion
         } else {
-          console.error(`Download failed with code ${code} for: ${videoInfo.title}`)
+          console.error(`Download failed with code ${code} for: ${title}`)
           console.error('Error output:', errorOutput)
           console.error('Full output:', output)
           
@@ -865,12 +811,13 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
         extension = opts.videoFormat || appSettings.videoFormat || 'mp4'
       }
       
-      const filename = `${videoInfo.title.replace(/[<>:"/\\|?*]/g, '_')}.${extension}`
+      const title = videoInfo?.title || `download-${Date.now()}`
+      const filename = `${title.replace(/[<>:"/\\|?*]/g, '_')}.${extension}`
       
       return { 
         success: true, 
         jobId: jobId,
-        message: `Download started for: ${videoInfo.title}`,
+        message: `Download started for: ${videoInfo?.title || opts.url || id}`,
         outputPath: path.join(outputPath, filename),
         format: opts.format,
         quality: opts.videoQuality || opts.quality || 'best',

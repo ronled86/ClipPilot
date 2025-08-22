@@ -39,14 +39,14 @@ export default function App() {
     videoFormat: 'mp4',
     videoQuality: '720p',
     videoCodec: 'h264',
-    youtubeApiKey: '',
-    enableEnhancedSearch: false
+    youtubeApiKey: ''
   })
 
   const [downloads, setDownloads] = useState<DownloadJob[]>([])
   const [isBrowserMode, setIsBrowserMode] = useState(false)
   const [trendingOffset, setTrendingOffset] = useState(0)
   const [canLoadMoreTrending, setCanLoadMoreTrending] = useState(true)
+  const [showUrlDownload, setShowUrlDownload] = useState(false)
 
   // Detect if running in browser vs Electron
   useEffect(() => {
@@ -203,8 +203,7 @@ export default function App() {
     setLoading(true)
     try {
       const response = await window.clippilot.getTrending(
-        settings.youtubeApiKey, 
-        settings.enableEnhancedSearch
+        settings.youtubeApiKey
       )
       setResults(response.items || [])
       setCurrentQuery('') // Clear query since this is trending, not search
@@ -246,21 +245,26 @@ export default function App() {
     setCanLoadMoreTrending(false) // Disable trending pagination when searching
     
     try {
-      // Call search with settings - it will handle free tier vs enhanced search automatically
+      // Call search with settings - requires API key
       const response = await window.clippilot.search(
         q, 
-        settings.youtubeApiKey, 
-        settings.enableEnhancedSearch
+        settings.youtubeApiKey
       )
       setResults(response.items || response) // Handle both old and new API responses
       setNextPageToken(response.nextPageToken || null)
       
-      // If no results in free tier, show a helpful message
-      if ((!response.items || response.items.length === 0) && !settings.youtubeApiKey) {
-        console.log('Free tier search completed - no results. Enhanced search requires API key.')
+      // If no results, show a helpful message
+      if ((!response.items || response.items.length === 0)) {
+        console.log('Search completed - no results found.')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Search failed:', error)
+      // Show error message to user
+      if (error.message?.includes('API key')) {
+        alert('YouTube API key is required. Please add your API key in Settings.')
+      } else {
+        alert('Search failed. Please check your internet connection and API key.')
+      }
     } finally {
       setLoading(false)
     }
@@ -278,8 +282,7 @@ export default function App() {
         const response = await window.clippilot.searchMore(
           currentQuery, 
           nextPageToken, 
-          settings.youtubeApiKey, 
-          settings.enableEnhancedSearch
+          settings.youtubeApiKey
         )
         setResults(prev => [...prev, ...(response.items || response)])
         setNextPageToken(response.nextPageToken || null)
@@ -455,14 +458,135 @@ export default function App() {
     setDownloads(prev => prev.filter(job => job.id !== jobId))
   }
 
+  const handleUrlDownload = async (url: string) => {
+    if (isBrowserMode) {
+      alert('🌐 Browser Mode: URL downloads are only available in the desktop app.')
+      return
+    }
+
+    if (!window.clippilot) {
+      alert('ClipPilot API not available')
+      return
+    }
+
+    // Validate URL
+    try {
+      new URL(url)
+    } catch (error) {
+      alert('Please enter a valid URL')
+      return
+    }
+
+    // Extract video ID for YouTube URLs
+    let videoId = ''
+    try {
+      const urlObj = new URL(url)
+      if (urlObj.hostname.includes('youtube.com') || urlObj.hostname.includes('youtu.be')) {
+        if (urlObj.hostname.includes('youtu.be')) {
+          videoId = urlObj.pathname.slice(1)
+        } else {
+          videoId = urlObj.searchParams.get('v') || ''
+        }
+      }
+    } catch (error) {
+      console.warn('Could not parse URL for video ID:', error)
+    }
+
+    try {
+      // Check if the URL/video can be downloaded
+      if (videoId) {
+        const canDownload = await window.clippilot.canDownload(videoId)
+        if (!canDownload.allowed) {
+          alert(`Cannot download: ${canDownload.reason}`)
+          return
+        }
+      }
+
+      // Start download with URL directly
+      const downloadOptions = {
+        quality: settings.defaultQuality,
+        format: settings.defaultFormat,
+        outputPath: settings.downloadFolder,
+        audioFormat: settings.audioFormat,
+        audioBitrate: settings.audioBitrate,
+        videoFormat: settings.videoFormat,
+        videoQuality: settings.videoQuality,
+        videoCodec: settings.videoCodec,
+        url: url // Pass the URL directly for yt-dlp
+      }
+
+      const downloadResult = await window.clippilot.enqueueDownload(videoId || url, downloadOptions)
+
+      if (downloadResult.success) {
+        // Add download notification
+        const downloadJob: DownloadJob = {
+          id: downloadResult.jobId,
+          title: `URL Download: ${url}`,
+          format: settings.defaultFormat,
+          actualFormat: settings.defaultFormat === 'mp3' ? settings.audioFormat : settings.videoFormat,
+          status: 'downloading',
+          progress: 0,
+          outputPath: downloadResult.outputPath,
+          startTime: Date.now()
+        }
+        setDownloads(prev => [...prev, downloadJob])
+
+        // Clear the input
+        const input = document.querySelector('div.bg-blue-50 input[type="url"]') as HTMLInputElement
+        if (input) input.value = ''
+
+        alert('✅ Download started! Check the notifications for progress.')
+      } else {
+        alert(`❌ Download failed: ${downloadResult.error}`)
+      }
+
+    } catch (error: any) {
+      console.error('URL download failed:', error)
+      alert(`❌ Download failed: ${error.message || 'Unknown error'}`)
+    }
+  }
+
+  const handleExitApp = async () => {
+    if (isBrowserMode) {
+      // In browser mode, just close the tab/window
+      window.close()
+      return
+    }
+    
+    // In Electron mode, ask for confirmation and then exit
+    const confirmExit = confirm('Are you sure you want to exit ClipPilot?')
+    if (confirmExit) {
+      try {
+        if (window.clippilot?.exitApp) {
+          await window.clippilot.exitApp()
+        } else {
+          // Fallback for older API
+          window.close()
+        }
+      } catch (error) {
+        console.error('Failed to exit app:', error)
+        window.close()
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <header className="sticky top-0 bg-white/80 backdrop-blur border-b">
         <div className="w-full px-4 py-3 flex items-center gap-3">
           <AnimatedLogo />
           <h1 className="text-xl font-semibold">ClipPilot</h1>
-          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">v{getVersionString()}</span>
           <div className="flex-1" />
+          <button
+            onClick={() => setShowUrlDownload(!showUrlDownload)}
+            className="px-3 py-1 border rounded hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors flex items-center gap-1"
+            title="Toggle Direct URL Download"
+          >
+            🔗 Direct URL
+            <span className="text-xs">
+              {showUrlDownload ? '▲' : '▼'}
+            </span>
+          </button>
           <select
             className="border rounded px-2 py-1"
             value={i18n.language}
@@ -479,9 +603,56 @@ export default function App() {
           >
             ⚙️
           </button>
+          {!isBrowserMode && (
+            <button
+              onClick={handleExitApp}
+              className="px-3 py-1 border rounded hover:bg-red-50 hover:border-red-300 hover:text-red-600"
+              title="Exit ClipPilot"
+            >
+              ✕
+            </button>
+          )}
         </div>
         <div className="w-full px-4 py-3">
+          {/* URL Download Section - Conditionally Shown */}
+          {showUrlDownload && (
+            <div className="mb-3 p-3 border rounded-lg bg-blue-50 border-blue-200">
+              <h3 className="text-sm font-medium text-blue-800 mb-2">🔗 Direct URL Download</h3>
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  placeholder="Paste YouTube URL here (https://youtube.com/watch?v=...)"
+                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const url = (e.target as HTMLInputElement).value.trim()
+                      if (url) {
+                        handleUrlDownload(url)
+                      }
+                    }
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    const input = document.querySelector('div.bg-blue-50 input[type="url"]') as HTMLInputElement
+                    const url = input?.value.trim()
+                    if (url) {
+                      handleUrlDownload(url)
+                    }
+                  }}
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Download
+                </button>
+              </div>
+              <p className="text-xs text-blue-600 mt-2">
+                Supports YouTube, Vimeo, and many other video platforms
+              </p>
+            </div>
+          )}
+          
           <SearchBar onSearch={onSearch} settings={settings} />
+          
           <p className="text-xs text-gray-500 mt-2">{t('download_policy')}</p>
         </div>
       </header>
@@ -512,17 +683,17 @@ export default function App() {
               <div className="space-y-4">
                 <div className="text-6xl mb-4">🔍</div>
                 <h3 className="text-xl font-medium text-gray-800">
-                  {isBrowserMode ? 'Browser Demo Mode' : 'Ready to find amazing content!'}
+                  {isBrowserMode ? 'Browser Demo Mode' : 'Add YouTube API Key to Get Started!'}
                 </h3>
                 <p className="text-gray-600 max-w-md mx-auto">
                   {isBrowserMode ? (
-                    'This is a demo of ClipPilot running in browser mode. Search suggestions work, but download features require the desktop app.'
+                    'This is a demo of ClipPilot running in browser mode. Download the desktop app for full functionality including video downloads.'
                   ) : (
-                    'Search for music, videos, tutorials, or anything you want to download. The search uses YouTube\'s free suggestions to help you find exactly what you\'re looking for.'
+                    'Add your YouTube API key in Settings to search for and download videos. The app requires an API key to access YouTube\'s search functionality.'
                   )}
                 </p>
                 <div className="text-sm text-blue-600 bg-blue-50 rounded-lg p-3 max-w-md mx-auto">
-                  💡 <strong>Pro tip:</strong> Start typing in the search box above to see intelligent suggestions!
+                  💡 <strong>Setup tip:</strong> Click the ⚙️ Settings button above to add your YouTube API key!
                 </div>
                 {isBrowserMode && (
                   <div className="text-sm text-orange-600 bg-orange-50 rounded-lg p-3 max-w-md mx-auto mt-4">
@@ -540,7 +711,7 @@ export default function App() {
                   {isBrowserMode ? (
                     'In browser demo mode, search suggestions work but results require the desktop app. Download ClipPilot to see full search results and download videos!'
                   ) : (
-                    'Try searching with different keywords or check your spelling.'
+                    'Try searching with different keywords, check your spelling, or verify your YouTube API key is correctly configured in Settings.'
                   )}
                 </p>
               </div>
@@ -654,8 +825,7 @@ export default function App() {
         {!loading && ((nextPageToken && currentQuery) || (!currentQuery && canLoadMoreTrending)) && (
           <div 
             id="scroll-sentinel" 
-            className="h-4 w-full"
-            style={{ height: '20px' }}
+            className="h-5 w-full"
           />
         )}
         

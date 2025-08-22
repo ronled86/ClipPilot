@@ -62,63 +62,41 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
     try {
       let suggestions: string[] = []
 
-      // Try enhanced API first if enabled and API key is available
-      if (settings?.enableEnhancedSearch && settings?.youtubeApiKey) {
-        try {
-          const apiResponse = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(query)}&key=${settings.youtubeApiKey}`
+      // Use YouTube autocomplete API through main process
+      try {
+        // Use main process to avoid CORS issues (Electron mode)
+        if (window.clippilot?.getYoutubeSuggestions) {
+          suggestions = await window.clippilot.getYoutubeSuggestions(query)
+          console.log('✅ YouTube suggestions loaded:', suggestions.length)
+        } else {
+          // Browser mode - skip fetch due to CORS, use smart fallbacks
+          console.log('🌐 Browser mode: using intelligent fallback suggestions for:', query)
+          suggestions = FALLBACK_SUGGESTIONS.filter((item: string) =>
+            item.toLowerCase().includes(query.toLowerCase()) ||
+            query.toLowerCase().includes(item.toLowerCase())
+          ).slice(0, 6)
+          
+          // Add query-based suggestions
+          const queryWords = query.toLowerCase().split(' ')
+          const contextualSuggestions = [
+            `${query} tutorial`,
+            `${query} music`,
+            `${query} live`,
+            `${query} cover`,
+            `${query} acoustic`,
+            `${query} instrumental`
+          ].filter(suggestion => 
+            !suggestions.some(existing => existing.toLowerCase().includes(suggestion.toLowerCase()))
           )
           
-          if (apiResponse.ok) {
-            const apiData = await apiResponse.json()
-            suggestions = apiData.items?.map((item: any) => item.snippet.title).filter((title: string) => title && title !== query) || []
-            console.log('✅ Enhanced search results loaded')
-          } else {
-            console.warn('⚠️ Enhanced API failed, falling back to free method')
-          }
-        } catch (apiError) {
-          console.warn('⚠️ Enhanced API error, falling back to free method:', apiError)
+          suggestions = [...suggestions, ...contextualSuggestions].slice(0, 6)
         }
-      }
-
-      // Always use free YouTube autocomplete API as primary method (not fallback)
-      // This ensures we always get real YouTube suggestions, not mock data
-      if (suggestions.length === 0) {
-        try {
-          // Use main process to avoid CORS issues (Electron mode)
-          if (window.clippilot?.getYoutubeSuggestions) {
-            suggestions = await window.clippilot.getYoutubeSuggestions(query)
-            console.log('✅ Free YouTube suggestions loaded:', suggestions.length)
-          } else {
-            // Browser mode - skip fetch due to CORS, use smart fallbacks
-            console.log('🌐 Browser mode: using intelligent fallback suggestions for:', query)
-            suggestions = FALLBACK_SUGGESTIONS.filter((item: string) =>
-              item.toLowerCase().includes(query.toLowerCase()) ||
-              query.toLowerCase().includes(item.toLowerCase())
-            ).slice(0, 6)
-            
-            // Add query-based suggestions
-            const queryWords = query.toLowerCase().split(' ')
-            const contextualSuggestions = [
-              `${query} tutorial`,
-              `${query} music`,
-              `${query} live`,
-              `${query} cover`,
-              `${query} acoustic`,
-              `${query} instrumental`
-            ].filter(suggestion => 
-              !suggestions.some(existing => existing.toLowerCase().includes(suggestion.toLowerCase()))
-            )
-            
-            suggestions = [...suggestions, ...contextualSuggestions].slice(0, 6)
-          }
-        } catch (freeApiError) {
-          console.warn('⚠️ YouTube API failed, using fallback suggestions:', freeApiError)
-          // Use fallback suggestions if API fails
-          suggestions = FALLBACK_SUGGESTIONS.filter((item: string) =>
-            item.toLowerCase().includes(query.toLowerCase())
-          ).slice(0, 6)
-        }
+      } catch (freeApiError) {
+        console.warn('⚠️ YouTube API failed, using fallback suggestions:', freeApiError)
+        // Use fallback suggestions if API fails
+        suggestions = FALLBACK_SUGGESTIONS.filter((item: string) =>
+          item.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 6)
       }
 
       setYoutubeSuggestions(suggestions.slice(0, 6)) // Limit to 6 suggestions

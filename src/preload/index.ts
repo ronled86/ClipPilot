@@ -24,6 +24,7 @@ const api = {
   getSettings: async () => ipcRenderer.invoke('get-settings'),
   saveSettings: async (settings: any) => ipcRenderer.invoke('save-settings', settings),
   openFolder: async (filePath: string) => ipcRenderer.invoke('open-folder', filePath),
+  exitApp: async () => ipcRenderer.invoke('exit-app'),
   onProgress: (cb: (ev: any) => void) => {
     const listener = (_e: any, data: any) => cb(data)
     ipcRenderer.on('job-progress', listener)

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { getVersionString } from '../../version'
 
 interface SettingsModalProps {
   isOpen: boolean
@@ -18,7 +19,6 @@ export interface DownloadSettings {
   videoCodec: string
   // API Settings
   youtubeApiKey?: string
-  enableEnhancedSearch?: boolean
 }
 
 export default function SettingsModal({ isOpen, onClose, onSave, currentSettings }: SettingsModalProps) {
@@ -58,7 +58,10 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
       <div className="bg-white rounded-lg w-[900px] max-w-[95vw] max-h-[95vh] flex flex-col">
         {/* Fixed Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-200 flex-shrink-0">
-          <h2 className="text-xl font-bold">Download Settings</h2>
+          <div>
+            <h2 className="text-xl font-bold">Download Settings</h2>
+            <p className="text-xs text-gray-500 mt-1">ClipPilot v{getVersionString()}</p>
+          </div>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
@@ -110,10 +113,11 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="audio-format" className="block text-sm font-medium text-gray-700 mb-2">
                     Audio Format
                   </label>
                   <select
+                    id="audio-format"
                     value={settings.audioFormat}
                     onChange={(e) => setSettings(prev => ({ ...prev, audioFormat: e.target.value }))}
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
@@ -128,10 +132,11 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="audio-bitrate" className="block text-sm font-medium text-gray-700 mb-2">
                     Audio Bitrate
                   </label>
                   <select
+                    id="audio-bitrate"
                     value={settings.audioBitrate}
                     onChange={(e) => setSettings(prev => ({ ...prev, audioBitrate: e.target.value }))}
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
@@ -153,10 +158,11 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="video-format" className="block text-sm font-medium text-gray-700 mb-2">
                     Video Format
                   </label>
                   <select
+                    id="video-format"
                     value={settings.videoFormat}
                     onChange={(e) => setSettings(prev => ({ ...prev, videoFormat: e.target.value }))}
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
@@ -170,10 +176,11 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="video-quality" className="block text-sm font-medium text-gray-700 mb-2">
                     Video Quality
                   </label>
                   <select
+                    id="video-quality"
                     value={settings.videoQuality}
                     onChange={(e) => setSettings(prev => ({ ...prev, videoQuality: e.target.value }))}
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
@@ -189,10 +196,11 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="video-codec" className="block text-sm font-medium text-gray-700 mb-2">
                     Video Codec
                   </label>
                   <select
+                    id="video-codec"
                     value={settings.videoCodec}
                     onChange={(e) => setSettings(prev => ({ ...prev, videoCodec: e.target.value }))}
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
@@ -220,66 +228,59 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                 </div>
               )}
               <div className="bg-blue-100 border border-blue-300 rounded-md p-3 text-sm">
-                <p className="font-medium text-blue-800 mb-2">ℹ️ How it works:</p>
+                <p className="font-medium text-blue-800 mb-2">ℹ️ About API Key:</p>
                 <ul className="text-blue-700 space-y-1 text-xs list-disc list-inside">
-                  <li><strong>Without API Key:</strong> Basic YouTube search works perfectly (free)</li>
-                  <li><strong>With API Key:</strong> Enhanced search results and better performance</li>
+                  <li><strong>Required:</strong> YouTube API key is needed for search and trending videos</li>
                   <li><strong>Privacy:</strong> API key is stored locally on your computer only</li>
+                  <li><strong>Cost:</strong> Google provides generous usage limits at no charge</li>
                 </ul>
               </div>
 
-              <div>
-                <label className="flex items-center space-x-2 mb-3">
+              <div className="space-y-3">
+                <div>
+                  <label htmlFor="youtube-api-key" className="block text-sm font-medium text-gray-700 mb-2">
+                    YouTube API Key (Required)
+                  </label>
                   <input
-                    type="checkbox"
-                    checked={settings.enableEnhancedSearch || false}
+                    id="youtube-api-key"
+                    type="password"
+                    value={settings.youtubeApiKey || ''}
                     onChange={(e) => setSettings(prev => ({ 
                       ...prev, 
-                      enableEnhancedSearch: e.target.checked 
+                      youtubeApiKey: e.target.value 
                     }))}
-                    className="rounded"
+                    placeholder="Enter your YouTube Data API v3 key..."
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
                   />
-                  <span className="text-sm font-medium text-gray-700">
-                    Enable Enhanced Search (Optional)
-                  </span>
-                </label>
-              </div>
-
-              {settings.enableEnhancedSearch && (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      YouTube Data API v3 Key
-                    </label>
-                    <input
-                      type="password"
-                      value={settings.youtubeApiKey || ''}
-                      onChange={(e) => setSettings(prev => ({ 
-                        ...prev, 
-                        youtubeApiKey: e.target.value 
-                      }))}
-                      placeholder="AIzaSyD..."
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
-                    />
-                  </div>
-                  
-                  <div className="bg-yellow-100 border border-yellow-300 rounded-md p-3 text-xs">
-                    <p className="font-medium text-yellow-800 mb-2">📋 How to get a free API key:</p>
-                    <ol className="text-yellow-700 space-y-1 list-decimal list-inside">
-                      <li>Go to <a href="https://console.developers.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Google Cloud Console</a></li>
-                      <li>Create a new project or select existing one</li>
-                      <li>Enable "YouTube Data API v3"</li>
-                      <li>Create credentials → API Key</li>
-                      <li>Copy the key and paste it above</li>
-                    </ol>
-                    <p className="mt-2 text-yellow-600">
-                      <strong>Free tier:</strong> 10,000 requests/day (more than enough for personal use)
-                    </p>
-                  </div>
                 </div>
-              )}
+                
+                <div className="bg-blue-50 border border-blue-300 rounded-md p-3 text-xs">
+                  <p className="font-medium text-blue-800 mb-2">📋 How to get an API key:</p>
+                  <ol className="text-blue-700 space-y-1 list-decimal list-inside">
+                    <li>Visit <a href="https://console.developers.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Google Cloud Console</a></li>
+                    <li>Create a project and enable "YouTube Data API v3"</li>
+                    <li>Go to Credentials → Create → API Key</li>
+                    <li>Copy and paste the key above</li>
+                  </ol>
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* Desktop Tips Section */}
+          {window.clippilot && (
+            <div className="border rounded-lg p-4 bg-gray-50">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">💡 Desktop Tips</h3>
+              <div className="space-y-3">
+                <div className="bg-blue-100 border border-blue-300 rounded-md p-3 text-sm">
+                  <p className="font-medium text-blue-800 mb-1">⌨️ Keyboard Shortcuts:</p>
+                  <p className="text-blue-700 text-xs">
+                    <strong>Alt+M</strong> - Toggle menu bar visibility (hidden by default for cleaner interface)
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Fixed Footer */}

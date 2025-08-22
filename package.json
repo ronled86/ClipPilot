@@ -1,6 +1,6 @@
 {
   "name": "clippilot-desktop",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "YouTube search, view, and download client with license-aware gating",
   "main": "dist/main/index.js",

@@ -24,12 +24,10 @@ nsis:
   allowElevation: true
   deleteAppDataOnUninstall: true
   allowToChangeInstallationDirectory: true
-  createDesktopShortcut: ask
+  createDesktopShortcut: true
   createStartMenuShortcut: true
   runAfterFinish: true
   # Handle existing installations intelligently
   uninstallDisplayName: "ClipPilot"
-  installerHeader: "Installing ClipPilot"
-  installerHeaderIcon: "default"
   # Auto-detect and handle previous versions
   artifactName: "${productName}-Setup-${version}.${ext}"

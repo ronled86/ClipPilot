@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 export interface DownloadJob {
   id: string
@@ -19,6 +19,25 @@ interface DownloadNotificationsProps {
 
 export default function DownloadNotifications({ downloads, onDismiss }: DownloadNotificationsProps) {
   if (downloads.length === 0) return null
+
+  const ProgressBar = ({ progress }: { progress: number }) => {
+    const barRef = useRef<HTMLDivElement>(null)
+    
+    useEffect(() => {
+      if (barRef.current) {
+        barRef.current.style.width = `${progress}%`
+      }
+    }, [progress])
+
+    return (
+      <div className="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden">
+        <div 
+          ref={barRef}
+          className="bg-blue-500 h-1.5 rounded-full transition-all duration-300 absolute left-0 top-0"
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="fixed bottom-4 right-4 w-80 max-w-sm z-50 space-y-2">
@@ -56,12 +75,7 @@ export default function DownloadNotifications({ downloads, onDismiss }: Download
                     <span>Downloading...</span>
                     {download.progress && <span>{Math.round(download.progress)}%</span>}
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5">
-                    <div 
-                      className="bg-blue-500 h-1.5 rounded-full transition-all duration-300"
-                      style={{ width: `${download.progress || 0}%` }}
-                    />
-                  </div>
+                  <ProgressBar progress={download.progress || 0} />
                 </div>
               )}
               
