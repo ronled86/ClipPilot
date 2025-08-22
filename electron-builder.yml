@@ -1,18 +1,38 @@
 appId: com.ronled.clippilot
 productName: ClipPilot
+copyright: "Copyright © 2025 Ron Led"
 # icon: assets/icon.png  # Commented out for now, will use default
 files:
   - dist/**
   - package.json
+  - tools/**
 directories:
   output: release
+  buildResources: assets
 win:
   # icon: assets/icon.png  # Commented out for now, will use default
   target:
-    - nsis
-  forceCodeSigning: false  # Disable code signing requirement
+    - target: nsis
+      arch: [x64]
+    - target: msi
+      arch: [x64]
+  forceCodeSigning: false
+  requestedExecutionLevel: asInvoker
+  signAndEditExecutable: false
+  verifyUpdateCodeSignature: false
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
+  allowElevation: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
+  deleteAppDataOnUninstall: false
+  displayLanguageSelector: false
+  installerLanguages: [en_US]
+  license: LICENSE
+  artifactName: "${productName}-Setup-${version}.${ext}"
+msi:
+  oneClick: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  artifactName: "${productName}-Setup-${version}.${ext}"
