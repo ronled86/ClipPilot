@@ -6,6 +6,10 @@
   "main": "dist/main/index.js",
   "author": "Ron",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "concurrently \"vite\" \"tsc -p tsconfig.node.json -w\" \"cross-env NODE_ENV=development DEV_SERVER_URL=http://localhost:5173 electron .\"",
     "build": "vite build && tsc -p tsconfig.node.json",
@@ -22,7 +26,8 @@
     "version:patch": "node scripts/version-bump.js patch",
     "version:minor": "node scripts/version-bump.js minor",
     "version:major": "node scripts/version-bump.js major",
-    "clean": "node scripts/cleanup.js"
+    "clean": "node scripts/cleanup.js",
+    "test": "echo \"No tests configured yet\" && exit 0"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
