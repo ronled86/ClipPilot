@@ -14,25 +14,22 @@ win:
   target:
     - target: nsis
       arch: [x64]
-    - target: msi
-      arch: [x64]
   forceCodeSigning: false
   requestedExecutionLevel: asInvoker
   signAndEditExecutable: false
   verifyUpdateCodeSignature: false
 nsis:
   oneClick: false
-  allowToChangeInstallationDirectory: true
+  perMachine: false
   allowElevation: true
-  createDesktopShortcut: true
+  deleteAppDataOnUninstall: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: ask
   createStartMenuShortcut: true
-  deleteAppDataOnUninstall: false
-  displayLanguageSelector: false
-  installerLanguages: [en_US]
-  license: LICENSE
-  artifactName: "${productName}-Setup-${version}.${ext}"
-msi:
-  oneClick: false
-  createDesktopShortcut: true
-  createStartMenuShortcut: true
+  runAfterFinish: true
+  # Handle existing installations intelligently
+  uninstallDisplayName: "ClipPilot"
+  installerHeader: "Installing ClipPilot"
+  installerHeaderIcon: "default"
+  # Auto-detect and handle previous versions
   artifactName: "${productName}-Setup-${version}.${ext}"

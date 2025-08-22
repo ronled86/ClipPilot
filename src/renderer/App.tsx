@@ -44,6 +44,19 @@ export default function App() {
   })
 
   const [downloads, setDownloads] = useState<DownloadJob[]>([])
+  const [isBrowserMode, setIsBrowserMode] = useState(false)
+  const [trendingOffset, setTrendingOffset] = useState(0)
+  const [canLoadMoreTrending, setCanLoadMoreTrending] = useState(true)
+
+  // Detect if running in browser vs Electron
+  useEffect(() => {
+    const isElectron = !!(window as any).electronAPI || !!(window as any).clippilot
+    setIsBrowserMode(!isElectron)
+    if (!isElectron) {
+      console.log('Running in browser mode - some features may be limited')
+      setApiReady(true) // In browser mode, we're always "ready"
+    }
+  }, [])
 
   // Load settings on app start
   useEffect(() => {
@@ -67,16 +80,18 @@ export default function App() {
   }, [i18n.language])
 
   useEffect(() => {
-    // Check if the API is available
-    const checkApi = () => {
-      if (window.clippilot) {
-        setApiReady(true)
-      } else {
-        setTimeout(checkApi, 100)
+    // Check if the API is available (Electron mode only)
+    if (!isBrowserMode) {
+      const checkApi = () => {
+        if (window.clippilot) {
+          setApiReady(true)
+        } else {
+          setTimeout(checkApi, 100)
+        }
       }
+      checkApi()
     }
-    checkApi()
-  }, [])
+  }, [isBrowserMode])
 
   // Infinite scroll effect with window resize and fullscreen handling
   useEffect(() => {
@@ -93,8 +108,7 @@ export default function App() {
       if (
         scrollTop + windowHeight + 100 >= documentHeight &&
         !loading &&
-        nextPageToken &&
-        currentQuery
+        ((nextPageToken && currentQuery) || (!currentQuery && canLoadMoreTrending))
       ) {
         isScrolling = true
         loadMoreResults().finally(() => {
@@ -157,8 +171,7 @@ export default function App() {
         if (
           entry.isIntersecting &&
           !loading &&
-          nextPageToken &&
-          currentQuery
+          ((nextPageToken && currentQuery) || (!currentQuery && canLoadMoreTrending))
         ) {
           loadMoreResults()
         }
@@ -175,18 +188,29 @@ export default function App() {
     return () => {
       observer.disconnect()
     }
-  }, [loading, nextPageToken, currentQuery, results.length]) // Include results.length to re-observe when content changes
+  }, [loading, nextPageToken, currentQuery, canLoadMoreTrending, results.length]) // Include canLoadMoreTrending for trending pagination
 
   // Load trending videos when app starts
   const loadTrendingVideos = async () => {
+    if (isBrowserMode) {
+      // In browser mode, don't load trending
+      console.log('Browser mode: trending videos not available')
+      return
+    }
+    
     if (!window.clippilot?.getTrending) return
 
     setLoading(true)
     try {
-      const response = await window.clippilot.getTrending()
+      const response = await window.clippilot.getTrending(
+        settings.youtubeApiKey, 
+        settings.enableEnhancedSearch
+      )
       setResults(response.items || [])
       setCurrentQuery('') // Clear query since this is trending, not search
-      setNextPageToken(null) // Trending doesn't have pagination
+      setNextPageToken(null) // Trending doesn't use traditional pagination
+      setTrendingOffset(0) // Reset trending offset
+      setCanLoadMoreTrending(true) // Reset trending load more capability
     } catch (error) {
       console.error('Failed to load trending videos:', error)
     } finally {
@@ -202,6 +226,15 @@ export default function App() {
   }, [apiReady])
 
   const onSearch = async (q: string) => {
+    if (isBrowserMode) {
+      // In browser mode, just show a message
+      console.log('Search in browser mode:', q)
+      setCurrentQuery(q)
+      setResults([])
+      setNextPageToken(null)
+      return
+    }
+    
     if (!window.clippilot) {
       console.error('ClipPilot API not available')
       return
@@ -210,11 +243,22 @@ export default function App() {
     setLoading(true)
     setCurrentQuery(q)
     setNextPageToken(null)
+    setCanLoadMoreTrending(false) // Disable trending pagination when searching
     
     try {
-      const response = await window.clippilot.search(q)
+      // Call search with settings - it will handle free tier vs enhanced search automatically
+      const response = await window.clippilot.search(
+        q, 
+        settings.youtubeApiKey, 
+        settings.enableEnhancedSearch
+      )
       setResults(response.items || response) // Handle both old and new API responses
       setNextPageToken(response.nextPageToken || null)
+      
+      // If no results in free tier, show a helpful message
+      if ((!response.items || response.items.length === 0) && !settings.youtubeApiKey) {
+        console.log('Free tier search completed - no results. Enhanced search requires API key.')
+      }
     } catch (error) {
       console.error('Search failed:', error)
     } finally {
@@ -223,26 +267,63 @@ export default function App() {
   }
 
   const loadMoreResults = async () => {
-    if (!window.clippilot || !currentQuery || !nextPageToken || loading) {
+    if (!window.clippilot || loading) {
       return
     }
 
-    setLoading(true)
+    // Handle search pagination
+    if (currentQuery && nextPageToken) {
+      setLoading(true)
+      try {
+        const response = await window.clippilot.searchMore(
+          currentQuery, 
+          nextPageToken, 
+          settings.youtubeApiKey, 
+          settings.enableEnhancedSearch
+        )
+        setResults(prev => [...prev, ...(response.items || response)])
+        setNextPageToken(response.nextPageToken || null)
+      } catch (error) {
+        console.error('Load more search results failed:', error)
+      } finally {
+        setLoading(false)
+      }
+      return
+    }
 
-    try {
-      const response = await window.clippilot.searchMore(currentQuery, nextPageToken)
-      setResults(prev => [...prev, ...(response.items || response)])
-      setNextPageToken(response.nextPageToken || null)
-    } catch (error) {
-      console.error('Load more failed:', error)
-    } finally {
-      setLoading(false)
+    // Handle trending pagination
+    if (!currentQuery && canLoadMoreTrending && window.clippilot.getMoreTrending) {
+      setLoading(true)
+      try {
+        const newOffset = trendingOffset + 20
+        const response = await window.clippilot.getMoreTrending(
+          settings.youtubeApiKey,
+          newOffset
+        )
+        
+        if (response.items && response.items.length > 0) {
+          setResults(prev => [...prev, ...response.items])
+          setTrendingOffset(newOffset)
+          setCanLoadMoreTrending(response.hasMore !== false)
+        } else {
+          setCanLoadMoreTrending(false)
+        }
+      } catch (error) {
+        console.error('Load more trending failed:', error)
+        setCanLoadMoreTrending(false)
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
   const handleSaveSettings = async (newSettings: DownloadSettings) => {
     try {
-      if (window.clippilot?.saveSettings) {
+      if (isBrowserMode) {
+        // In browser mode, just update local state
+        setSettings(newSettings)
+        console.log('Settings updated in browser mode:', newSettings)
+      } else if (window.clippilot?.saveSettings) {
         await window.clippilot.saveSettings(newSettings)
         setSettings(newSettings)
       }
@@ -423,7 +504,50 @@ export default function App() {
             </button>
           )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+        
+        {/* Results grid or empty state */}
+        {results.length === 0 && !loading ? (
+          <div className="text-center py-16">
+            {!currentQuery ? (
+              <div className="space-y-4">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-medium text-gray-800">
+                  {isBrowserMode ? 'Browser Demo Mode' : 'Ready to find amazing content!'}
+                </h3>
+                <p className="text-gray-600 max-w-md mx-auto">
+                  {isBrowserMode ? (
+                    'This is a demo of ClipPilot running in browser mode. Search suggestions work, but download features require the desktop app.'
+                  ) : (
+                    'Search for music, videos, tutorials, or anything you want to download. The search uses YouTube\'s free suggestions to help you find exactly what you\'re looking for.'
+                  )}
+                </p>
+                <div className="text-sm text-blue-600 bg-blue-50 rounded-lg p-3 max-w-md mx-auto">
+                  💡 <strong>Pro tip:</strong> Start typing in the search box above to see intelligent suggestions!
+                </div>
+                {isBrowserMode && (
+                  <div className="text-sm text-orange-600 bg-orange-50 rounded-lg p-3 max-w-md mx-auto mt-4">
+                    📱 <strong>Full features:</strong> Download the desktop app for complete functionality including video downloads!
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="text-6xl mb-4">🤷‍♂️</div>
+                <h3 className="text-xl font-medium text-gray-800">
+                  {isBrowserMode ? 'Demo Mode - Search Submitted' : 'No results found'}
+                </h3>
+                <p className="text-gray-600">
+                  {isBrowserMode ? (
+                    'In browser demo mode, search suggestions work but results require the desktop app. Download ClipPilot to see full search results and download videos!'
+                  ) : (
+                    'Try searching with different keywords or check your spelling.'
+                  )}
+                </p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
           {results.map(v => (
             <article key={v.id} className="border rounded-xl p-3 shadow-sm flex flex-col gap-2">
               <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
@@ -516,6 +640,7 @@ export default function App() {
             </article>
           ))}
         </div>
+        )}
         
         {/* Loading indicator */}
         {loading && (
@@ -526,7 +651,7 @@ export default function App() {
         )}
         
         {/* Intersection Observer sentinel for infinite scroll */}
-        {!loading && nextPageToken && currentQuery && (
+        {!loading && ((nextPageToken && currentQuery) || (!currentQuery && canLoadMoreTrending)) && (
           <div 
             id="scroll-sentinel" 
             className="h-4 w-full"
@@ -535,7 +660,7 @@ export default function App() {
         )}
         
         {/* End of results indicator */}
-        {!loading && results.length > 0 && !nextPageToken && (
+        {!loading && results.length > 0 && !nextPageToken && (!canLoadMoreTrending || currentQuery) && (
           <div className="text-center py-8 text-gray-500">
             No more results to load
           </div>

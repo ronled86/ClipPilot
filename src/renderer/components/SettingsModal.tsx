@@ -34,7 +34,12 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
   }
 
   const handleSelectFolder = async () => {
-    if (!window.clippilot?.selectFolder) return
+    // Check if we're in browser mode
+    if (!window.clippilot) {
+      // Browser mode - show a helpful message
+      alert('🌐 Browser Mode: Folder selection is only available in the desktop app. Downloads would typically go to your default Downloads folder.')
+      return
+    }
     
     try {
       const result = await window.clippilot.selectFolder()
@@ -49,35 +54,48 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-[800px] max-w-90vw max-h-90vh overflow-y-auto">
-        <div className="flex justify-between items-center mb-6">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg w-[900px] max-w-[95vw] max-h-[95vh] flex flex-col">
+        {/* Fixed Header */}
+        <div className="flex justify-between items-center p-6 border-b border-gray-200 flex-shrink-0">
           <h2 className="text-xl font-bold">Download Settings</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl"
+            className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
           >
             ×
           </button>
         </div>
 
-        <div className="space-y-6">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="space-y-6">
           {/* Download Folder - Top Section */}
           <div className="border rounded-lg p-4 bg-gray-50">
             <label className="block text-sm font-medium text-gray-700 mb-3">
               📁 Download Folder
             </label>
+            {!window.clippilot && (
+              <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-700">
+                🌐 <strong>Browser Mode:</strong> Folder selection requires the desktop app. Downloads would use your browser's default download location.
+              </div>
+            )}
             <div className="flex gap-2">
               <input
                 type="text"
-                value={settings.downloadFolder}
+                value={window.clippilot ? settings.downloadFolder : 'Browser default downloads folder'}
                 readOnly
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-white"
                 placeholder="Choose download folder..."
               />
               <button
                 onClick={handleSelectFolder}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  window.clippilot 
+                    ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                    : 'bg-gray-300 text-gray-600 cursor-not-allowed hover:bg-gray-300'
+                }`}
+                title={window.clippilot ? 'Browse for folder' : 'Only available in desktop app'}
               >
                 Browse
               </button>
@@ -195,6 +213,12 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
             <h3 className="text-lg font-semibold text-gray-800 mb-4">🔑 API Configuration (Optional)</h3>
             
             <div className="space-y-4">
+              {!window.clippilot && (
+                <div className="bg-orange-100 border border-orange-300 rounded-md p-3 text-sm">
+                  <p className="font-medium text-orange-800 mb-2">🌐 Browser Mode:</p>
+                  <p className="text-orange-700 text-xs">API configuration works in browser mode but actual downloads require the desktop app.</p>
+                </div>
+              )}
               <div className="bg-blue-100 border border-blue-300 rounded-md p-3 text-sm">
                 <p className="font-medium text-blue-800 mb-2">ℹ️ How it works:</p>
                 <ul className="text-blue-700 space-y-1 text-xs list-disc list-inside">
@@ -258,7 +282,8 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 mt-6">
+        {/* Fixed Footer */}
+        <div className="flex justify-end gap-2 p-6 border-t border-gray-200 flex-shrink-0 bg-white">
           <button
             onClick={onClose}
             className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
@@ -271,6 +296,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
           >
             Save Settings
           </button>
+        </div>
         </div>
       </div>
     </div>

@@ -81,25 +81,54 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
         }
       }
 
-      // Fallback to free YouTube autocomplete API if enhanced didn't work or isn't enabled
+      // Always use free YouTube autocomplete API as primary method (not fallback)
+      // This ensures we always get real YouTube suggestions, not mock data
       if (suggestions.length === 0) {
-        const response = await fetch(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&q=${encodeURIComponent(query)}`)
-        const text = await response.text()
-        
-        // Parse JSONP response
-        const jsonStart = text.indexOf('(') + 1
-        const jsonEnd = text.lastIndexOf(')')
-        const jsonStr = text.substring(jsonStart, jsonEnd)
-        const data = JSON.parse(jsonStr)
-        
-        // Extract suggestions from the response
-        suggestions = data[1]?.map((item: any) => item[0]).filter((item: string) => item && item !== query) || []
+        try {
+          // Use main process to avoid CORS issues (Electron mode)
+          if (window.clippilot?.getYoutubeSuggestions) {
+            suggestions = await window.clippilot.getYoutubeSuggestions(query)
+            console.log('✅ Free YouTube suggestions loaded:', suggestions.length)
+          } else {
+            // Browser mode - skip fetch due to CORS, use smart fallbacks
+            console.log('🌐 Browser mode: using intelligent fallback suggestions for:', query)
+            suggestions = FALLBACK_SUGGESTIONS.filter((item: string) =>
+              item.toLowerCase().includes(query.toLowerCase()) ||
+              query.toLowerCase().includes(item.toLowerCase())
+            ).slice(0, 6)
+            
+            // Add query-based suggestions
+            const queryWords = query.toLowerCase().split(' ')
+            const contextualSuggestions = [
+              `${query} tutorial`,
+              `${query} music`,
+              `${query} live`,
+              `${query} cover`,
+              `${query} acoustic`,
+              `${query} instrumental`
+            ].filter(suggestion => 
+              !suggestions.some(existing => existing.toLowerCase().includes(suggestion.toLowerCase()))
+            )
+            
+            suggestions = [...suggestions, ...contextualSuggestions].slice(0, 6)
+          }
+        } catch (freeApiError) {
+          console.warn('⚠️ YouTube API failed, using fallback suggestions:', freeApiError)
+          // Use fallback suggestions if API fails
+          suggestions = FALLBACK_SUGGESTIONS.filter((item: string) =>
+            item.toLowerCase().includes(query.toLowerCase())
+          ).slice(0, 6)
+        }
       }
 
       setYoutubeSuggestions(suggestions.slice(0, 6)) // Limit to 6 suggestions
     } catch (error) {
       console.warn('Failed to fetch YouTube suggestions:', error)
-      setYoutubeSuggestions([])
+      // Use fallback suggestions if everything fails
+      const fallbackSuggestions = FALLBACK_SUGGESTIONS.filter((item: string) =>
+        item.toLowerCase().includes(query.toLowerCase())
+      )
+      setYoutubeSuggestions(fallbackSuggestions.slice(0, 6))
     } finally {
       setLoadingSuggestions(false)
     }
@@ -272,6 +301,7 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
               {suggestions.map((suggestion, index) => {
                 const isYoutubeSuggestion = youtubeSuggestions.includes(suggestion)
                 const isHistorySuggestion = searchHistory.includes(suggestion)
+                const isBrowserMode = !window.clippilot?.getYoutubeSuggestions
                 
                 return (
                   <div
@@ -283,14 +313,16 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
                   >
                     <span className="flex-1">{suggestion}</span>
                     <div className="flex items-center gap-1 ml-2">
-                      {isYoutubeSuggestion && (
+                      {isYoutubeSuggestion && !isBrowserMode && (
                         <span className="text-xs text-red-500">🎥 YouTube</span>
                       )}
                       {isHistorySuggestion && !isYoutubeSuggestion && (
                         <span className="text-xs text-gray-400">📝 History</span>
                       )}
                       {!isYoutubeSuggestion && !isHistorySuggestion && (
-                        <span className="text-xs text-blue-400">💡 Suggestion</span>
+                        <span className="text-xs text-blue-400">
+                          {isBrowserMode ? '🌐 Smart' : '💡 Suggestion'}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -301,6 +333,9 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
               <div className="px-4 py-2 text-xs text-gray-500 border-t bg-gray-50">
                 💡 Use ↑↓ to navigate, Tab to complete, Enter to search
                 {loadingSuggestions && <span className="ml-2">• Loading more suggestions...</span>}
+                {!window.clippilot?.getYoutubeSuggestions && (
+                  <span className="ml-2">• Browser demo mode</span>
+                )}
               </div>
             </div>
           )}

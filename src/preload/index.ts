@@ -1,19 +1,21 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 const api = {
-  search: async (q: string) => {
+  search: async (q: string, apiKey?: string, enhancedSearch?: boolean) => {
     if (!q || q.trim().length === 0) {
       throw new Error('Search query cannot be empty')
     }
-    return ipcRenderer.invoke('search', q)
+    return ipcRenderer.invoke('search', q, apiKey, enhancedSearch)
   },
-  searchMore: async (q: string, pageToken: string) => {
+  searchMore: async (q: string, pageToken: string, apiKey?: string, enhancedSearch?: boolean) => {
     if (!q || q.trim().length === 0) {
       throw new Error('Search query cannot be empty')
     }
-    return ipcRenderer.invoke('search-more', q, pageToken)
+    return ipcRenderer.invoke('search-more', q, pageToken, apiKey, enhancedSearch)
   },
-  getTrending: async () => ipcRenderer.invoke('get-trending'),
+  getTrending: async (apiKey?: string, enhancedSearch?: boolean) => ipcRenderer.invoke('get-trending', apiKey, enhancedSearch),
+  getMoreTrending: async (apiKey?: string, offset?: number) => ipcRenderer.invoke('get-more-trending', apiKey, offset),
+  getYoutubeSuggestions: async (query: string) => ipcRenderer.invoke('get-youtube-suggestions', query),
   getFormats: async (id: string) => ipcRenderer.invoke('get-formats', id),
   canDownload: async (id: string) => ipcRenderer.invoke('can-download', id),
   enqueueDownload: async (id: string, opts: any) => ipcRenderer.invoke('enqueue-download', id, opts),
