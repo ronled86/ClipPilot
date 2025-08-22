@@ -38,7 +38,9 @@ export default function App() {
     audioBitrate: '192k',
     videoFormat: 'mp4',
     videoQuality: '720p',
-    videoCodec: 'h264'
+    videoCodec: 'h264',
+    youtubeApiKey: '',
+    enableEnhancedSearch: false
   })
 
   const [downloads, setDownloads] = useState<DownloadJob[]>([])
@@ -398,7 +400,7 @@ export default function App() {
           </button>
         </div>
         <div className="w-full px-4 py-3">
-          <SearchBar onSearch={onSearch} />
+          <SearchBar onSearch={onSearch} settings={settings} />
           <p className="text-xs text-gray-500 mt-2">{t('download_policy')}</p>
         </div>
       </header>

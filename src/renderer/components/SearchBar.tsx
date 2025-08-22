@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// Import DownloadSettings interface
+import type { DownloadSettings } from './SettingsModal'
+
 // Common fallback suggestions for music/video content
 const FALLBACK_SUGGESTIONS = [
   'music', 'tutorial', 'podcast', 'live', 'interview', 'cover', 'remix', 'acoustic',
@@ -9,7 +12,12 @@ const FALLBACK_SUGGESTIONS = [
   'education', 'lecture', 'course', 'how to', 'DIY', 'cooking', 'fitness', 'travel'
 ]
 
-export default function SearchBar({ onSearch }: { onSearch: (q: string) => void }) {
+interface SearchBarProps {
+  onSearch: (q: string) => void
+  settings?: DownloadSettings
+}
+
+export default function SearchBar({ onSearch, settings }: SearchBarProps) {
   const { t } = useTranslation()
   const [q, setQ] = useState('')
   const [suggestions, setSuggestions] = useState<string[]>([])
@@ -52,18 +60,42 @@ export default function SearchBar({ onSearch }: { onSearch: (q: string) => void 
 
     setLoadingSuggestions(true)
     try {
-      // Use YouTube's autocomplete API
-      const response = await fetch(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&q=${encodeURIComponent(query)}`)
-      const text = await response.text()
-      
-      // Parse JSONP response
-      const jsonStart = text.indexOf('(') + 1
-      const jsonEnd = text.lastIndexOf(')')
-      const jsonStr = text.substring(jsonStart, jsonEnd)
-      const data = JSON.parse(jsonStr)
-      
-      // Extract suggestions from the response
-      const suggestions = data[1]?.map((item: any) => item[0]).filter((item: string) => item && item !== query) || []
+      let suggestions: string[] = []
+
+      // Try enhanced API first if enabled and API key is available
+      if (settings?.enableEnhancedSearch && settings?.youtubeApiKey) {
+        try {
+          const apiResponse = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(query)}&key=${settings.youtubeApiKey}`
+          )
+          
+          if (apiResponse.ok) {
+            const apiData = await apiResponse.json()
+            suggestions = apiData.items?.map((item: any) => item.snippet.title).filter((title: string) => title && title !== query) || []
+            console.log('✅ Enhanced search results loaded')
+          } else {
+            console.warn('⚠️ Enhanced API failed, falling back to free method')
+          }
+        } catch (apiError) {
+          console.warn('⚠️ Enhanced API error, falling back to free method:', apiError)
+        }
+      }
+
+      // Fallback to free YouTube autocomplete API if enhanced didn't work or isn't enabled
+      if (suggestions.length === 0) {
+        const response = await fetch(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&q=${encodeURIComponent(query)}`)
+        const text = await response.text()
+        
+        // Parse JSONP response
+        const jsonStart = text.indexOf('(') + 1
+        const jsonEnd = text.lastIndexOf(')')
+        const jsonStr = text.substring(jsonStart, jsonEnd)
+        const data = JSON.parse(jsonStr)
+        
+        // Extract suggestions from the response
+        suggestions = data[1]?.map((item: any) => item[0]).filter((item: string) => item && item !== query) || []
+      }
+
       setYoutubeSuggestions(suggestions.slice(0, 6)) // Limit to 6 suggestions
     } catch (error) {
       console.warn('Failed to fetch YouTube suggestions:', error)

@@ -16,6 +16,9 @@ export interface DownloadSettings {
   videoFormat: string
   videoQuality: string
   videoCodec: string
+  // API Settings
+  youtubeApiKey?: string
+  enableEnhancedSearch?: boolean
 }
 
 export default function SettingsModal({ isOpen, onClose, onSave, currentSettings }: SettingsModalProps) {
@@ -184,6 +187,73 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                   </select>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* API Settings Section */}
+          <div className="border rounded-lg p-4 bg-purple-50">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">🔑 API Configuration (Optional)</h3>
+            
+            <div className="space-y-4">
+              <div className="bg-blue-100 border border-blue-300 rounded-md p-3 text-sm">
+                <p className="font-medium text-blue-800 mb-2">ℹ️ How it works:</p>
+                <ul className="text-blue-700 space-y-1 text-xs list-disc list-inside">
+                  <li><strong>Without API Key:</strong> Basic YouTube search works perfectly (free)</li>
+                  <li><strong>With API Key:</strong> Enhanced search results and better performance</li>
+                  <li><strong>Privacy:</strong> API key is stored locally on your computer only</li>
+                </ul>
+              </div>
+
+              <div>
+                <label className="flex items-center space-x-2 mb-3">
+                  <input
+                    type="checkbox"
+                    checked={settings.enableEnhancedSearch || false}
+                    onChange={(e) => setSettings(prev => ({ 
+                      ...prev, 
+                      enableEnhancedSearch: e.target.checked 
+                    }))}
+                    className="rounded"
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    Enable Enhanced Search (Optional)
+                  </span>
+                </label>
+              </div>
+
+              {settings.enableEnhancedSearch && (
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      YouTube Data API v3 Key
+                    </label>
+                    <input
+                      type="password"
+                      value={settings.youtubeApiKey || ''}
+                      onChange={(e) => setSettings(prev => ({ 
+                        ...prev, 
+                        youtubeApiKey: e.target.value 
+                      }))}
+                      placeholder="AIzaSyD..."
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  
+                  <div className="bg-yellow-100 border border-yellow-300 rounded-md p-3 text-xs">
+                    <p className="font-medium text-yellow-800 mb-2">📋 How to get a free API key:</p>
+                    <ol className="text-yellow-700 space-y-1 list-decimal list-inside">
+                      <li>Go to <a href="https://console.developers.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Google Cloud Console</a></li>
+                      <li>Create a new project or select existing one</li>
+                      <li>Enable "YouTube Data API v3"</li>
+                      <li>Create credentials → API Key</li>
+                      <li>Copy the key and paste it above</li>
+                    </ol>
+                    <p className="mt-2 text-yellow-600">
+                      <strong>Free tier:</strong> 10,000 requests/day (more than enough for personal use)
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
