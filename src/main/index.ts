@@ -13,6 +13,22 @@ dotenv.config()
 const isDev = process.env.NODE_ENV === 'development'
 const devUrl = process.env.DEV_SERVER_URL || 'http://localhost:5173'
 
+// Helper function to get the correct tools path for both dev and production
+function getToolsPath(): string {
+  if (isDev) {
+    // In development, tools are in the project root
+    return path.join(process.cwd(), 'tools')
+  } else {
+    // In production, tools are packaged with the app
+    return path.join(process.resourcesPath, 'app', 'tools')
+  }
+}
+
+// Helper function to get specific tool executable paths
+function getToolPath(toolName: string, executable: string): string {
+  return path.join(getToolsPath(), toolName, executable)
+}
+
 let win: BrowserWindow | null = null
 
 function createWindow() {
@@ -812,8 +828,21 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
     })
     
     const jobId = `job-${Date.now()}`
-    const ytDlpPath = path.join(__dirname, '../../tools/yt-dlp/yt-dlp.exe')
+    const ytDlpPath = getToolPath('yt-dlp', 'yt-dlp.exe')
     const outputPath = opts.outputPath || appSettings.downloadFolder
+    
+    // Check if yt-dlp exists
+    if (!fs.existsSync(ytDlpPath)) {
+      const error = `yt-dlp not found at: ${ytDlpPath}`
+      console.error(error)
+      console.error('Tools path:', getToolsPath())
+      console.error('isDev:', isDev)
+      console.error('process.resourcesPath:', process.resourcesPath)
+      console.error('__dirname:', __dirname)
+      return { success: false, error }
+    }
+    
+    console.log(`Using yt-dlp from: ${ytDlpPath}`)
     
     // Ensure output directory exists
     try {
@@ -841,7 +870,7 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
     ]
 
     // Add ffmpeg location so yt-dlp can find it for audio conversion
-    const ffmpegPath = path.join(__dirname, '../../tools/ffmpeg/ffmpeg.exe')
+    const ffmpegPath = getToolPath('ffmpeg', 'ffmpeg.exe')
     if (fs.existsSync(ffmpegPath)) {
       args.push('--ffmpeg-location', path.dirname(ffmpegPath))
       console.log(`Using ffmpeg from: ${path.dirname(ffmpegPath)}`)
