@@ -6,10 +6,43 @@ const path = require('path')
 const versionFile = path.join(__dirname, '..', 'src', 'version.ts')
 const packageFile = path.join(__dirname, '..', 'package.json')
 
+function updateDocumentationFiles(oldVersion, newVersion) {
+  const filesToUpdate = [
+    'README.md',
+    'wiki/Home.md',
+    'wiki/Installation-Guide.md',
+    'RELEASE.md'
+  ]
+
+  filesToUpdate.forEach(fileName => {
+    const filePath = path.join(__dirname, '..', fileName)
+    if (fs.existsSync(filePath)) {
+      let content = fs.readFileSync(filePath, 'utf8')
+      
+      // Replace version numbers in various formats
+      content = content.replace(new RegExp(oldVersion.replace(/\./g, '\\.'), 'g'), newVersion)
+      content = content.replace(new RegExp(`v${oldVersion.replace(/\./g, '\\.')}`, 'g'), `v${newVersion}`)
+      content = content.replace(new RegExp(`Setup-${oldVersion.replace(/\./g, '\\.')}`, 'g'), `Setup-${newVersion}`)
+      
+      // Update version badge in README
+      if (fileName === 'README.md') {
+        content = content.replace(
+          /version-[\d\.]+(?:-[\w]+)?-blue/g,
+          `version-${newVersion}-blue`
+        )
+      }
+      
+      fs.writeFileSync(filePath, content)
+      console.log(`📝 Updated ${fileName}`)
+    }
+  })
+}
+
 function updateVersion(type = 'patch') {
   // Read current package.json
   const pkg = JSON.parse(fs.readFileSync(packageFile, 'utf8'))
   const [major, minor, patch] = pkg.version.split('.').map(Number)
+  const oldVersion = pkg.version
 
   let newMajor = major
   let newMinor = minor  
@@ -90,9 +123,15 @@ export const getAppInfo = () => ({
 
   fs.writeFileSync(versionFile, versionContent)
 
+  // Update documentation files if version changed
+  if (versionChanged && oldVersion !== newVersion) {
+    updateDocumentationFiles(oldVersion, newVersion)
+  }
+
   if (versionChanged) {
     console.log(`✅ Version updated to ${newVersion}`)
     console.log(`📦 Updated package.json and src/version.ts`)
+    console.log(`📚 Updated all documentation files`)
   } else {
     console.log(`✅ Build number updated for version ${newVersion}`)
     console.log(`📦 Updated src/version.ts with new build timestamp`)
