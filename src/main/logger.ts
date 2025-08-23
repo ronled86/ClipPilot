@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
+import { getVersionString } from '../version'
 
 export enum LogLevel {
   DEBUG = 0,
@@ -91,7 +92,7 @@ class Logger {
   private logStartup(): void {
     this.info('='.repeat(80))
     this.info('ClipPAilot Application Started')
-    this.info(`Version: ${require('../../package.json').version}`)
+    this.info(`Version: ${getVersionString()}`)
     this.info(`Environment: ${this.isDev ? 'Development' : 'Production'}`)
     this.info(`Platform: ${process.platform} ${process.arch}`)
     this.info(`Node.js: ${process.version}`)

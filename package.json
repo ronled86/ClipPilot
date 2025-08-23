@@ -1,6 +1,6 @@
 {
   "name": "clippailot-desktop",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": true,
   "description": "YouTube search, view, and download client with license-aware gating",
   "main": "dist/main/index.js",
