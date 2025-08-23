@@ -1,8 +1,8 @@
 appId: com.ronled.clippailot
 productName: ClipPAilot
 copyright: "Copyright © 2025 Ron Lederer"
-# Prevent auto-publishing in CI unless explicitly requested
-publish: null
+# Explicitly disable publishing
+publish: []
 icon: assets/icon.ico
 files:
   - dist/**

@@ -32,7 +32,7 @@ jobs:
         run: npm run build
         
       - name: Build installer
-        run: npm run dist
+        run: npm run build && npx electron-builder --win nsis --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
@@ -100,12 +100,18 @@ jobs:
           draft: false
           prerelease: false
           
+      - name: Get package version
+        id: package_version
+        shell: bash
+        run: |
+          echo "package_version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+          
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/ClipPAilot-Setup-${{ steps.version.outputs.version }}.exe
+          asset_path: ./release/ClipPAilot-Setup-${{ steps.package_version.outputs.package_version }}.exe
           asset_name: ClipPAilot-Setup-${{ steps.version.outputs.version }}.exe
           asset_content_type: application/octet-stream
