@@ -8,9 +8,21 @@ Var UpgradeMode
 
 # Custom installer initialization with streamlined upgrade process
 !macro customInit
-  # Check for existing installation in registry
-  ReadRegStr $PreviousInstallDir HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "InstallLocation"
-  ReadRegStr $PreviousVersion HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "DisplayVersion"
+  # Check for existing installation in registry using electron-builder's standard key
+  ReadRegStr $PreviousInstallDir HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
+  ReadRegStr $PreviousVersion HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion"
+  
+  # Also check HKLM for system-wide installations (Program Files)
+  ${If} $PreviousInstallDir == ""
+    ReadRegStr $PreviousInstallDir HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
+    ReadRegStr $PreviousVersion HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion"
+  ${EndIf}
+  
+  # Check for orphaned installations with old keys or different locations
+  ${If} $PreviousInstallDir == ""
+    ReadRegStr $PreviousInstallDir HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{com.ronled.clippailot}" "InstallLocation"
+    ReadRegStr $PreviousVersion HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{com.ronled.clippailot}" "DisplayVersion"
+  ${EndIf}
   
   # If previous installation found, handle upgrade with single interaction
   ${If} $PreviousInstallDir != ""
@@ -109,11 +121,11 @@ Var UpgradeMode
 
 # Custom installer finish
 !macro customInstall
-  # Create registry entries for future upgrade detection
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "InstallLocation" "$INSTDIR"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "Publisher" "Ron Lederer"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "DisplayName" "ClipPAilot"
+  # Create registry entries for future upgrade detection - use electron-builder's standard key
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation" "$INSTDIR"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion" "${VERSION}"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "Publisher" "Ron Lederer"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayName" "ClipPAilot"
   
   ${If} $UpgradeMode == "true"
     DetailPrint "Upgrade completed successfully!"
