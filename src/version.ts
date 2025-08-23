@@ -6,11 +6,11 @@
 export const VERSION = {
   major: 1,
   minor: 0,
-  patch: 3,
-  build: 1755934913552,
+  patch: 6,
+  build: Date.now(),
   tag: 'stable',
-  fullVersion: '1.0.3',
-  buildDate: '2025-08-23T07:41:53.552Z',
+  fullVersion: '1.0.6',
+  buildDate: new Date().toISOString(),
   features: [
     'YouTube Search & Preview',
     'Intelligent Search Autocomplete',
