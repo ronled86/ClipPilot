@@ -50,6 +50,11 @@ function createWindow() {
 
   win = new BrowserWindow(windowOptions)
 
+  // Explicitly set the icon for taskbar on Windows
+  if (process.platform === 'win32' && require('fs').existsSync(iconPath)) {
+    win.setIcon(iconPath)
+  }
+
   // Hide menu bar by default for cleaner interface
   win.setMenuBarVisibility(false)
   win.setAutoHideMenuBar(true)
