@@ -2,7 +2,7 @@ appId: com.ronled.clippailot
 productName: ClipPAilot
 copyright: "Copyright © 2025 Ron Lederer"
 # Use custom build version for proper Chrome-style versioning
-buildVersion: "1.0.12.2"
+buildVersion: "1.0.12.3"
 # Explicitly disable publishing
 publish: []
 icon: assets/icon.ico
@@ -44,8 +44,11 @@ nsis:
   include: "scripts/installer.nsh"
   # Don't treat warnings as errors
   warningsAsErrors: false
-  # Publisher information
-  installerSidebar: "assets/logo.png"
+  # NSIS installer branding - using proper paths and fallbacks
+  installerSidebar: "assets/installer-sidebar.bmp"
+  uninstallerSidebar: "assets/installer-sidebar.bmp"
   installerHeaderIcon: "assets/logo.png"
+  # Include icon and branding
+  displayLanguageSelector: false
   # Better upgrade handling with unique GUID
   guid: "com.ronled.clippailot"
