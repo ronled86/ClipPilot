@@ -168,8 +168,8 @@ export default function DownloadNotifications({ downloads, onDismiss, onCancel }
             <button
               onClick={() => {
                 // Open file location (we'll implement this)
-                if (window.clippilot?.openFolder && download.outputPath) {
-                  window.clippilot.openFolder(download.outputPath)
+                if (window.clippailot?.openFolder && download.outputPath) {
+                  window.clippailot.openFolder(download.outputPath)
                 }
               }}
               className="mt-2 w-full text-xs bg-green-100 hover:bg-green-200 text-green-700 py-1 px-2 rounded"

@@ -1,6 +1,6 @@
-# ClipPilot Release Guide
+# ClipPAilot Release Guide
 
-This guide explains how to create and publish releases of ClipPilot with automated installers.
+This guide explains how to create and publish releases of ClipPAilot with automated installers.
 
 ## 📋 Prerequisites
 
@@ -68,7 +68,7 @@ The GitHub Action will automatically:
 Your releases will include:
 
 ### 📁 **Installer File**
-- `ClipPilot-Setup-v1.0.4.exe` - Ready-to-install Windows executable
+- `ClipPAilot-Setup-v1.0.4.exe` - Ready-to-install Windows executable
 
 ### 📋 **Release Notes**
 - What's new in this version
@@ -115,7 +115,7 @@ npm run release:patch
 git push origin main --tags
 
 # 3. Visit your GitHub releases page
-# https://github.com/ronled86/ClipPilot/releases
+# https://github.com/ronled86/ClipPAilot/releases
 
 # 4. Your installer will be available in ~5-10 minutes
 ```
@@ -137,4 +137,4 @@ git push origin main --tags
 
 ---
 
-🎊 **Congratulations!** You now have automated releases for ClipPilot!
+🎊 **Congratulations!** You now have automated releases for ClipPAilot!

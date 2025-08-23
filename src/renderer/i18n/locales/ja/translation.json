@@ -17,11 +17,11 @@
 
   "exit_modal": {
     "title": "終了してもよろしいですか？",
-    "message": "バックグラウンドでまだ実行中のアクティブなダウンロードがあります。ClipPilotを終了してもよろしいですか？",
+    "message": "バックグラウンドでまだ実行中のアクティブなダウンロードがあります。ClipPAilotを終了してもよろしいですか？",
     "cancel_downloads": "ダウンロードをキャンセルして終了",
     "cancel_downloads_tooltip": "すべてのアクティブなダウンロードを停止してアプリケーションを終了",
     "keep_running": "バックグラウンドで実行を継続",
-    "keep_running_tooltip": "ClipPilotをバックグラウンドで実行し続けてダウンロードを完了させる",
+    "keep_running_tooltip": "ClipPAilotをバックグラウンドで実行し続けてダウンロードを完了させる",
     "stay_open": "開いたままにする",
     "stay_open_tooltip": "変更を加えずにアプリケーションに戻る"
   },
@@ -110,7 +110,7 @@
     "settings_saved": "設定保存完了",
     "settings_saved_msg": "設定が正常に保存されました。",
     "browser_limitation": "ブラウザモード制限",
-    "browser_limitation_msg": "URLダウンロードはデスクトップアプリでのみ利用可能です。この機能を使用するにはClipPilotをダウンロードしてインストールしてください。"
+    "browser_limitation_msg": "URLダウンロードはデスクトップアプリでのみ利用可能です。この機能を使用するにはClipPAilotをダウンロードしてインストールしてください。"
   },
 
   "main_screen": {
@@ -119,8 +119,8 @@
     "refresh": "更新",
     "refresh_tooltip": "動画リストを更新",
     "settings_tooltip": "ダウンロード設定",
-    "about_tooltip": "ClipPilotについて",
-    "exit_tooltip": "ClipPilotを終了",
+    "about_tooltip": "ClipPAilotについて",
+    "exit_tooltip": "ClipPAilotを終了",
     "preview": "プレビュー",
     "preview_tooltip": "動画をプレビュー",
     "loading": "読み込み中...",

@@ -46,7 +46,7 @@ function removeFile(filePath) {
 }
 
 function cleanupProject() {
-  console.log('🧹 Starting ClipPilot project cleanup...\n')
+  console.log('🧹 Starting ClipPAilot project cleanup...\n')
   
   let removedCount = 0
   let totalCount = filesToRemove.length

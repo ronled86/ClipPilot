@@ -1,5 +1,5 @@
-appId: com.ronled.clippilot
-productName: ClipPilot
+appId: com.ronled.clippailot
+productName: ClipPAilot
 copyright: "Copyright © 2025 Ron Lederer"
 icon: assets/icon.ico  # Windows ICO format for proper taskbar icon
 files:
@@ -22,7 +22,7 @@ win:
   publish:
     provider: github
     owner: ronled86
-    repo: ClipPilot
+    repo: ClipPAilot
 nsis:
   oneClick: false
   perMachine: false
@@ -33,6 +33,6 @@ nsis:
   createStartMenuShortcut: true
   runAfterFinish: true
   # Handle existing installations intelligently
-  uninstallDisplayName: "ClipPilot"
+  uninstallDisplayName: "ClipPAilot"
   # Auto-detect and handle previous versions
   artifactName: "${productName}-Setup-${version}.${ext}"

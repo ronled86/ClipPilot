@@ -72,4 +72,4 @@ debug/
 *.dll
 *.so
 *.dylib
-!start_clippilot.bat
+!start_clippailot.bat

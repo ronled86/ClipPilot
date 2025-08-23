@@ -1,6 +1,6 @@
-# 🎥 ClipPilot Wiki
+# 🎥 ClipPAilot Wiki
 
-Welcome to the comprehensive documentation for **ClipPilot** - a powerful desktop application for YouTube content discovery, preview, and download with intelligent features.
+Welcome to the comprehensive documentation for **ClipPAilot** - a powerful desktop application for YouTube content discovery, preview, and download with intelligent features.
 
 ## 🚀 Quick Start
 
@@ -11,7 +11,7 @@ Welcome to the comprehensive documentation for **ClipPilot** - a powerful deskto
 ## 📋 Documentation Sections
 
 ### 📦 **Getting Started**
-- [Installation Guide](Installation-Guide) - Download and install ClipPilot
+- [Installation Guide](Installation-Guide) - Download and install ClipPAilot
 - [First Launch](First-Launch) - Initial setup and configuration
 - [System Requirements](System-Requirements) - Hardware and software requirements
 
@@ -23,12 +23,12 @@ Welcome to the comprehensive documentation for **ClipPilot** - a powerful deskto
 
 ### 🛠️ **Developer Resources**
 - [Development Setup](Development-Setup) - Set up development environment
-- [Building from Source](Building-from-Source) - Compile ClipPilot yourself
+- [Building from Source](Building-from-Source) - Compile ClipPAilot yourself
 - [API Documentation](API-Documentation) - Technical implementation details
 - [Contributing Guidelines](Contributing-Guidelines) - How to contribute to the project
 
 ### 🔧 **Technical Reference**
-- [Architecture Overview](Architecture-Overview) - How ClipPilot works
+- [Architecture Overview](Architecture-Overview) - How ClipPAilot works
 - [File Formats](File-Formats) - Supported video and audio formats
 - [Localization](Localization) - Language support and RTL features
 - [Security & Privacy](Security-Privacy) - How we protect your data
@@ -52,21 +52,21 @@ Welcome to the comprehensive documentation for **ClipPilot** - a powerful deskto
 
 ## 🆘 **Need Help?**
 
-- 🐛 **Found a Bug?** Report it on our [Issues page](https://github.com/ronled86/ClipPilot/issues)
-- 💡 **Feature Request?** Create a [feature request](https://github.com/ronled86/ClipPilot/issues/new?template=feature_request.md)
+- 🐛 **Found a Bug?** Report it on our [Issues page](https://github.com/ronled86/ClipPAilot/issues)
+- 💡 **Feature Request?** Create a [feature request](https://github.com/ronled86/ClipPAilot/issues/new?template=feature_request.md)
 - 📧 **General Questions?** Check our [FAQ](FAQ) first
 
 ## 🤝 **Contributing**
 
-ClipPilot is open source! We welcome contributions:
+ClipPAilot is open source! We welcome contributions:
 
 - 📖 **Documentation**: Help improve these wiki pages
 - 🐛 **Bug Fixes**: Submit pull requests for fixes
 - ✨ **Features**: Propose and implement new features
-- 🌐 **Translations**: Help translate ClipPilot to more languages
+- 🌐 **Translations**: Help translate ClipPAilot to more languages
 
 See our [Contributing Guidelines](Contributing-Guidelines) for details.
 
 ---
 
-**ClipPilot v1.0.5** | Created with ❤️ by [Ron Lederer](https://github.com/ronled86) | Licensed under [Apache 2.0](License)
+**ClipPAilot v1.0.5** | Created with ❤️ by [Ron Lederer](https://github.com/ronled86) | Licensed under [Apache 2.0](License)

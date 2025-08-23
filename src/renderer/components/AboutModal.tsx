@@ -188,8 +188,8 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
               </div>
               <div className="mt-3 pt-3 border-t border-purple-200">
                 <p className="text-xs text-gray-600">
-                  <strong>{t('about_modal.licenses.clippilot_license')}</strong> Apache 2.0 - 
-                  <a href="https://github.com/ronled86/ClipPilot" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:text-purple-800 underline ml-1">
+                  <strong>{t('about_modal.licenses.clippailot_license')}</strong> Apache 2.0 - 
+                  <a href="https://github.com/ronled86/ClipPAilot" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:text-purple-800 underline ml-1">
                     {t('about_modal.licenses.view_source')}
                   </a>
                 </p>

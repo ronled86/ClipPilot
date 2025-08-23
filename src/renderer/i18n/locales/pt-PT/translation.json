@@ -17,11 +17,11 @@
 
   "exit_modal": {
     "title": "Tem a certeza de que quer sair?",
-    "message": "Tem transferências activas ainda a decorrer em segundo plano. Tem a certeza de que quer sair do ClipPilot?",
+    "message": "Tem transferências activas ainda a decorrer em segundo plano. Tem a certeza de que quer sair do ClipPAilot?",
     "cancel_downloads": "Cancelar transferências e sair",
     "cancel_downloads_tooltip": "Interromper todas as transferências activas e sair da aplicação",
     "keep_running": "Continuar a executar em segundo plano",
-    "keep_running_tooltip": "Permitir que o ClipPilot continue a executar em segundo plano para completar as transferências",
+    "keep_running_tooltip": "Permitir que o ClipPAilot continue a executar em segundo plano para completar as transferências",
     "stay_open": "Permanecer aberto",
     "stay_open_tooltip": "Voltar à aplicação sem fazer alterações"
   },
@@ -110,7 +110,7 @@
     "settings_saved": "Definições Guardadas",
     "settings_saved_msg": "As suas preferências foram guardadas com sucesso.",
     "browser_limitation": "Limitação do Modo Navegador",
-    "browser_limitation_msg": "Transferências por URL estão disponíveis apenas na aplicação de ambiente de trabalho. Por favor, transfira e instale o ClipPilot para utilizar este recurso."
+    "browser_limitation_msg": "Transferências por URL estão disponíveis apenas na aplicação de ambiente de trabalho. Por favor, transfira e instale o ClipPAilot para utilizar este recurso."
   },
 
   "main_screen": {
@@ -119,8 +119,8 @@
     "refresh": "Actualizar",
     "refresh_tooltip": "Actualizar lista de vídeos",
     "settings_tooltip": "Definições de transferência",
-    "about_tooltip": "Acerca do ClipPilot",
-    "exit_tooltip": "Sair do ClipPilot",
+    "about_tooltip": "Acerca do ClipPAilot",
+    "exit_tooltip": "Sair do ClipPAilot",
     "preview": "Pré-visualizar",
     "preview_tooltip": "Pré-visualizar vídeo",
     "loading": "A carregar...",

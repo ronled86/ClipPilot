@@ -41,7 +41,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
 
   const handleSelectFolder = async () => {
     // Check if we're in browser mode
-    if (!window.clippilot) {
+    if (!window.clippailot) {
       // Browser mode - show a helpful message
       showWarning(
         'Browser Mode Limitation',
@@ -52,7 +52,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
     }
     
     try {
-      const result = await window.clippilot.selectFolder()
+      const result = await window.clippailot.selectFolder()
       if (result.success && result.path) {
         setSettings(prev => ({ ...prev, downloadFolder: result.path }))
       }
@@ -85,7 +85,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
             <label className="block text-sm font-medium text-gray-700 mb-3">
               📁 {t('settings_modal.download_folder.label')}
             </label>
-            {!window.clippilot && (
+            {!window.clippailot && (
               <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-700">
                 🌐 <strong>{t('settings_modal.download_folder.browser_warning')}</strong>
               </div>
@@ -93,7 +93,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
             <div className="flex gap-2">
               <input
                 type="text"
-                value={window.clippilot ? settings.downloadFolder : 'Browser default downloads folder'}
+                value={window.clippailot ? settings.downloadFolder : 'Browser default downloads folder'}
                 readOnly
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-white"
                 placeholder="Choose download folder..."
@@ -101,11 +101,11 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
               <button
                 onClick={handleSelectFolder}
                 className={`px-4 py-2 rounded-md transition-colors ${
-                  window.clippilot 
+                  window.clippailot 
                     ? 'bg-blue-500 text-white hover:bg-blue-600' 
                     : 'bg-gray-300 text-gray-600 cursor-not-allowed hover:bg-gray-300'
                 }`}
-                title={window.clippilot ? t('common.browse') : 'Only available in desktop app'}
+                title={window.clippailot ? t('common.browse') : 'Only available in desktop app'}
               >
                 {t('common.browse')}
               </button>
@@ -228,7 +228,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
             <h3 className="text-lg font-semibold text-gray-800 mb-4">🔑 {t('settings_modal.api_settings.title')}</h3>
             
             <div className="space-y-4">
-              {!window.clippilot && (
+              {!window.clippailot && (
                 <div className="bg-orange-100 border border-orange-300 rounded-md p-3 text-sm">
                   <p className="font-medium text-orange-800 mb-2">🌐 Browser Mode:</p>
                   <p className="text-orange-700 text-xs">API configuration works in browser mode but actual downloads require the desktop app.</p>

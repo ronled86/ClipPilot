@@ -35,8 +35,8 @@ const api = {
   }
 }
 
-contextBridge.exposeInMainWorld('clippilot', api)
+contextBridge.exposeInMainWorld('clippailot', api)
 export type Api = typeof api
 declare global {
-  interface Window { clippilot: Api }
+  interface Window { clippailot: Api }
 }

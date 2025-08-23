@@ -48,7 +48,7 @@ function updateVersion(type = 'patch') {
 
   // Always update version.ts with new build timestamp
   const versionContent = `/**
- * ClipPilot Version Information
+ * ClipPAilot Version Information
  * Auto-generated version file - do not edit manually
  */
 
@@ -81,7 +81,7 @@ export const getBuildInfo = (): string => {
 }
 
 export const getAppInfo = () => ({
-  name: 'ClipPilot',
+  name: 'ClipPAilot',
   version: VERSION.fullVersion,
   build: VERSION.build,
   buildDate: VERSION.buildDate,

@@ -19,7 +19,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: What version of ClipPilot are you using?
+      description: What version of ClipPAilot are you using?
       placeholder: 1.0.0
     validations:
       required: true

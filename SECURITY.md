@@ -2,7 +2,7 @@
 
 ## 🔒 Security Overview
 
-ClipPilot takes security seriously. This document outlines our security practices and how to report security vulnerabilities.
+ClipPAilot takes security seriously. This document outlines our security practices and how to report security vulnerabilities.
 
 ## 🛡️ Security Features
 
@@ -15,7 +15,7 @@ ClipPilot takes security seriously. This document outlines our security practice
 - **Local Processing**: All downloads processed locally, no cloud dependencies
 
 ### Data Protection
-- **No Data Collection**: ClipPilot doesn't collect or transmit user data
+- **No Data Collection**: ClipPAilot doesn't collect or transmit user data
 - **Local Storage Only**: Search history stored locally using browser localStorage
 - **No Analytics**: No tracking or analytics services integrated
 - **Offline Capable**: Core functionality works without internet (except search)
@@ -40,7 +40,7 @@ We provide security updates for the following versions:
 If you discover a security vulnerability, please report it responsibly:
 
 ### How to Report
-1. **Email**: Send details to [security@clippilot.com] (replace with actual email)
+1. **Email**: Send details to [security@clippailot.com] (replace with actual email)
 2. **GitHub**: Create a private security advisory on GitHub
 3. **Include**:
    - Description of the vulnerability
@@ -62,7 +62,7 @@ If you discover a security vulnerability, please report it responsibly:
 ## 🛠️ Security Best Practices for Users
 
 ### Installation Security
-1. **Download from Official Sources**: Only download ClipPilot from official GitHub releases
+1. **Download from Official Sources**: Only download ClipPAilot from official GitHub releases
 2. **Verify Checksums**: Verify file integrity using provided checksums
 3. **Antivirus Scanning**: Scan downloads with your antivirus software
 4. **Windows SmartScreen**: Allow Windows SmartScreen warnings for known-good releases
@@ -127,17 +127,17 @@ const mainWindow = new BrowserWindow({
 **Q: Is my YouTube API key secure?**  
 A: Yes, if stored in `.env` file (which is not committed to git). Never put API keys in source code.
 
-**Q: Can ClipPilot access my personal files?**  
+**Q: Can ClipPAilot access my personal files?**  
 A: Only files in the download folder you specify. The app runs in a sandbox with limited file system access.
 
-**Q: Does ClipPilot send data to external servers?**  
+**Q: Does ClipPAilot send data to external servers?**  
 A: Only to YouTube's API for search functionality. No personal data is transmitted.
 
 **Q: Are downloaded files safe?**  
 A: Files are processed locally using ffmpeg. However, scan downloads with antivirus as with any internet content.
 
 **Q: Can I audit the code myself?**  
-A: Yes! ClipPilot is open source. Review the code, especially `src/main/index.ts` for security-critical functions.
+A: Yes! ClipPAilot is open source. Review the code, especially `src/main/index.ts` for security-critical functions.
 
 ## 🆘 Emergency Response
 

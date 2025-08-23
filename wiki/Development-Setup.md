@@ -1,6 +1,6 @@
 # 🛠️ Development Setup
 
-Guide for developers who want to contribute to ClipPilot or build it from source.
+Guide for developers who want to contribute to ClipPAilot or build it from source.
 
 ## 🔧 Prerequisites
 
@@ -24,24 +24,24 @@ Guide for developers who want to contribute to ClipPilot or build it from source
 ### **Clone Repository**
 ```bash
 # HTTPS
-git clone https://github.com/ronled86/ClipPilot.git
+git clone https://github.com/ronled86/ClipPAilot.git
 
 # SSH (if you have access)
-git clone git@github.com:ronled86/ClipPilot.git
+git clone git@github.com:ronled86/ClipPAilot.git
 
-cd ClipPilot
+cd ClipPAilot
 ```
 
 ### **Fork for Contributing**
 1. **Fork Repository**: Click "Fork" on GitHub
 2. **Clone Your Fork**:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/ClipPilot.git
-   cd ClipPilot
+   git clone https://github.com/YOUR_USERNAME/ClipPAilot.git
+   cd ClipPAilot
    ```
 3. **Add Upstream**:
    ```bash
-   git remote add upstream https://github.com/ronled86/ClipPilot.git
+   git remote add upstream https://github.com/ronled86/ClipPAilot.git
    ```
 
 ## 📦 **Installation**
@@ -108,7 +108,7 @@ This starts:
 ### **Project Structure**
 
 ```
-ClipPilot/
+ClipPAilot/
 ├── src/
 │   ├── main/           # Electron main process
 │   │   └── index.ts    # Main entry point
@@ -204,8 +204,8 @@ npm run dist:linux
 
 Edit `electron-builder.yml`:
 ```yaml
-appId: com.yourcompany.clippilot
-productName: ClipPilot
+appId: com.yourcompany.clippailot
+productName: ClipPAilot
 directories:
   output: release
 win:

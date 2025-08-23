@@ -15,7 +15,7 @@ import zhCN from './locales/zh-CN/translation.json'
 const getSavedLanguage = (): string => {
   try {
     // Try to get from localStorage as fallback for browser mode
-    return localStorage.getItem('clippilot-language') || 'en'
+    return localStorage.getItem('clippailot-language') || 'en'
   } catch {
     return 'en'
   }

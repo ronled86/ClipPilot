@@ -18,7 +18,7 @@ if not exist node_modules (
   npm ci || goto :error
 )
 
-echo Starting ClipPilot in development mode...
+echo Starting ClipPAilot in development mode...
 npm run dev
 exit /b 0
 

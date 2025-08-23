@@ -1,4 +1,4 @@
-# 🎥 ClipPilot
+# 🎥 ClipPAilot
 
 **A powerful YouTube search, preview, and download client with intelligent features and license-aware content filtering.**
 
@@ -49,7 +49,7 @@
 1. **Clone and Install**
    ```bash
    git clone <repository-url>
-   cd ClipPilot
+   cd ClipPAilot
    npm ci
    ```
 
@@ -68,7 +68,7 @@
 3. **Run the Application**
    ```bash
    # Quick start (double-click)
-   start_clippilot.bat
+   start_clippailot.bat
    
    # Or manually
    npm run dev
@@ -112,7 +112,7 @@ Removes unused files and cleans up the project structure.
 ## 📁 Project Structure
 
 ```
-ClipPilot/
+ClipPAilot/
 ├── src/
 │   ├── main/              # Electron main process
 │   │   └── index.ts       # Main application logic, YouTube API, downloads
@@ -162,7 +162,7 @@ ClipPilot/
 
 ## 🌍 Internationalization
 
-ClipPilot supports multiple languages with proper RTL (Right-to-Left) layout:
+ClipPAilot supports multiple languages with proper RTL (Right-to-Left) layout:
 
 - **English (en)**: Default language with LTR layout
 - **Hebrew (he)**: Full RTL support with Hebrew translations
@@ -194,7 +194,7 @@ Create a `.env` file for configuration:
 YOUTUBE_API_KEY=your_api_key_here
 
 # Application Settings
-DEFAULT_DOWNLOAD_FOLDER=C:\Users\YourName\Downloads\ClipPilot
+DEFAULT_DOWNLOAD_FOLDER=C:\Users\YourName\Downloads\ClipPAilot
 ```
 
 ## 🔧 Troubleshooting

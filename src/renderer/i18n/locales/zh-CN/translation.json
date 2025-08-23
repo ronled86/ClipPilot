@@ -17,11 +17,11 @@
 
   "exit_modal": {
     "title": "确定要退出吗？",
-    "message": "您有正在后台运行的活跃下载。确定要退出ClipPilot吗？",
+    "message": "您有正在后台运行的活跃下载。确定要退出ClipPAilot吗？",
     "cancel_downloads": "取消下载并退出",
     "cancel_downloads_tooltip": "停止所有活跃下载并退出应用程序",
     "keep_running": "继续在后台运行",
-    "keep_running_tooltip": "允许ClipPilot继续在后台运行以完成下载",
+    "keep_running_tooltip": "允许ClipPAilot继续在后台运行以完成下载",
     "stay_open": "保持打开",
     "stay_open_tooltip": "返回应用程序而不做任何更改"
   },
@@ -110,7 +110,7 @@
     "settings_saved": "设置已保存",
     "settings_saved_msg": "您的偏好设置已成功保存。",
     "browser_limitation": "浏览器模式限制",
-    "browser_limitation_msg": "URL下载仅在桌面应用中可用。请下载并安装ClipPilot以使用此功能。"
+    "browser_limitation_msg": "URL下载仅在桌面应用中可用。请下载并安装ClipPAilot以使用此功能。"
   },
 
   "main_screen": {
@@ -119,8 +119,8 @@
     "refresh": "刷新",
     "refresh_tooltip": "刷新视频列表",
     "settings_tooltip": "下载设置",
-    "about_tooltip": "关于ClipPilot",
-    "exit_tooltip": "退出ClipPilot",
+    "about_tooltip": "关于ClipPAilot",
+    "exit_tooltip": "退出ClipPAilot",
     "preview": "预览",
     "preview_tooltip": "预览视频",
     "loading": "加载中...",

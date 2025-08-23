@@ -59,7 +59,7 @@ export default function App() {
 
   // Detect if running in browser vs Electron
   useEffect(() => {
-    const isElectron = !!(window as any).electronAPI || !!(window as any).clippilot
+    const isElectron = !!(window as any).electronAPI || !!(window as any).clippailot
     setIsBrowserMode(!isElectron)
     if (!isElectron) {
       console.log('Running in browser mode - some features may be limited')
@@ -70,9 +70,9 @@ export default function App() {
   // Load settings on app start
   useEffect(() => {
     const loadSettings = async () => {
-      if (window.clippilot?.getSettings) {
+      if (window.clippailot?.getSettings) {
         try {
-          const savedSettings = await window.clippilot.getSettings()
+          const savedSettings = await window.clippailot.getSettings()
           setSettings(savedSettings)
           // Apply saved language to i18n
           if (savedSettings.language && savedSettings.language !== i18n.language) {
@@ -84,7 +84,7 @@ export default function App() {
       } else {
         // Browser mode - try to load language from localStorage
         try {
-          const savedLanguage = localStorage.getItem('clippilot-language')
+          const savedLanguage = localStorage.getItem('clippailot-language')
           if (savedLanguage && savedLanguage !== i18n.language) {
             await i18n.changeLanguage(savedLanguage)
           }
@@ -125,7 +125,7 @@ export default function App() {
     // Check if the API is available (Electron mode only)
     if (!isBrowserMode) {
       const checkApi = () => {
-        if (window.clippilot) {
+        if (window.clippailot) {
           setApiReady(true)
         } else {
           setTimeout(checkApi, 100)
@@ -137,9 +137,9 @@ export default function App() {
 
   // Set up progress listener for downloads
   useEffect(() => {
-    if (!window.clippilot?.onProgress) return
+    if (!window.clippailot?.onProgress) return
 
-    const removeListener = window.clippilot.onProgress((data: any) => {
+    const removeListener = window.clippailot.onProgress((data: any) => {
       console.log('Progress update received:', data)
       
       setDownloads(prev => prev.map(job => {
@@ -284,7 +284,7 @@ export default function App() {
       return
     }
     
-    if (!window.clippilot?.getTrending) return
+    if (!window.clippailot?.getTrending) return
 
     // Check if API key is available
     if (!settings.youtubeApiKey) {
@@ -294,7 +294,7 @@ export default function App() {
 
     setLoading(true)
     try {
-      const response = await window.clippilot.getTrending(
+      const response = await window.clippailot.getTrending(
         settings.youtubeApiKey,
         categoryId || selectedCategory
       )
@@ -340,8 +340,8 @@ export default function App() {
       return
     }
     
-    if (!window.clippilot) {
-      console.error('ClipPilot API not available')
+    if (!window.clippailot) {
+      console.error('ClipPAilot API not available')
       return
     }
     
@@ -352,7 +352,7 @@ export default function App() {
     
     try {
       // Call search with settings - requires API key
-      const response = await window.clippilot.search(
+      const response = await window.clippailot.search(
         q, 
         settings.youtubeApiKey
       )
@@ -385,7 +385,7 @@ export default function App() {
   }
 
   const loadMoreResults = async () => {
-    if (!window.clippilot || loading) {
+    if (!window.clippailot || loading) {
       return
     }
 
@@ -393,7 +393,7 @@ export default function App() {
     if (currentQuery && nextPageToken) {
       setLoading(true)
       try {
-        const response = await window.clippilot.searchMore(
+        const response = await window.clippailot.searchMore(
           currentQuery, 
           nextPageToken, 
           settings.youtubeApiKey
@@ -409,11 +409,11 @@ export default function App() {
     }
 
     // Handle trending pagination
-    if (!currentQuery && canLoadMoreTrending && window.clippilot.getMoreTrending) {
+    if (!currentQuery && canLoadMoreTrending && window.clippailot.getMoreTrending) {
       setLoading(true)
       try {
         const newOffset = trendingOffset + 20
-        const response = await window.clippilot.getMoreTrending(
+        const response = await window.clippailot.getMoreTrending(
           settings.youtubeApiKey,
           newOffset
         )
@@ -444,11 +444,11 @@ export default function App() {
       
       if (isBrowserMode) {
         // In browser mode, save to localStorage
-        localStorage.setItem('clippilot-language', newLanguage)
+        localStorage.setItem('clippailot-language', newLanguage)
         setSettings(updatedSettings)
-      } else if (window.clippilot?.saveSettings) {
+      } else if (window.clippailot?.saveSettings) {
         // In desktop mode, save to settings file
-        await window.clippilot.saveSettings(updatedSettings)
+        await window.clippailot.saveSettings(updatedSettings)
         setSettings(updatedSettings)
       }
     } catch (error) {
@@ -463,8 +463,8 @@ export default function App() {
         setSettings(newSettings)
         console.log('Settings updated in browser mode:', newSettings)
         showSuccess('Settings Saved', 'Your preferences have been updated successfully.', 3000)
-      } else if (window.clippilot?.saveSettings) {
-        await window.clippilot.saveSettings(newSettings)
+      } else if (window.clippailot?.saveSettings) {
+        await window.clippailot.saveSettings(newSettings)
         setSettings(newSettings)
         showSuccess('Settings Saved', 'Your preferences have been saved to disk.', 3000)
       }
@@ -475,7 +475,7 @@ export default function App() {
   }
 
   const handleDownload = async (videoId: string, format?: 'mp3' | 'mp4') => {
-    if (!window.clippilot || downloadingVideos.has(videoId)) {
+    if (!window.clippailot || downloadingVideos.has(videoId)) {
       return
     }
 
@@ -484,7 +484,7 @@ export default function App() {
     const videoTitle = video?.title || 'Unknown Video'
 
     try {
-      const p = await window.clippilot.canDownload(videoId)
+      const p = await window.clippailot.canDownload(videoId)
       if (!p.allowed) {
         // Add failed download notification
         const actualFormat = (format || settings.defaultFormat) === 'mp3' ? settings.audioFormat : settings.videoFormat
@@ -519,7 +519,7 @@ export default function App() {
       }
 
       // Start the download
-      const downloadResult = await window.clippilot.enqueueDownload(videoId, downloadOptions)
+      const downloadResult = await window.clippailot.enqueueDownload(videoId, downloadOptions)
 
       if (downloadResult.success) {
         // Add download notification
@@ -576,9 +576,9 @@ export default function App() {
   }
 
   const handleCancelDownload = async (jobId: string) => {
-    if (window.clippilot?.cancelDownload) {
+    if (window.clippailot?.cancelDownload) {
       try {
-        const result = await window.clippilot.cancelDownload(jobId)
+        const result = await window.clippailot.cancelDownload(jobId)
         if (result.success) {
           showInfo('Download Cancelled', 'The download has been stopped successfully.', 3000)
         } else {
@@ -594,14 +594,14 @@ export default function App() {
     if (isBrowserMode) {
       showWarning(
         'Browser Mode Limitation',
-        'URL downloads are only available in the desktop app. Please download and install ClipPilot to use this feature.',
+        'URL downloads are only available in the desktop app. Please download and install ClipPAilot to use this feature.',
         8000
       )
       return
     }
 
-    if (!window.clippilot) {
-      showError('API Unavailable', 'ClipPilot desktop API is not available. Please restart the application.', 5000)
+    if (!window.clippailot) {
+      showError('API Unavailable', 'ClipPAilot desktop API is not available. Please restart the application.', 5000)
       return
     }
 
@@ -652,7 +652,7 @@ export default function App() {
         url: url // Pass the URL directly for yt-dlp
       }
 
-      const downloadResult = await window.clippilot.enqueueDownload(url, downloadOptions)
+      const downloadResult = await window.clippailot.enqueueDownload(url, downloadOptions)
 
       if (downloadResult.success) {
         // Add download notification
@@ -706,8 +706,8 @@ export default function App() {
   const confirmExit = async () => {
     setExitConfirmationModal(false)
     try {
-      if (window.clippilot?.exitApp) {
-        await window.clippilot.exitApp()
+      if (window.clippailot?.exitApp) {
+        await window.clippailot.exitApp()
       } else {
         // Fallback for older API
         window.close()
@@ -727,7 +727,7 @@ export default function App() {
       <header className="sticky top-0 bg-white/80 backdrop-blur border-b">
         <div className="w-full px-4 py-3 flex items-center gap-3">
           <AnimatedLogo />
-          <h1 className="text-xl font-semibold">ClipPilot</h1>
+          <h1 className="text-xl font-semibold">ClipPAilot</h1>
           <div className="flex-1" />
           <button
             onClick={() => setShowUrlDownload(!showUrlDownload)}
@@ -891,7 +891,7 @@ export default function App() {
                 </h3>
                 <p className="text-gray-600 max-w-md mx-auto">
                   {isBrowserMode ? (
-                    'This is a demo of ClipPilot running in browser mode. Download the desktop app for full functionality including video downloads.'
+                    'This is a demo of ClipPAilot running in browser mode. Download the desktop app for full functionality including video downloads.'
                   ) : (
                     'Add your YouTube API key in Settings to search for and download videos. The app requires an API key to access YouTube\'s search functionality.'
                   )}
@@ -913,7 +913,7 @@ export default function App() {
                 </h3>
                 <p className="text-gray-600">
                   {isBrowserMode ? (
-                    'In browser demo mode, search suggestions work but results require the desktop app. Download ClipPilot to see full search results and download videos!'
+                    'In browser demo mode, search suggestions work but results require the desktop app. Download ClipPAilot to see full search results and download videos!'
                   ) : (
                     'Try searching with different keywords, check your spelling, or verify your YouTube API key is correctly configured in Settings.'
                   )}

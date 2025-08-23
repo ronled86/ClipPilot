@@ -31,7 +31,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     show: false,
-    title: 'ClipPilot - YouTube Search & Download',
+    title: 'ClipPAilot - YouTube Search & Download',
     webPreferences: {
       contextIsolation: true,
       sandbox: true,
@@ -74,7 +74,7 @@ function createWindow() {
 app.whenReady().then(async () => {
   // Set application user model ID for Windows
   if (process.platform === 'win32') {
-    app.setAppUserModelId('com.ronled.clippilot')
+    app.setAppUserModelId('com.ronled.clippailot')
   }
   
   // Load settings from file
@@ -193,7 +193,7 @@ async function getBasicYouTubeResults(query: string): Promise<SearchResult[]> {
     results.push({
       id: 'free-tier-info',
       title: `💡 These are sample results for "${query}". Add YouTube API key for real search results!`,
-      channel: 'ClipPilot Free Tier',
+      channel: 'ClipPAilot Free Tier',
       duration: '0:00',
       thumbnail: '',
       license: 'standard',
@@ -332,7 +332,7 @@ ipcMain.handle('search', async (_evt, q: string, apiKey?: string): Promise<any> 
         {
           id: 'quota-error',
           title: 'API Quota Exceeded - Daily limit of 10,000 requests reached',
-          channel: 'ClipPilot Notice',
+          channel: 'ClipPAilot Notice',
           duration: '0:00',
           thumbnail: '',
           license: 'standard',
@@ -341,7 +341,7 @@ ipcMain.handle('search', async (_evt, q: string, apiKey?: string): Promise<any> 
         {
           id: 'quota-solution',
           title: 'Solution: Create a new API key or wait for quota reset',
-          channel: 'ClipPilot Help',
+          channel: 'ClipPAilot Help',
           duration: '0:00',
           thumbnail: '',
           license: 'standard',
@@ -360,7 +360,7 @@ ipcMain.handle('search', async (_evt, q: string, apiKey?: string): Promise<any> 
       {
         id: 'error-info',
         title: `Search error for "${q}" - Check your connection or add API key for better results`,
-        channel: 'ClipPilot',
+        channel: 'ClipPAilot',
         duration: '0:00',
         thumbnail: '',
         license: 'standard',
@@ -447,7 +447,7 @@ ipcMain.handle('search-more', async (_evt, q: string, pageToken: string, apiKey?
         items: [{
           id: 'quota-error',
           title: 'API Quota Exceeded - Daily limit reached (10,000 requests)',
-          channel: 'ClipPilot Error',
+          channel: 'ClipPAilot Error',
           duration: '0:00',
           thumbnail: '',
           license: 'standard',
@@ -650,7 +650,7 @@ ipcMain.handle('get-more-trending', async (_evt, apiKey?: string, offset: number
         items: [{
           id: 'quota-error-trending',
           title: 'API Quota Exceeded - Cannot load more trending videos',
-          channel: 'ClipPilot Notice',
+          channel: 'ClipPAilot Notice',
           duration: '0:00',
           thumbnail: '',
           license: 'standard',
@@ -1179,7 +1179,7 @@ ipcMain.handle('preview-video', async (_evt, id: string) => {
 const settingsPath = path.join(app.getPath('userData'), 'settings.json')
 
 const defaultSettings = {
-  downloadFolder: path.join(os.homedir(), 'Downloads', 'ClipPilot'),
+  downloadFolder: path.join(os.homedir(), 'Downloads', 'ClipPAilot'),
   defaultFormat: 'mp4' as 'mp3' | 'mp4',
   defaultQuality: 'best',
   audioFormat: 'mp3',

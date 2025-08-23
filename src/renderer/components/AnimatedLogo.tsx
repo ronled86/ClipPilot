@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function AnimatedLogo() {
   return (
-    <div aria-label="ClipPilot logo" title="ClipPilot" className="w-14 h-14">
+    <div aria-label="ClipPAilot logo" title="ClipPAilot" className="w-14 h-14">
       <svg width="100%" height="100%" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img">
         <defs>
           <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">

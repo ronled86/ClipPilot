@@ -28,8 +28,8 @@
   },
 
   "exit_modal": {
-    "title": "Quitter ClipPilot",
-    "message": "Êtes-vous sûr de vouloir quitter ClipPilot ? Tous les téléchargements en cours seront annulés.",
+    "title": "Quitter ClipPAilot",
+    "message": "Êtes-vous sûr de vouloir quitter ClipPAilot ? Tous les téléchargements en cours seront annulés.",
     "cancel": "Annuler",
     "confirm": "Quitter l'application"
   },
@@ -117,7 +117,7 @@
     "settings_saved": "Paramètres enregistrés",
     "settings_saved_msg": "Vos préférences ont été enregistrées avec succès.",
     "browser_limitation": "Limitation du mode navigateur",
-    "browser_limitation_msg": "Les téléchargements par URL ne sont disponibles que dans l'application de bureau. Veuillez télécharger et installer ClipPilot pour utiliser cette fonctionnalité."
+    "browser_limitation_msg": "Les téléchargements par URL ne sont disponibles que dans l'application de bureau. Veuillez télécharger et installer ClipPAilot pour utiliser cette fonctionnalité."
   },
 
   "main_screen": {
@@ -126,8 +126,8 @@
     "refresh": "Actualiser",
     "refresh_tooltip": "Actualiser la liste des vidéos",
     "settings_tooltip": "Paramètres de téléchargement",
-    "about_tooltip": "À propos de ClipPilot",
-    "exit_tooltip": "Quitter ClipPilot",
+    "about_tooltip": "À propos de ClipPAilot",
+    "exit_tooltip": "Quitter ClipPAilot",
     "preview": "Aperçu",
     "preview_tooltip": "Aperçu de la vidéo",
     "loading": "Chargement...",
@@ -136,11 +136,11 @@
   },
 
   "about_modal": {
-    "title": "À propos de ClipPilot",
+    "title": "À propos de ClipPAilot",
     "close": "Fermer",
     "welcome": {
-      "title": "Bienvenue dans ClipPilot",
-      "description": "ClipPilot est une application de bureau puissante qui vous permet de rechercher, prévisualiser et télécharger des vidéos depuis YouTube et d'autres plateformes. Avec le support de multiples formats et qualités, un suivi de progression intégré et une interface propre, elle est conçue pour rendre le téléchargement de vidéos simple et efficace."
+      "title": "Bienvenue dans ClipPAilot",
+      "description": "ClipPAilot est une application de bureau puissante qui vous permet de rechercher, prévisualiser et télécharger des vidéos depuis YouTube et d'autres plateformes. Avec le support de multiples formats et qualités, un suivi de progression intégré et une interface propre, elle est conçue pour rendre le téléchargement de vidéos simple et efficace."
     },
     "version_info": {
       "title": "Informations de Version",
@@ -167,7 +167,7 @@
     },
     "licenses": {
       "title": "Licences Open Source",
-      "description": "ClipPilot est construit avec ces incroyables bibliothèques open source :",
+      "description": "ClipPAilot est construit avec ces incroyables bibliothèques open source :",
       "electron_desc": "Applications de bureau multiplateformes",
       "react_desc": "Framework UI de Meta",
       "typescript_desc": "JavaScript avec types sûrs",
@@ -178,11 +178,11 @@
       "yt_dlp_desc": "Moteur de téléchargement vidéo",
       "ffmpeg_desc": "Traitement multimédia",
       "nodejs_desc": "Runtime JavaScript",
-      "clippilot_license": "Licence ClipPilot :",
+      "clippailot_license": "Licence ClipPAilot :",
       "view_source": "Voir le code source"
     },
     "footer": {
-      "built_with": "ClipPilot - Construit avec ❤️ en utilisant Electron, React et TypeScript",
+      "built_with": "ClipPAilot - Construit avec ❤️ en utilisant Electron, React et TypeScript",
       "support": "Pour le support et les mises à jour, visitez le dépôt du projet"
     }
   }

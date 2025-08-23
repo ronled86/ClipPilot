@@ -2,7 +2,7 @@ import type { Api } from '../preload'
 
 declare global {
   interface Window {
-    clippilot: Api
+    clippailot: Api
     __REACT_DEVTOOLS_GLOBAL_HOOK__?: {
       isDisabled: boolean
       supportsFiber: boolean

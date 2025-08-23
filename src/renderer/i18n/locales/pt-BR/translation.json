@@ -28,8 +28,8 @@
   },
 
   "exit_modal": {
-    "title": "Sair do ClipPilot",
-    "message": "Tem certeza que deseja sair do ClipPilot? Todos os downloads em andamento serão cancelados.",
+    "title": "Sair do ClipPAilot",
+    "message": "Tem certeza que deseja sair do ClipPAilot? Todos os downloads em andamento serão cancelados.",
     "cancel": "Cancelar",
     "confirm": "Sair da aplicação"
   },
@@ -117,7 +117,7 @@
     "settings_saved": "Configurações salvas",
     "settings_saved_msg": "Suas preferências foram salvas com sucesso.",
     "browser_limitation": "Limitação do modo navegador",
-    "browser_limitation_msg": "Downloads por URL estão disponíveis apenas na aplicação desktop. Por favor, baixe e instale o ClipPilot para usar este recurso."
+    "browser_limitation_msg": "Downloads por URL estão disponíveis apenas na aplicação desktop. Por favor, baixe e instale o ClipPAilot para usar este recurso."
   },
 
   "main_screen": {
@@ -126,8 +126,8 @@
     "refresh": "Atualizar",
     "refresh_tooltip": "Atualizar lista de vídeos",
     "settings_tooltip": "Configurações de download",
-    "about_tooltip": "Sobre o ClipPilot",
-    "exit_tooltip": "Sair do ClipPilot",
+    "about_tooltip": "Sobre o ClipPAilot",
+    "exit_tooltip": "Sair do ClipPAilot",
     "preview": "Visualizar",
     "preview_tooltip": "Visualizar vídeo",
     "loading": "Carregando...",
@@ -136,11 +136,11 @@
   },
 
   "about_modal": {
-    "title": "Sobre o ClipPilot",
+    "title": "Sobre o ClipPAilot",
     "close": "Fechar",
     "welcome": {
-      "title": "Bem-vindo ao ClipPilot",
-      "description": "ClipPilot é uma aplicação desktop poderosa que permite pesquisar, visualizar e baixar vídeos do YouTube e outras plataformas. Com suporte a múltiplos formatos e qualidades, rastreamento de progresso integrado e interface limpa, foi projetado para tornar o download de vídeos simples e eficiente."
+      "title": "Bem-vindo ao ClipPAilot",
+      "description": "ClipPAilot é uma aplicação desktop poderosa que permite pesquisar, visualizar e baixar vídeos do YouTube e outras plataformas. Com suporte a múltiplos formatos e qualidades, rastreamento de progresso integrado e interface limpa, foi projetado para tornar o download de vídeos simples e eficiente."
     },
     "version_info": {
       "title": "Informações da Versão",
@@ -167,7 +167,7 @@
     },
     "licenses": {
       "title": "Licenças Open Source",
-      "description": "ClipPilot é construído com essas incríveis bibliotecas open source:",
+      "description": "ClipPAilot é construído com essas incríveis bibliotecas open source:",
       "electron_desc": "Aplicações desktop multiplataforma",
       "react_desc": "Framework UI da Meta",
       "typescript_desc": "JavaScript com tipagem segura",
@@ -178,11 +178,11 @@
       "yt_dlp_desc": "Motor de download de vídeo",
       "ffmpeg_desc": "Processamento de mídia",
       "nodejs_desc": "Runtime JavaScript",
-      "clippilot_license": "Licença ClipPilot:",
+      "clippailot_license": "Licença ClipPAilot:",
       "view_source": "Ver código fonte"
     },
     "footer": {
-      "built_with": "ClipPilot - Construído com ❤️ usando Electron, React e TypeScript",
+      "built_with": "ClipPAilot - Construído com ❤️ usando Electron, React e TypeScript",
       "support": "Para suporte e atualizações, visite o repositório do projeto"
     }
   }

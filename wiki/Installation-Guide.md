@@ -1,10 +1,10 @@
 # 📦 Installation Guide
 
-This guide will help you install ClipPilot on your Windows system.
+This guide will help you install ClipPAilot on your Windows system.
 
 ## 🔧 System Requirements
 
-Before installing ClipPilot, make sure your system meets these requirements:
+Before installing ClipPAilot, make sure your system meets these requirements:
 
 ### **Minimum Requirements**
 - **OS**: Windows 10 (version 1809 or later) or Windows 11
@@ -24,29 +24,29 @@ Before installing ClipPilot, make sure your system meets these requirements:
 ### **Option 1: GitHub Releases (Recommended)**
 
 1. **Visit the Releases Page**:
-   - Go to: [ClipPilot Releases](https://github.com/ronled86/ClipPilot/releases)
+   - Go to: [ClipPAilot Releases](https://github.com/ronled86/ClipPAilot/releases)
 
 2. **Download Latest Version**:
    - Click on the latest release
-   - Download `ClipPilot-Setup-X.X.X.exe`
+   - Download `ClipPAilot-Setup-X.X.X.exe`
 
 3. **Verify Download** (Optional):
    - Download the `.blockmap` file for integrity verification
 
 ### **Option 2: Direct Download**
 
-Latest stable release: **[ClipPilot v1.0.5](https://github.com/ronled86/ClipPilot/releases/latest)**
+Latest stable release: **[ClipPAilot v1.0.5](https://github.com/ronled86/ClipPAilot/releases/latest)**
 
 ## 🚀 Installation Steps
 
 ### **Standard Installation**
 
 1. **Run the Installer**:
-   - Double-click `ClipPilot-Setup-X.X.X.exe`
+   - Double-click `ClipPAilot-Setup-X.X.X.exe`
    - Windows may show a security warning - click "More info" → "Run anyway"
 
 2. **Follow Setup Wizard**:
-   - Choose installation directory (default: `C:\Users\[username]\AppData\Local\Programs\ClipPilot`)
+   - Choose installation directory (default: `C:\Users\[username]\AppData\Local\Programs\ClipPAilot`)
    - Select additional options:
      - ✅ Create desktop shortcut
      - ✅ Add to Start Menu
@@ -55,24 +55,24 @@ Latest stable release: **[ClipPilot v1.0.5](https://github.com/ronled86/ClipPilo
 3. **Complete Installation**:
    - Click "Install" to begin installation
    - Wait for files to be copied
-   - Choose whether to launch ClipPilot immediately
+   - Choose whether to launch ClipPAilot immediately
 
 ### **Silent Installation**
 
 For automated deployment:
 
 ```cmd
-ClipPilot-Setup-1.0.5.exe /S
+ClipPAilot-Setup-1.0.5.exe /S
 ```
 
 **Parameters:**
 - `/S` - Silent install
 - `/D=C:\MyPath` - Custom install directory
 
-## 🔄 Updating ClipPilot
+## 🔄 Updating ClipPAilot
 
 ### **Automatic Updates**
-ClipPilot includes an auto-updater that:
+ClipPAilot includes an auto-updater that:
 - Checks for updates on startup
 - Downloads updates in the background
 - Prompts to restart and apply updates
@@ -86,19 +86,19 @@ ClipPilot includes an auto-updater that:
 
 ### **Using Windows Settings**
 1. Open **Settings** → **Apps**
-2. Search for "ClipPilot"
+2. Search for "ClipPAilot"
 3. Click **Uninstall**
 
 ### **Using Control Panel**
 1. Open **Control Panel** → **Programs and Features**
-2. Find "ClipPilot" in the list
+2. Find "ClipPAilot" in the list
 3. Click **Uninstall**
 
 ### **Complete Removal**
 To remove all data:
-1. Uninstall ClipPilot (above steps)
-2. Delete settings folder: `%APPDATA%\clippilot-desktop`
-3. Delete downloads folder (if created by ClipPilot)
+1. Uninstall ClipPAilot (above steps)
+2. Delete settings folder: `%APPDATA%\clippailot-desktop`
+3. Delete downloads folder (if created by ClipPAilot)
 
 ## 🔧 Post-Installation Setup
 
@@ -116,7 +116,7 @@ After installation:
 **"Windows protected your PC" warning:**
 - This is normal for new software
 - Click "More info" → "Run anyway"
-- Add ClipPilot to Windows Defender exclusions if needed
+- Add ClipPAilot to Windows Defender exclusions if needed
 
 **Installation fails:**
 - Run installer as Administrator
@@ -124,8 +124,8 @@ After installation:
 - Check available disk space
 - Close other applications
 
-**Cannot find ClipPilot after installation:**
-- Check Start Menu under "ClipPilot"
+**Cannot find ClipPAilot after installation:**
+- Check Start Menu under "ClipPAilot"
 - Look for desktop shortcut
 - Navigate to installation directory
 
@@ -138,7 +138,7 @@ After installation:
 
 **Custom Installation Directory:**
 ```cmd
-ClipPilot-Setup-1.0.5.exe /D=C:\CustomPath\ClipPilot
+ClipPAilot-Setup-1.0.5.exe /D=C:\CustomPath\ClipPAilot
 ```
 
 **Corporate Environment:**
@@ -152,7 +152,7 @@ If you encounter installation issues:
 
 1. Check our [Troubleshooting Guide](Troubleshooting)
 2. Review [System Requirements](#system-requirements)
-3. Create an issue on [GitHub](https://github.com/ronled86/ClipPilot/issues)
+3. Create an issue on [GitHub](https://github.com/ronled86/ClipPAilot/issues)
 
 ---
 

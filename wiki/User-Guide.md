@@ -1,12 +1,12 @@
 # 👥 User Guide
 
-Complete guide to using ClipPilot for discovering, previewing, and downloading YouTube content.
+Complete guide to using ClipPAilot for discovering, previewing, and downloading YouTube content.
 
 ## 🚀 Getting Started
 
 ### **Main Interface Overview**
 
-ClipPilot's interface is designed for simplicity and efficiency:
+ClipPAilot's interface is designed for simplicity and efficiency:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -37,7 +37,7 @@ ClipPilot's interface is designed for simplicity and efficiency:
 - **Quality**: Include terms like "4K", "HD", "1080p"
 
 ### **Search History**
-- ClipPilot remembers your recent searches
+- ClipPAilot remembers your recent searches
 - Access history via the search dropdown
 - Clear history in Settings
 
@@ -103,7 +103,7 @@ Configure downloads in Settings (🔧):
 ## 🌐 **Language & Localization**
 
 ### **Supported Languages**
-ClipPilot supports 9 languages:
+ClipPAilot supports 9 languages:
 - 🇺🇸 English
 - 🇮🇱 Hebrew (עברית) - with RTL support
 - 🇩🇪 German (Deutsch)
@@ -165,7 +165,7 @@ Downloads are organized by:
 ## 🔒 **Privacy & Legal**
 
 ### **License Awareness**
-ClipPilot respects content licensing:
+ClipPAilot respects content licensing:
 - **License Detection**: Identifies video licenses
 - **Usage Guidelines**: Displays appropriate warnings
 - **Terms Compliance**: Follows YouTube Terms of Service
@@ -208,7 +208,7 @@ ClipPilot respects content licensing:
 **Performance issues:**
 - Close other applications
 - Check system resources
-- Restart ClipPilot
+- Restart ClipPAilot
 
 ### **Error Messages**
 

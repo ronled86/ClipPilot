@@ -51,10 +51,10 @@ try {
 Next steps:
 1. Push to GitHub: git push origin main --tags
 2. The GitHub Action will automatically create the release
-3. Or create a manual release at: https://github.com/ronled86/ClipPilot/releases/new
+3. Or create a manual release at: https://github.com/ronled86/ClipPAilot/releases/new
 
 Files created:
-- release/ClipPilot-Setup-${newVersion}.exe
+- release/ClipPAilot-Setup-${newVersion}.exe
 `);
 
 } catch (error) {

@@ -117,7 +117,7 @@
     "settings_saved": "הגדרות נשמרו",
     "settings_saved_msg": "ההעדפות שלך נשמרו בהצלחה.",
     "browser_limitation": "מגבלת מצב דפדפן",
-    "browser_limitation_msg": "הורדות URL זמינות רק באפליקציית השולחן. אנא הורד והתקן את ClipPilot כדי להשתמש בתכונה זו."
+    "browser_limitation_msg": "הורדות URL זמינות רק באפליקציית השולחן. אנא הורד והתקן את ClipPAilot כדי להשתמש בתכונה זו."
   },
 
   "main_screen": {
@@ -126,8 +126,8 @@
     "refresh": "רענן",
     "refresh_tooltip": "רענן רשימת וידאו",
     "settings_tooltip": "הגדרות הורדה",
-    "about_tooltip": "אודות ClipPilot",
-    "exit_tooltip": "צא מ-ClipPilot",
+    "about_tooltip": "אודות ClipPAilot",
+    "exit_tooltip": "צא מ-ClipPAilot",
     "preview": "צפייה",
     "preview_tooltip": "תצוגה מקדימה של וידאו",
     "loading": "טוען...",
@@ -136,11 +136,11 @@
   },
 
   "about_modal": {
-    "title": "אודות ClipPilot",
+    "title": "אודות ClipPAilot",
     "close": "סגור",
     "welcome": {
-      "title": "ברוכים הבאים ל-ClipPilot",
-      "description": "ClipPilot היא אפליקציית שולחן עבודה חזקה המאפשרת לחפש, לצפות בתצוגה מקדימה ולהוריד סרטונים מיוטיוב ופלטפורמות אחרות. עם תמיכה בפורמטים ואיכויות מרובות, מעקב התקדמות מובנה וממשק נקי, היא מיועדת להפוך הורדת וידאו לפשוטה ויעילה."
+      "title": "ברוכים הבאים ל-ClipPAilot",
+      "description": "ClipPAilot היא אפליקציית שולחן עבודה חזקה המאפשרת לחפש, לצפות בתצוגה מקדימה ולהוריד סרטונים מיוטיוב ופלטפורמות אחרות. עם תמיכה בפורמטים ואיכויות מרובות, מעקב התקדמות מובנה וממשק נקי, היא מיועדת להפוך הורדת וידאו לפשוטה ויעילה."
     },
     "version_info": {
       "title": "מידע גרסה",
@@ -167,7 +167,7 @@
     },
     "licenses": {
       "title": "רישיונות קוד פתוח",
-      "description": "ClipPilot בנוי עם ספריות קוד פתוח מדהימות אלה:",
+      "description": "ClipPAilot בנוי עם ספריות קוד פתוח מדהימות אלה:",
       "electron_desc": "אפליקציות שולחן עבודה חוצות פלטפורמות",
       "react_desc": "מסגרת UI של Meta",
       "typescript_desc": "JavaScript בטוח מבחינת סוגים",
@@ -178,11 +178,11 @@
       "yt_dlp_desc": "מנוע הורדת וידאו",
       "ffmpeg_desc": "עיבוד מדיה",
       "nodejs_desc": "סביבת JavaScript",
-      "clippilot_license": "רישיון ClipPilot:",
+      "clippailot_license": "רישיון ClipPAilot:",
       "view_source": "צפה בקוד המקור"
     },
     "footer": {
-      "built_with": "ClipPilot - נבנה עם ❤️ באמצעות Electron, React ו-TypeScript",
+      "built_with": "ClipPAilot - נבנה עם ❤️ באמצעות Electron, React ו-TypeScript",
       "support": "לתמיכה ועדכונים, בקר במאגר הפרויקט"
     }
   }

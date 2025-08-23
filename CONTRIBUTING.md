@@ -1,6 +1,6 @@
-# Contributing to ClipPilot
+# Contributing to ClipPAilot
 
-Thank you for your interest in contributing to ClipPilot! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to ClipPAilot! This document provides guidelines and information for contributors.
 
 ## 🎯 Ways to Contribute
 
@@ -46,8 +46,8 @@ yt-dlp.exe
 ### Quick Start
 ```bash
 # 1. Fork and clone
-git clone https://github.com/your-username/clippilot.git
-cd clippilot
+git clone https://github.com/your-username/clippailot.git
+cd clippailot
 
 # 2. Install dependencies
 npm ci
@@ -340,4 +340,4 @@ By contributing to this project, you agree that your contributions will be licen
 
 ---
 
-**Thank you for contributing to ClipPilot! Together we can build something amazing. 🚀**
+**Thank you for contributing to ClipPAilot! Together we can build something amazing. 🚀**

@@ -1,11 +1,11 @@
 # ❓ Frequently Asked Questions
 
-Common questions and answers about ClipPilot.
+Common questions and answers about ClipPAilot.
 
 ## 🔧 **Installation & Setup**
 
-### **Q: What are the system requirements for ClipPilot?**
-**A:** ClipPilot requires:
+### **Q: What are the system requirements for ClipPAilot?**
+**A:** ClipPAilot requires:
 - Windows 10 (1809+) or Windows 11
 - 64-bit (x64) architecture
 - 4 GB RAM minimum (8 GB recommended)
@@ -13,13 +13,13 @@ Common questions and answers about ClipPilot.
 - Internet connection for YouTube integration
 
 ### **Q: Why does Windows show a security warning when installing?**
-**A:** This is normal for new software. ClipPilot is safe to install. Click "More info" → "Run anyway" to proceed. The warning appears because the installer isn't signed with an expensive code signing certificate.
+**A:** This is normal for new software. ClipPAilot is safe to install. Click "More info" → "Run anyway" to proceed. The warning appears because the installer isn't signed with an expensive code signing certificate.
 
-### **Q: Do I need a YouTube API key to use ClipPilot?**
-**A:** No, ClipPilot works without an API key for basic functionality. An API key enhances the search experience and provides access to trending videos.
+### **Q: Do I need a YouTube API key to use ClipPAilot?**
+**A:** No, ClipPAilot works without an API key for basic functionality. An API key enhances the search experience and provides access to trending videos.
 
-### **Q: How do I update ClipPilot?**
-**A:** ClipPilot includes an auto-updater that checks for updates on startup. You can also manually download and install the latest version from the GitHub releases page.
+### **Q: How do I update ClipPAilot?**
+**A:** ClipPAilot includes an auto-updater that checks for updates on startup. You can also manually download and install the latest version from the GitHub releases page.
 
 ## 🔍 **Search & Discovery**
 
@@ -33,7 +33,7 @@ Common questions and answers about ClipPilot.
 Try searching for popular terms or check your internet connection.
 
 ### **Q: Can I search for specific channels or playlists?**
-**A:** Currently, ClipPilot focuses on individual video search. Channel and playlist support is planned for future releases.
+**A:** Currently, ClipPAilot focuses on individual video search. Channel and playlist support is planned for future releases.
 
 ### **Q: How does the trending videos feature work?**
 **A:** Trending videos are fetched from YouTube's public API and show popular content in various categories. This feature requires a YouTube API key for full functionality.
@@ -55,8 +55,8 @@ Try searching for popular terms or check your internet connection.
 
 ## ⬇️ **Downloads**
 
-### **Q: What video formats does ClipPilot support?**
-**A:** ClipPilot supports multiple formats:
+### **Q: What video formats does ClipPAilot support?**
+**A:** ClipPAilot supports multiple formats:
 - **Video**: MP4, WebM, MKV
 - **Audio**: MP3, AAC, FLAC, WAV
 - **Quality**: 360p to 4K (depending on source)
@@ -80,38 +80,38 @@ Try searching for popular terms or check your internet connection.
 
 ## 🌐 **Language & Interface**
 
-### **Q: Which languages does ClipPilot support?**
-**A:** ClipPilot supports 9 languages:
+### **Q: Which languages does ClipPAilot support?**
+**A:** ClipPAilot supports 9 languages:
 - English, Hebrew, German, Spanish, French
 - Portuguese (Brazil & Portugal), Japanese, Chinese
 
 ### **Q: How do I change the interface language?**
 **A:** Go to Settings (🔧) → Language → Select your preferred language. Some changes may require restarting the application.
 
-### **Q: Does ClipPilot support right-to-left (RTL) languages?**
-**A:** Yes! ClipPilot has full RTL support for Hebrew, including proper text direction and interface mirroring.
+### **Q: Does ClipPAilot support right-to-left (RTL) languages?**
+**A:** Yes! ClipPAilot has full RTL support for Hebrew, including proper text direction and interface mirroring.
 
 ## 🔒 **Privacy & Legal**
 
-### **Q: Is ClipPilot safe to use?**
-**A:** Yes, ClipPilot is completely safe:
+### **Q: Is ClipPAilot safe to use?**
+**A:** Yes, ClipPAilot is completely safe:
 - Open source code available on GitHub
 - No data collection or tracking
 - All processing done locally
 - No advertisements or malware
 
-### **Q: Does ClipPilot respect copyright laws?**
-**A:** ClipPilot includes license-aware features and respects YouTube's Terms of Service. Users are responsible for ensuring their downloads comply with applicable copyright laws and fair use guidelines.
+### **Q: Does ClipPAilot respect copyright laws?**
+**A:** ClipPAilot includes license-aware features and respects YouTube's Terms of Service. Users are responsible for ensuring their downloads comply with applicable copyright laws and fair use guidelines.
 
-### **Q: What data does ClipPilot collect?**
-**A:** ClipPilot prioritizes privacy:
+### **Q: What data does ClipPAilot collect?**
+**A:** ClipPAilot prioritizes privacy:
 - No user data collection
 - No tracking or analytics
 - Settings stored locally only
 - API calls made directly to YouTube
 
-### **Q: Can I use ClipPilot for commercial purposes?**
-**A:** ClipPilot is licensed under Apache 2.0, allowing commercial use. However, ensure any downloaded content complies with its respective licensing and copyright terms.
+### **Q: Can I use ClipPAilot for commercial purposes?**
+**A:** ClipPAilot is licensed under Apache 2.0, allowing commercial use. However, ensure any downloaded content complies with its respective licensing and copyright terms.
 
 ## ⚙️ **Settings & Configuration**
 
@@ -121,18 +121,18 @@ Try searching for popular terms or check your internet connection.
 ### **Q: Can I change where files are downloaded?**
 **A:** Yes, in Settings → Download Path, click "Browse" to select a new folder.
 
-### **Q: How do I reset ClipPilot to default settings?**
+### **Q: How do I reset ClipPAilot to default settings?**
 **A:** Delete the settings file located at:
-`%APPDATA%\clippilot-desktop\settings.json`
+`%APPDATA%\clippailot-desktop\settings.json`
 
-Then restart ClipPilot.
+Then restart ClipPAilot.
 
 ### **Q: Can I run multiple downloads simultaneously?**
-**A:** Yes, ClipPilot supports concurrent downloads. You can adjust the number of simultaneous downloads in Settings.
+**A:** Yes, ClipPAilot supports concurrent downloads. You can adjust the number of simultaneous downloads in Settings.
 
 ## 🛠️ **Troubleshooting**
 
-### **Q: ClipPilot won't start after installation**
+### **Q: ClipPAilot won't start after installation**
 **A:** Try these solutions:
 1. Run as Administrator
 2. Check Windows compatibility mode
@@ -145,7 +145,7 @@ Then restart ClipPilot.
 - DPI scaling problems
 - Corrupted installation
 
-Try updating graphics drivers or reinstalling ClipPilot.
+Try updating graphics drivers or reinstalling ClipPAilot.
 
 ### **Q: Downloads are very slow**
 **A:** Speed depends on:
@@ -165,8 +165,8 @@ Try downloading during off-peak hours or choosing lower quality.
 
 ## 🔄 **Updates & Versions**
 
-### **Q: How often is ClipPilot updated?**
-**A:** ClipPilot receives regular updates with bug fixes, new features, and improvements. Major updates are released quarterly, with patch updates as needed.
+### **Q: How often is ClipPAilot updated?**
+**A:** ClipPAilot receives regular updates with bug fixes, new features, and improvements. Major updates are released quarterly, with patch updates as needed.
 
 ### **Q: Will my settings be preserved during updates?**
 **A:** Yes, your settings, download history, and preferences are preserved during updates.
@@ -178,11 +178,11 @@ Try downloading during off-peak hours or choosing lower quality.
 
 ### **Q: Where can I report bugs or request features?**
 **A:** Visit our GitHub repository:
-- **Bug Reports**: [Create an Issue](https://github.com/ronled86/ClipPilot/issues/new?template=bug_report.md)
-- **Feature Requests**: [Request Feature](https://github.com/ronled86/ClipPilot/issues/new?template=feature_request.md)
-- **Discussions**: [GitHub Discussions](https://github.com/ronled86/ClipPilot/discussions)
+- **Bug Reports**: [Create an Issue](https://github.com/ronled86/ClipPAilot/issues/new?template=bug_report.md)
+- **Feature Requests**: [Request Feature](https://github.com/ronled86/ClipPAilot/issues/new?template=feature_request.md)
+- **Discussions**: [GitHub Discussions](https://github.com/ronled86/ClipPAilot/discussions)
 
-### **Q: How can I contribute to ClipPilot?**
+### **Q: How can I contribute to ClipPAilot?**
 **A:** We welcome contributions! See our [Contributing Guidelines](Contributing-Guidelines) for:
 - Code contributions
 - Documentation improvements
@@ -197,4 +197,4 @@ Try downloading during off-peak hours or choosing lower quality.
 
 ---
 
-**Still have questions?** Create a [GitHub Discussion](https://github.com/ronled86/ClipPilot/discussions) or check our [User Guide](User-Guide) for detailed instructions.
+**Still have questions?** Create a [GitHub Discussion](https://github.com/ronled86/ClipPAilot/discussions) or check our [User Guide](User-Guide) for detailed instructions.

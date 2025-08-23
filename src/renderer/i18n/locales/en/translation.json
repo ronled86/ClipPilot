@@ -28,8 +28,8 @@
   },
 
   "exit_modal": {
-    "title": "Exit ClipPilot",
-    "message": "Are you sure you want to exit ClipPilot? Any ongoing downloads will be cancelled.",
+    "title": "Exit ClipPAilot",
+    "message": "Are you sure you want to exit ClipPAilot? Any ongoing downloads will be cancelled.",
     "cancel": "Cancel",
     "confirm": "Exit App"
   },
@@ -117,7 +117,7 @@
     "settings_saved": "Settings Saved",
     "settings_saved_msg": "Your preferences have been saved successfully.",
     "browser_limitation": "Browser Mode Limitation",
-    "browser_limitation_msg": "URL downloads are only available in the desktop app. Please download and install ClipPilot to use this feature."
+    "browser_limitation_msg": "URL downloads are only available in the desktop app. Please download and install ClipPAilot to use this feature."
   },
 
   "main_screen": {
@@ -126,8 +126,8 @@
     "refresh": "Refresh",
     "refresh_tooltip": "Refresh Video List",
     "settings_tooltip": "Download Settings",
-    "about_tooltip": "About ClipPilot",
-    "exit_tooltip": "Exit ClipPilot",
+    "about_tooltip": "About ClipPAilot",
+    "exit_tooltip": "Exit ClipPAilot",
     "preview": "Preview",
     "preview_tooltip": "Preview Video",
     "loading": "Loading...",
@@ -136,11 +136,11 @@
   },
 
   "about_modal": {
-    "title": "About ClipPilot",
+    "title": "About ClipPAilot",
     "close": "Close",
     "welcome": {
-      "title": "Welcome to ClipPilot",
-      "description": "ClipPilot is a powerful desktop application that lets you search, preview, and download videos from YouTube and other platforms. With support for multiple formats and qualities, built-in progress tracking, and a clean interface, it's designed to make video downloading simple and efficient."
+      "title": "Welcome to ClipPAilot",
+      "description": "ClipPAilot is a powerful desktop application that lets you search, preview, and download videos from YouTube and other platforms. With support for multiple formats and qualities, built-in progress tracking, and a clean interface, it's designed to make video downloading simple and efficient."
     },
     "version_info": {
       "title": "Version Information",
@@ -167,7 +167,7 @@
     },
     "licenses": {
       "title": "Open Source Licenses",
-      "description": "ClipPilot is built with these amazing open source libraries:",
+      "description": "ClipPAilot is built with these amazing open source libraries:",
       "electron_desc": "Cross-platform desktop apps",
       "react_desc": "UI framework by Meta",
       "typescript_desc": "Type-safe JavaScript",
@@ -178,11 +178,11 @@
       "yt_dlp_desc": "Video download engine",
       "ffmpeg_desc": "Media processing",
       "nodejs_desc": "JavaScript runtime",
-      "clippilot_license": "ClipPilot License:",
+      "clippailot_license": "ClipPAilot License:",
       "view_source": "View source code"
     },
     "footer": {
-      "built_with": "ClipPilot - Built with ❤️ using Electron, React & TypeScript",
+      "built_with": "ClipPAilot - Built with ❤️ using Electron, React & TypeScript",
       "support": "For support and updates, visit the project repository"
     }
   }

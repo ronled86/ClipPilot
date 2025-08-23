@@ -32,7 +32,7 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
 
   // Load search history from localStorage on component mount
   useEffect(() => {
-    const history = localStorage.getItem('clippilot-search-history')
+    const history = localStorage.getItem('clippailot-search-history')
     if (history) {
       try {
         setSearchHistory(JSON.parse(history))
@@ -48,7 +48,7 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
     
     const newHistory = [query, ...searchHistory.filter(item => item !== query)].slice(0, 20)
     setSearchHistory(newHistory)
-    localStorage.setItem('clippilot-search-history', JSON.stringify(newHistory))
+    localStorage.setItem('clippailot-search-history', JSON.stringify(newHistory))
   }
 
   // Fetch YouTube search suggestions
@@ -65,8 +65,8 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
       // Use YouTube autocomplete API through main process
       try {
         // Use main process to avoid CORS issues (Electron mode)
-        if (window.clippilot?.getYoutubeSuggestions) {
-          suggestions = await window.clippilot.getYoutubeSuggestions(query)
+        if (window.clippailot?.getYoutubeSuggestions) {
+          suggestions = await window.clippailot.getYoutubeSuggestions(query)
           console.log('✅ YouTube suggestions loaded:', suggestions.length)
         } else {
           // Browser mode - skip fetch due to CORS, use smart fallbacks
@@ -279,7 +279,7 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
               {suggestions.map((suggestion, index) => {
                 const isYoutubeSuggestion = youtubeSuggestions.includes(suggestion)
                 const isHistorySuggestion = searchHistory.includes(suggestion)
-                const isBrowserMode = !window.clippilot?.getYoutubeSuggestions
+                const isBrowserMode = !window.clippailot?.getYoutubeSuggestions
                 
                 return (
                   <div
@@ -311,7 +311,7 @@ export default function SearchBar({ onSearch, settings }: SearchBarProps) {
               <div className="px-4 py-2 text-xs text-gray-500 border-t bg-gray-50">
                 💡 Use ↑↓ to navigate, Tab to complete, Enter to search
                 {loadingSuggestions && <span className="ml-2">• Loading more suggestions...</span>}
-                {!window.clippilot?.getYoutubeSuggestions && (
+                {!window.clippailot?.getYoutubeSuggestions && (
                   <span className="ml-2">• Browser demo mode</span>
                 )}
               </div>
