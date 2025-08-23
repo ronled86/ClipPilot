@@ -7,10 +7,9 @@ export const VERSION = {
   major: 1,
   minor: 0,
   patch: 10,
-  build: 1755954496567,
-  tag: 'stable',
-  fullVersion: '1.0.10',
-  buildDate: '2025-08-23T13:08:16.567Z',
+  build: 142,
+  fullVersion: '1.0.10.142',
+  buildDate: '2025-08-23T13:29:10.009Z',
   features: [
     'YouTube Search & Preview',
     'Intelligent Search Autocomplete',
@@ -24,7 +23,7 @@ export const VERSION = {
 } as const
 
 export const getVersionString = (): string => {
-  return `${VERSION.fullVersion}-${VERSION.tag}`
+  return VERSION.fullVersion
 }
 
 export const getBuildInfo = (): string => {

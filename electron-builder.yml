@@ -1,10 +1,8 @@
 appId: com.ronled.clippailot
 productName: ClipPAilot
 copyright: "Copyright © 2025 Ron Lederer"
-# Publisher information for safety and trust
-publish:
-  provider: generic
-  url: "https://github.com/ronled86/ClipPilot/releases/"
+# Prevent auto-publishing in CI unless explicitly requested
+publish: null
 icon: assets/icon.ico
 files:
   - dist/**
@@ -49,3 +47,5 @@ nsis:
   warningsAsErrors: false
   # Publisher information
   installerSidebar: "assets/logo.png"
+  # Better upgrade handling with unique GUID
+  guid: "com.ronled.clippailot"
