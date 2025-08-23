@@ -69,4 +69,4 @@ See our [Contributing Guidelines](Contributing-Guidelines) for details.
 
 ---
 
-**ClipPAilot v1.0.7** | Created with ❤️ by [Ron Lederer](https://github.com/ronled86) | Licensed under [Apache 2.0](License)
+**ClipPAilot v1.0.10** | Created with ❤️ by [Ron Lederer](https://github.com/ronled86) | Licensed under [Apache 2.0](License)

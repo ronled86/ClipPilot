@@ -6,6 +6,7 @@ import * as fs from 'fs'
 import * as os from 'os'
 import * as dotenv from 'dotenv'
 import { google } from 'googleapis'
+import { logger } from './logger'
 
 // Load environment variables
 dotenv.config()
@@ -19,8 +20,8 @@ function getToolsPath(): string {
     // In development, tools are in the project root
     return path.join(process.cwd(), 'tools')
   } else {
-    // In production, tools are packaged with the app
-    return path.join(process.resourcesPath, 'app', 'tools')
+    // In production, tools are in extraResources outside the asar archive
+    return path.join(process.resourcesPath, 'tools')
   }
 }
 
@@ -32,6 +33,8 @@ function getToolPath(toolName: string, executable: string): string {
 let win: BrowserWindow | null = null
 
 function createWindow() {
+  logger.info('Creating main window...')
+  
   // Try to use custom icon, fall back gracefully if not found
   let iconPath: string
   
@@ -39,9 +42,11 @@ function createWindow() {
     // In development, use icon from project root assets folder
     iconPath = path.join(process.cwd(), 'assets', 'icon.ico')
   } else {
-    // In production, use icon from app resources
-    iconPath = path.join(__dirname, '../../assets/icon.ico')
+    // In production, use icon from extraResources
+    iconPath = path.join(process.resourcesPath, 'icon.ico')
   }
+  
+  logger.info(`Icon path: ${iconPath}`)
   
   const windowOptions: any = {
     width: 1200,
@@ -59,16 +64,18 @@ function createWindow() {
   // Only set icon if the file exists
   if (require('fs').existsSync(iconPath)) {
     windowOptions.icon = iconPath
-    console.log(`🎨 Using custom icon: ${iconPath}`)
+    logger.info(`Using custom icon: ${iconPath}`)
   } else {
-    console.log(`⚠️ Icon not found at: ${iconPath}`)
+    logger.warn(`Icon not found at: ${iconPath}`)
   }
 
   win = new BrowserWindow(windowOptions)
+  logger.info('Main window created successfully')
 
   // Explicitly set the icon for taskbar on Windows
   if (process.platform === 'win32' && require('fs').existsSync(iconPath)) {
     win.setIcon(iconPath)
+    logger.info('Windows taskbar icon set')
   }
 
   // Hide menu bar by default for cleaner interface
@@ -93,17 +100,40 @@ function createWindow() {
 }
 
 app.whenReady().then(async () => {
+  logger.info('Electron app ready, initializing...')
+  
+  // Log comprehensive system information
+  logger.logSystemInfo()
+  logger.logEnvironmentVariables()
+  logger.logToolPaths()
+  
   // Set application user model ID for Windows
   if (process.platform === 'win32') {
     app.setAppUserModelId('com.ronled.clippailot')
+    logger.info('Windows App User Model ID set')
+  }
+  
+  // Set app icon for the entire application
+  const appIconPath = isDev 
+    ? path.join(process.cwd(), 'assets', 'icon.ico')
+    : path.join(process.resourcesPath, 'icon.ico')
+  
+  if (require('fs').existsSync(appIconPath)) {
+    app.dock?.setIcon?.(appIconPath) // macOS
+    if (process.platform === 'win32') {
+      // Windows icon will be set via electron-builder config and per-window
+    }
+    logger.info(`App icon set: ${appIconPath}`)
+  } else {
+    logger.warn(`App icon not found: ${appIconPath}`)
   }
   
   // Load settings from file
   try {
     appSettings = await loadSettings()
-    console.log('Settings loaded from file')
+    logger.info('Settings loaded from file successfully')
   } catch (error) {
-    console.error('Failed to load settings, using defaults:', error)
+    logger.error('Failed to load settings, using defaults:', error)
   }
   
   createWindow()
@@ -143,8 +173,10 @@ app.on('window-all-closed', () => {
 })
 
 app.on('will-quit', () => {
+  logger.info('Application shutting down...')
   // Unregister all shortcuts
   globalShortcut.unregisterAll()
+  logger.cleanup()
 })
 
 // Simple IPC stubs
@@ -831,18 +863,27 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
     const ytDlpPath = getToolPath('yt-dlp', 'yt-dlp.exe')
     const outputPath = opts.outputPath || appSettings.downloadFolder
     
+    logger.info(`Starting download job ${jobId}`, {
+      url: opts.url,
+      format: opts.format,
+      quality: opts.quality,
+      outputPath,
+      ytDlpPath
+    })
+    
     // Check if yt-dlp exists
     if (!fs.existsSync(ytDlpPath)) {
       const error = `yt-dlp not found at: ${ytDlpPath}`
-      console.error(error)
-      console.error('Tools path:', getToolsPath())
-      console.error('isDev:', isDev)
-      console.error('process.resourcesPath:', process.resourcesPath)
-      console.error('__dirname:', __dirname)
+      logger.error(error, {
+        toolsPath: getToolsPath(),
+        isDev,
+        resourcesPath: process.resourcesPath,
+        dirname: __dirname
+      })
       return { success: false, error }
     }
     
-    console.log(`Using yt-dlp from: ${ytDlpPath}`)
+    logger.info(`Using yt-dlp from: ${ytDlpPath}`)
     
     // Ensure output directory exists
     try {
@@ -954,8 +995,11 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
       }
 
       // Log the exact command being executed for debugging
-      console.log(`🚀 Executing yt-dlp with args:`, args.join(' '))
-      console.log(`📁 Working directory: ${outputPath}`)
+      logger.info(`Executing yt-dlp command`, {
+        command: `${ytDlpPath} ${args.join(' ')}`,
+        workingDirectory: outputPath,
+        args
+      })
 
       // Spawn yt-dlp process (hidden window)
       const child = spawn(ytDlpPath, args, {
@@ -996,7 +1040,7 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
       child.stdout?.on('data', (data) => {
         const outputLine = data.toString()
         output += outputLine
-        console.log('yt-dlp output:', outputLine)
+        logger.debug('yt-dlp stdout:', outputLine.trim())
         
         // Update last activity time
         lastProgressTime = Date.now()
@@ -1070,11 +1114,11 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
       child.stderr?.on('data', (data) => {
         const errorLine = data.toString()
         errorOutput += errorLine
-        console.error('yt-dlp error:', errorLine)
+        logger.error('yt-dlp stderr:', errorLine.trim())
         
         // Check for specific error patterns
         if (errorLine.includes('ERROR:') || errorLine.includes('FATAL:')) {
-          console.error('Download error detected')
+          logger.error('Download error detected', { errorLine })
           if (win && win.webContents) {
             win.webContents.send('job-progress', {
               jobId: jobId,

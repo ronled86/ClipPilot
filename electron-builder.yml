@@ -1,16 +1,28 @@
 appId: com.ronled.clippailot
 productName: ClipPAilot
 copyright: "Copyright © 2025 Ron Lederer"
-icon: assets/icon.ico  # Windows ICO format for proper taskbar icon
+# Publisher information for safety and trust
+publish:
+  provider: generic
+  url: "https://github.com/ronled86/ClipPilot/releases/"
+icon: assets/icon.ico
 files:
   - dist/**
   - package.json
-  - tools/**
+extraResources:
+  - from: tools
+    to: tools
+    filter: ["**/*"]
+  - from: assets/icon.ico
+    to: icon.ico
+  - from: logs
+    to: logs
+    filter: ["**/*"]
 directories:
   output: release
   buildResources: assets
 win:
-  icon: assets/icon.ico  # Windows ICO format for proper taskbar icon
+  icon: assets/icon.ico
   target:
     - target: nsis
       arch: [x64]
@@ -18,11 +30,6 @@ win:
   requestedExecutionLevel: asInvoker
   signAndEditExecutable: false
   verifyUpdateCodeSignature: false
-  # Enable publishing to GitHub Releases
-  publish:
-    provider: github
-    owner: ronled86
-    repo: ClipPAilot
 nsis:
   oneClick: false
   perMachine: false
@@ -40,3 +47,5 @@ nsis:
   include: "scripts/installer.nsh"
   # Don't treat warnings as errors
   warningsAsErrors: false
+  # Publisher information
+  installerSidebar: "assets/logo.png"

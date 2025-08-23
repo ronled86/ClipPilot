@@ -1,6 +1,6 @@
 {
   "name": "clippailot-desktop",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "private": true,
   "description": "YouTube search, view, and download client with license-aware gating",
   "main": "dist/main/index.js",
@@ -15,6 +15,7 @@
     "build": "vite build && tsc -p tsconfig.node.json",
     "pack": "electron-builder --dir",
     "dist": "npm run build && electron-builder --win nsis",
+    "dist:publish": "npm run build && electron-builder --win nsis --publish always",
     "release": "node scripts/create-release.js",
     "release:patch": "node scripts/create-release.js patch",
     "release:minor": "node scripts/create-release.js minor",

@@ -2,7 +2,7 @@
 
 **A powerful YouTube search, preview, and download client with intelligent features and license-aware content filtering.**
 
-[![Version](https://img.shields.io/badge/version-1.0.7-blue.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.0.10-blue.svg)](package.json)
 [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](#)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 
