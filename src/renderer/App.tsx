@@ -2,9 +2,13 @@ import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import AnimatedLogo from './components/AnimatedLogo'
 import SearchBar from './components/SearchBar'
+import CategorySelector from './components/CategorySelector'
 import VideoPreviewModal from './components/VideoPreviewModal'
 import SettingsModal, { DownloadSettings } from './components/SettingsModal'
+import AboutModal from './components/AboutModal'
+import ExitConfirmationModal from './components/ExitConfirmationModal'
 import DownloadNotifications, { DownloadJob } from './components/DownloadNotifications'
+import { useNotifications } from './components/NotificationSystem'
 import { getVersionString } from '../version'
 import './types.d.ts'
 
@@ -12,6 +16,7 @@ type Result = { id: string; title: string; channel: string; duration: string; th
 
 export default function App() {
   const { t, i18n } = useTranslation()
+  const { showSuccess, showError, showWarning, showInfo } = useNotifications()
   const [results, setResults] = useState<Result[]>([])
   const [dir, setDir] = useState<'ltr'|'rtl'>('ltr')
   const [apiReady, setApiReady] = useState(false)
@@ -30,6 +35,8 @@ export default function App() {
   })
 
   const [settingsModal, setSettingsModal] = useState(false)
+  const [aboutModal, setAboutModal] = useState(false)
+  const [exitConfirmationModal, setExitConfirmationModal] = useState(false)
   const [settings, setSettings] = useState<DownloadSettings>({
     downloadFolder: '',
     defaultFormat: 'mp4',
@@ -47,6 +54,7 @@ export default function App() {
   const [trendingOffset, setTrendingOffset] = useState(0)
   const [canLoadMoreTrending, setCanLoadMoreTrending] = useState(true)
   const [showUrlDownload, setShowUrlDownload] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState('0') // '0' means all categories
 
   // Detect if running in browser vs Electron
   useEffect(() => {
@@ -79,6 +87,25 @@ export default function App() {
     setDir(rtl ? 'rtl' : 'ltr')
   }, [i18n.language])
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+, for Settings (standard shortcut)
+      if (e.ctrlKey && e.key === ',') {
+        e.preventDefault()
+        setSettingsModal(true)
+      }
+      // F1 for About (standard shortcut)
+      if (e.key === 'F1') {
+        e.preventDefault()
+        setAboutModal(true)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   useEffect(() => {
     // Check if the API is available (Electron mode only)
     if (!isBrowserMode) {
@@ -92,6 +119,50 @@ export default function App() {
       checkApi()
     }
   }, [isBrowserMode])
+
+  // Set up progress listener for downloads
+  useEffect(() => {
+    if (!window.clippilot?.onProgress) return
+
+    const removeListener = window.clippilot.onProgress((data: any) => {
+      console.log('Progress update received:', data)
+      
+      setDownloads(prev => prev.map(job => {
+        if (job.id === data.jobId) {
+          const updatedJob = {
+            ...job,
+            progress: data.progress || 0,
+            status: data.status || 'downloading',
+            message: data.message,
+            error: data.error
+          }
+          
+          // If download is completed, failed, or cancelled, remove from downloading state
+          if (['completed', 'failed', 'cancelled'].includes(updatedJob.status)) {
+            setDownloadingVideos(prev => {
+              const newSet = new Set(prev)
+              // Extract video ID from job title if available
+              const videoMatch = results.find(v => job.title.includes(v.title))
+              if (videoMatch) {
+                newSet.delete(videoMatch.id)
+              }
+              return newSet
+            })
+          }
+          
+          return updatedJob
+        }
+        return job
+      }))
+    })
+
+    // Return cleanup function
+    return () => {
+      if (removeListener && typeof removeListener === 'function') {
+        removeListener()
+      }
+    }
+  }, [apiReady])
 
   // Infinite scroll effect with window resize and fullscreen handling
   useEffect(() => {
@@ -191,7 +262,7 @@ export default function App() {
   }, [loading, nextPageToken, currentQuery, canLoadMoreTrending, results.length]) // Include canLoadMoreTrending for trending pagination
 
   // Load trending videos when app starts
-  const loadTrendingVideos = async () => {
+  const loadTrendingVideos = async (categoryId?: string) => {
     if (isBrowserMode) {
       // In browser mode, don't load trending
       console.log('Browser mode: trending videos not available')
@@ -200,10 +271,17 @@ export default function App() {
     
     if (!window.clippilot?.getTrending) return
 
+    // Check if API key is available
+    if (!settings.youtubeApiKey) {
+      console.log('No API key available, skipping trending videos load')
+      return
+    }
+
     setLoading(true)
     try {
       const response = await window.clippilot.getTrending(
-        settings.youtubeApiKey
+        settings.youtubeApiKey,
+        categoryId || selectedCategory
       )
       setResults(response.items || [])
       setCurrentQuery('') // Clear query since this is trending, not search
@@ -212,6 +290,10 @@ export default function App() {
       setCanLoadMoreTrending(true) // Reset trending load more capability
     } catch (error) {
       console.error('Failed to load trending videos:', error)
+      // Don't show error for missing API key on initial load
+      if (settings.youtubeApiKey) {
+        showError('Loading Failed', 'Unable to load trending videos. Please check your API key.', 5000)
+      }
     } finally {
       setLoading(false)
     }
@@ -223,6 +305,15 @@ export default function App() {
       loadTrendingVideos()
     }
   }, [apiReady])
+
+  // Handle category change
+  const handleCategoryChange = async (categoryId: string) => {
+    setSelectedCategory(categoryId)
+    // Only reload if we're currently showing trending videos (not search results)
+    if (!currentQuery) {
+      await loadTrendingVideos(categoryId)
+    }
+  }
 
   const onSearch = async (q: string) => {
     if (isBrowserMode) {
@@ -261,9 +352,17 @@ export default function App() {
       console.error('Search failed:', error)
       // Show error message to user
       if (error.message?.includes('API key')) {
-        alert('YouTube API key is required. Please add your API key in Settings.')
+        showError(
+          'API Key Required',
+          'Please add your YouTube API key in Settings to enable search functionality.',
+          7000
+        )
       } else {
-        alert('Search failed. Please check your internet connection and API key.')
+        showError(
+          'Search Failed',
+          'Please check your internet connection and API key configuration.',
+          7000
+        )
       }
     } finally {
       setLoading(false)
@@ -326,13 +425,15 @@ export default function App() {
         // In browser mode, just update local state
         setSettings(newSettings)
         console.log('Settings updated in browser mode:', newSettings)
+        showSuccess('Settings Saved', 'Your preferences have been updated successfully.', 3000)
       } else if (window.clippilot?.saveSettings) {
         await window.clippilot.saveSettings(newSettings)
         setSettings(newSettings)
+        showSuccess('Settings Saved', 'Your preferences have been saved to disk.', 3000)
       }
     } catch (error) {
       console.error('Failed to save settings:', error)
-      alert('Failed to save settings')
+      showError('Save Failed', 'Unable to save settings. Please try again.', 5000)
     }
   }
 
@@ -398,27 +499,6 @@ export default function App() {
         }
         setDownloads(prev => [...prev, downloadJob])
 
-        // Simulate progress updates (in real app, this would come from yt-dlp progress)
-        const progressInterval = setInterval(() => {
-          setDownloads(prev => prev.map(job => {
-            if (job.id === downloadResult.jobId && job.status === 'downloading') {
-              const newProgress = Math.min((job.progress || 0) + Math.random() * 15, 95)
-              return { ...job, progress: newProgress }
-            }
-            return job
-          }))
-        }, 1000)
-
-        // Simulate completion after 10-15 seconds
-        setTimeout(() => {
-          clearInterval(progressInterval)
-          setDownloads(prev => prev.map(job => 
-            job.id === downloadResult.jobId 
-              ? { ...job, status: 'completed', progress: 100 }
-              : job
-          ))
-        }, 10000 + Math.random() * 5000)
-
       } else {
         // Add failed download notification
         const failedJob: DownloadJob = {
@@ -458,14 +538,33 @@ export default function App() {
     setDownloads(prev => prev.filter(job => job.id !== jobId))
   }
 
-  const handleUrlDownload = async (url: string) => {
+  const handleCancelDownload = async (jobId: string) => {
+    if (window.clippilot?.cancelDownload) {
+      try {
+        const result = await window.clippilot.cancelDownload(jobId)
+        if (result.success) {
+          showInfo('Download Cancelled', 'The download has been stopped successfully.', 3000)
+        } else {
+          showWarning('Cancel Failed', result.message || 'Unable to cancel download.', 5000)
+        }
+      } catch (error: any) {
+        showError('Cancel Error', error.message || 'Failed to cancel download.', 5000)
+      }
+    }
+  }
+
+  const handleUrlDownload = async (url: string, format?: 'mp3' | 'mp4') => {
     if (isBrowserMode) {
-      alert('🌐 Browser Mode: URL downloads are only available in the desktop app.')
+      showWarning(
+        'Browser Mode Limitation',
+        'URL downloads are only available in the desktop app. Please download and install ClipPilot to use this feature.',
+        8000
+      )
       return
     }
 
     if (!window.clippilot) {
-      alert('ClipPilot API not available')
+      showError('API Unavailable', 'ClipPilot desktop API is not available. Please restart the application.', 5000)
       return
     }
 
@@ -473,7 +572,7 @@ export default function App() {
     try {
       new URL(url)
     } catch (error) {
-      alert('Please enter a valid URL')
+      showError('Invalid URL', 'Please enter a valid URL. Make sure it includes http:// or https://', 5000)
       return
     }
 
@@ -483,29 +582,30 @@ export default function App() {
       const urlObj = new URL(url)
       if (urlObj.hostname.includes('youtube.com') || urlObj.hostname.includes('youtu.be')) {
         if (urlObj.hostname.includes('youtu.be')) {
-          videoId = urlObj.pathname.slice(1)
+          // For youtu.be URLs, video ID is in the path
+          videoId = urlObj.pathname.slice(1).split('?')[0] // Remove any query parameters
         } else {
+          // For youtube.com URLs, video ID is in the 'v' parameter
           videoId = urlObj.searchParams.get('v') || ''
         }
+        console.log(`Extracted video ID: ${videoId} from URL: ${url}`)
       }
     } catch (error) {
       console.warn('Could not parse URL for video ID:', error)
     }
 
     try {
-      // Check if the URL/video can be downloaded
+      // For URL downloads, skip the canDownload check since we're bypassing the search system
+      // The user is directly providing a URL they want to download
+      console.log(`Starting direct URL download for: ${url}`)
       if (videoId) {
-        const canDownload = await window.clippilot.canDownload(videoId)
-        if (!canDownload.allowed) {
-          alert(`Cannot download: ${canDownload.reason}`)
-          return
-        }
+        console.log(`Detected YouTube video ID: ${videoId}`)
       }
 
       // Start download with URL directly
       const downloadOptions = {
         quality: settings.defaultQuality,
-        format: settings.defaultFormat,
+        format: format || settings.defaultFormat,
         outputPath: settings.downloadFolder,
         audioFormat: settings.audioFormat,
         audioBitrate: settings.audioBitrate,
@@ -515,15 +615,16 @@ export default function App() {
         url: url // Pass the URL directly for yt-dlp
       }
 
-      const downloadResult = await window.clippilot.enqueueDownload(videoId || url, downloadOptions)
+      const downloadResult = await window.clippilot.enqueueDownload(url, downloadOptions)
 
       if (downloadResult.success) {
         // Add download notification
+        const actualFormat = (format || settings.defaultFormat) === 'mp3' ? settings.audioFormat : settings.videoFormat
         const downloadJob: DownloadJob = {
           id: downloadResult.jobId,
           title: `URL Download: ${url}`,
-          format: settings.defaultFormat,
-          actualFormat: settings.defaultFormat === 'mp3' ? settings.audioFormat : settings.videoFormat,
+          format: format || settings.defaultFormat,
+          actualFormat: actualFormat,
           status: 'downloading',
           progress: 0,
           outputPath: downloadResult.outputPath,
@@ -535,14 +636,22 @@ export default function App() {
         const input = document.querySelector('div.bg-blue-50 input[type="url"]') as HTMLInputElement
         if (input) input.value = ''
 
-        alert('✅ Download started! Check the notifications for progress.')
+        showSuccess(
+          'Download Started',
+          'Your download has been queued successfully. Check the progress notifications for updates.',
+          4000
+        )
       } else {
-        alert(`❌ Download failed: ${downloadResult.error}`)
+        showError('Download Failed', downloadResult.error || 'Unknown error occurred during download.', 7000)
       }
 
     } catch (error: any) {
       console.error('URL download failed:', error)
-      alert(`❌ Download failed: ${error.message || 'Unknown error'}`)
+      showError(
+        'Download Error',
+        error.message || 'An unexpected error occurred while starting the download.',
+        7000
+      )
     }
   }
 
@@ -553,21 +662,27 @@ export default function App() {
       return
     }
     
-    // In Electron mode, ask for confirmation and then exit
-    const confirmExit = confirm('Are you sure you want to exit ClipPilot?')
-    if (confirmExit) {
-      try {
-        if (window.clippilot?.exitApp) {
-          await window.clippilot.exitApp()
-        } else {
-          // Fallback for older API
-          window.close()
-        }
-      } catch (error) {
-        console.error('Failed to exit app:', error)
+    // In Electron mode, show sophisticated confirmation modal
+    setExitConfirmationModal(true)
+  }
+
+  const confirmExit = async () => {
+    setExitConfirmationModal(false)
+    try {
+      if (window.clippilot?.exitApp) {
+        await window.clippilot.exitApp()
+      } else {
+        // Fallback for older API
         window.close()
       }
+    } catch (error) {
+      console.error('Failed to exit app:', error)
+      window.close()
     }
+  }
+
+  const cancelExit = () => {
+    setExitConfirmationModal(false)
   }
 
   return (
@@ -580,12 +695,26 @@ export default function App() {
           <button
             onClick={() => setShowUrlDownload(!showUrlDownload)}
             className="px-3 py-1 border rounded hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors flex items-center gap-1"
-            title="Toggle Direct URL Download"
+            title={t('main_screen.direct_url_toggle')}
           >
-            🔗 Direct URL
+            🔗 {t('main_screen.direct_url')}
             <span className="text-xs">
               {showUrlDownload ? '▲' : '▼'}
             </span>
+          </button>
+          <button
+            onClick={() => {
+              setResults([])
+              setCurrentQuery('')
+              setNextPageToken(null)
+              setTrendingOffset(0)
+              setCanLoadMoreTrending(true)
+              loadTrendingVideos()
+            }}
+            className="px-3 py-1 border rounded hover:bg-green-50 hover:border-green-300 hover:text-green-600 transition-colors"
+            title={t('main_screen.refresh_tooltip')}
+          >
+            🔄 {t('main_screen.refresh')}
           </button>
           <select
             className="border rounded px-2 py-1"
@@ -595,19 +724,33 @@ export default function App() {
           >
             <option value="en">English</option>
             <option value="he">עברית</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="pt-BR">Português (Brasil)</option>
+            <option value="pt-PT">Português (Portugal)</option>
+            <option value="ja">日本語</option>
+            <option value="zh-CN">中文 (简体)</option>
           </select>
           <button
             onClick={() => setSettingsModal(true)}
             className="px-3 py-1 border rounded hover:bg-gray-50"
-            title="Download Settings"
+            title={t('main_screen.settings_tooltip')}
           >
             ⚙️
+          </button>
+          <button
+            onClick={() => setAboutModal(true)}
+            className="px-3 py-1 border rounded hover:bg-gray-50"
+            title={t('main_screen.about_tooltip')}
+          >
+            ℹ️
           </button>
           {!isBrowserMode && (
             <button
               onClick={handleExitApp}
               className="px-3 py-1 border rounded hover:bg-red-50 hover:border-red-300 hover:text-red-600"
-              title="Exit ClipPilot"
+              title={t('main_screen.exit_tooltip')}
             >
               ✕
             </button>
@@ -617,34 +760,50 @@ export default function App() {
           {/* URL Download Section - Conditionally Shown */}
           {showUrlDownload && (
             <div className="mb-3 p-3 border rounded-lg bg-blue-50 border-blue-200">
-              <h3 className="text-sm font-medium text-blue-800 mb-2">🔗 Direct URL Download</h3>
-              <div className="flex gap-2">
-                <input
-                  type="url"
-                  placeholder="Paste YouTube URL here (https://youtube.com/watch?v=...)"
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      const url = (e.target as HTMLInputElement).value.trim()
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-medium text-blue-800">🔗 {t('url_download.title')}</h3>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      const input = document.querySelector('div.bg-blue-50 input[type="url"]') as HTMLInputElement
+                      const url = input?.value.trim()
                       if (url) {
-                        handleUrlDownload(url)
+                        handleUrlDownload(url, 'mp4')
                       }
-                    }
-                  }}
-                />
-                <button
-                  onClick={() => {
-                    const input = document.querySelector('div.bg-blue-50 input[type="url"]') as HTMLInputElement
-                    const url = input?.value.trim()
-                    if (url) {
-                      handleUrlDownload(url)
-                    }
-                  }}
-                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Download
-                </button>
+                    }}
+                    className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
+                    title={`Download ${settings.videoFormat.toUpperCase()} (Video)`}
+                  >
+                    📹 {settings.videoFormat.toUpperCase()}
+                  </button>
+                  <button
+                    onClick={() => {
+                      const input = document.querySelector('div.bg-blue-50 input[type="url"]') as HTMLInputElement
+                      const url = input?.value.trim()
+                      if (url) {
+                        handleUrlDownload(url, 'mp3')
+                      }
+                    }}
+                    className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
+                    title={`Download ${settings.audioFormat.toUpperCase()} (Audio Only)`}
+                  >
+                    🎵 {settings.audioFormat.toUpperCase()}
+                  </button>
+                </div>
               </div>
+              <input
+                type="url"
+                placeholder="Paste YouTube URL here (https://youtube.com/watch?v=... or https://youtu.be/...)"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    const url = (e.target as HTMLInputElement).value.trim()
+                    if (url) {
+                      handleUrlDownload(url, settings.defaultFormat as 'mp3' | 'mp4') // Use user's default format
+                    }
+                  }
+                }}
+              />
               <p className="text-xs text-blue-600 mt-2">
                 Supports YouTube, Vimeo, and many other video platforms
               </p>
@@ -662,18 +821,26 @@ export default function App() {
           <h2 className="text-lg font-medium">
             {currentQuery ? `${t('results')} for "${currentQuery}"` : '🔥 Trending Videos'}
           </h2>
-          {currentQuery && (
-            <button
-              onClick={() => {
-                setCurrentQuery('')
-                setNextPageToken(null)
-                loadTrendingVideos()
-              }}
-              className="px-3 py-1 text-sm border rounded hover:bg-gray-50"
-            >
-              🔥 Back to Trending
-            </button>
-          )}
+          <div className="flex items-center space-x-3">
+            {!currentQuery && !isBrowserMode && (
+              <CategorySelector
+                selectedCategory={selectedCategory}
+                onCategoryChange={handleCategoryChange}
+              />
+            )}
+            {currentQuery && (
+              <button
+                onClick={() => {
+                  setCurrentQuery('')
+                  setNextPageToken(null)
+                  loadTrendingVideos()
+                }}
+                className="px-3 py-1 text-sm border rounded hover:bg-gray-50"
+              >
+                🔥 Back to Trending
+              </button>
+            )}
+          </div>
         </div>
         
         {/* Results grid or empty state */}
@@ -756,12 +923,12 @@ export default function App() {
                       title: v.title
                     })
                   }}
-                  title="Preview Video"
+                  title={t('main_screen.preview_tooltip')}
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
-                  <span className="text-xs">Preview</span>
+                  <span className="text-xs">{t('main_screen.preview')}</span>
                 </button>
                 <button 
                   className={`flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-blue-50 hover:border-blue-300 transition-colors ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
@@ -774,7 +941,7 @@ export default function App() {
                       <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                      <span className="text-xs">Loading...</span>
+                      <span className="text-xs">{t('main_screen.loading')}</span>
                     </>
                   ) : (
                     <>
@@ -796,7 +963,7 @@ export default function App() {
                       <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                      <span className="text-xs">Loading...</span>
+                      <span className="text-xs">{t('main_screen.loading')}</span>
                     </>
                   ) : (
                     <>
@@ -817,7 +984,7 @@ export default function App() {
         {loading && (
           <div className="flex justify-center items-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="ml-3 text-gray-600">Loading more videos...</span>
+            <span className="ml-3 text-gray-600">{t('main_screen.loading_more')}</span>
           </div>
         )}
         
@@ -832,7 +999,7 @@ export default function App() {
         {/* End of results indicator */}
         {!loading && results.length > 0 && !nextPageToken && (!canLoadMoreTrending || currentQuery) && (
           <div className="text-center py-8 text-gray-500">
-            No more results to load
+            {t('main_screen.no_more_results')}
           </div>
         )}
       </main>
@@ -852,9 +1019,21 @@ export default function App() {
         currentSettings={settings}
       />
 
+      <AboutModal
+        isOpen={aboutModal}
+        onClose={() => setAboutModal(false)}
+      />
+
+      <ExitConfirmationModal
+        isOpen={exitConfirmationModal}
+        onConfirm={confirmExit}
+        onCancel={cancelExit}
+      />
+
       <DownloadNotifications
         downloads={downloads}
         onDismiss={handleDismissDownload}
+        onCancel={handleCancelDownload}
       />
     </div>
   )

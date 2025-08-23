@@ -1,0 +1,121 @@
+{
+  "search_placeholder": "動画を検索",
+  "download_policy": "責任を持って使用し、著作権法を尊重してください",
+  "language": "言語",
+
+  "common": {
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "ok": "OK",
+    "yes": "はい",
+    "no": "いいえ"
+  },
+
+  "license_cc": "クリエイティブ・コモンズ",
+  "license_mine": "独自ライセンス",
+  "license_standard": "標準ライセンス",
+
+  "exit_modal": {
+    "title": "終了してもよろしいですか？",
+    "message": "バックグラウンドでまだ実行中のアクティブなダウンロードがあります。ClipPilotを終了してもよろしいですか？",
+    "cancel_downloads": "ダウンロードをキャンセルして終了",
+    "cancel_downloads_tooltip": "すべてのアクティブなダウンロードを停止してアプリケーションを終了",
+    "keep_running": "バックグラウンドで実行を継続",
+    "keep_running_tooltip": "ClipPilotをバックグラウンドで実行し続けてダウンロードを完了させる",
+    "stay_open": "開いたままにする",
+    "stay_open_tooltip": "変更を加えずにアプリケーションに戻る"
+  },
+
+  "categories": {
+    "film_animation": "映画とアニメ",
+    "autos_vehicles": "自動車と乗り物",
+    "music": "音楽",
+    "pets_animals": "ペットと動物",
+    "sports": "スポーツ",
+    "short_movies": "短編映画",
+    "travel_events": "旅行とイベント",
+    "gaming": "ゲーム",
+    "videoblogging": "ビデオブログ",
+    "people_blogs": "人物とブログ",
+    "comedy": "コメディ",
+    "entertainment": "エンターテイメント",
+    "news_politics": "ニュースと政治",
+    "howto_style": "ハウツーとスタイル",
+    "education": "教育",
+    "science_technology": "科学技術",
+    "nonprofits_activism": "非営利団体と活動"
+  },
+
+  "download_progress": {
+    "preparing": "準備中...",
+    "extracting": "情報を抽出中...",
+    "downloading": "ダウンロード中...",
+    "converting": "フォーマット変換中...",
+    "finalizing": "最終処理中...",
+    "completed": "ダウンロード完了！",
+    "failed": "ダウンロード失敗",
+    "cancelled": "ダウンロードキャンセル",
+    "cancel_button": "ダウンロードをキャンセル"
+  },
+
+  "settings_modal": {
+    "title": "ダウンロード設定",
+    "save_settings": "設定を保存",
+    "download_folder": {
+      "label": "ダウンロードフォルダ",
+      "browser_warning": "ブラウザモード：フォルダの選択にはデスクトップアプリが必要です。ダウンロードはブラウザのデフォルト場所を使用します。"
+    },
+    "browse": "参照",
+    "audio_settings": {
+      "title": "オーディオダウンロード設定",
+      "format": "オーディオフォーマット",
+      "bitrate": "オーディオビットレート"
+    },
+    "video_settings": {
+      "title": "ビデオダウンロード設定",
+      "format": "ビデオフォーマット",
+      "quality": "ビデオ品質",
+      "codec": "ビデオコーデック"
+    },
+    "api_settings": {
+      "title": "API設定",
+      "youtube_api_key": "YouTube APIキー（必須）"
+    }
+  },
+
+  "url_download": {
+    "title": "URL直接ダウンロード",
+    "placeholder": "YouTubeのURLまたは動画IDをここに貼り付け...",
+    "download_audio": "オーディオをダウンロード",
+    "download_video": "ビデオをダウンロード",
+    "toggle_show": "URLダウンロードを表示",
+    "toggle_hide": "URLダウンロードを非表示"
+  },
+
+  "notifications": {
+    "download_started": "ダウンロード開始",
+    "download_started_msg": "ダウンロードがキューに正常に追加されました。進行状況の通知で更新をご確認ください。",
+    "download_failed": "ダウンロード失敗",
+    "download_cancelled": "ダウンロードキャンセル",
+    "cancel_failed": "キャンセル失敗",
+    "settings_saved": "設定保存完了",
+    "settings_saved_msg": "設定が正常に保存されました。",
+    "browser_limitation": "ブラウザモード制限",
+    "browser_limitation_msg": "URLダウンロードはデスクトップアプリでのみ利用可能です。この機能を使用するにはClipPilotをダウンロードしてインストールしてください。"
+  },
+
+  "main_screen": {
+    "direct_url": "直接URL",
+    "direct_url_toggle": "URL直接ダウンロードを切り替え",
+    "refresh": "更新",
+    "refresh_tooltip": "動画リストを更新",
+    "settings_tooltip": "ダウンロード設定",
+    "about_tooltip": "ClipPilotについて",
+    "exit_tooltip": "ClipPilotを終了",
+    "preview": "プレビュー",
+    "preview_tooltip": "動画をプレビュー",
+    "loading": "読み込み中...",
+    "loading_more": "さらに動画を読み込み中...",
+    "no_more_results": "読み込める結果がありません"
+  }
+}

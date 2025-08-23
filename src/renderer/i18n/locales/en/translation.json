@@ -7,9 +7,122 @@
   "allowed": "Allowed",
   "blocked": "Blocked",
   "license_cc": "Creative Commons",
-  "license_mine": "My uploads",
+  "license_mine": "My uploads", 
   "license_standard": "Standard license",
   "theme": "Theme",
   "grid": "Grid",
-  "list": "List"
+  "list": "List",
+  
+  "common": {
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "browse": "Browse",
+    "refresh": "Refresh",
+    "download": "Download",
+    "preview": "Preview",
+    "search": "Search",
+    "about": "About",
+    "exit": "Exit"
+  },
+
+  "exit_modal": {
+    "title": "Exit ClipPilot",
+    "message": "Are you sure you want to exit ClipPilot? Any ongoing downloads will be cancelled.",
+    "cancel": "Cancel",
+    "confirm": "Exit App"
+  },
+
+  "categories": {
+    "label": "Category:",
+    "all": "All Categories",
+    "music": "Music",
+    "entertainment": "Entertainment", 
+    "comedy": "Comedy",
+    "education": "Education",
+    "science_tech": "Science & Technology",
+    "howto_style": "Howto & Style",
+    "news_politics": "News & Politics",
+    "people_blogs": "People & Blogs",
+    "film_animation": "Film & Animation",
+    "gaming": "Gaming",
+    "sports": "Sports",
+    "travel_events": "Travel & Events",
+    "pets_animals": "Pets & Animals",
+    "autos_vehicles": "Autos & Vehicles"
+  },
+
+  "download_progress": {
+    "preparing": "Preparing download...",
+    "extracting": "Extracting video info...",
+    "downloading": "Downloading video...",
+    "converting": "Converting format...",
+    "finalizing": "Finalizing...",
+    "completed": "Download completed!",
+    "failed": "Download failed",
+    "cancelled": "Download cancelled",
+    "cancel_button": "Cancel Download"
+  },
+
+  "settings_modal": {
+    "title": "Download Settings",
+    "save_settings": "Save Settings",
+    "download_folder": {
+      "label": "Download Folder",
+      "browser_warning": "Browser Mode: Folder selection requires the desktop app. Downloads would use your browser's default download location."
+    },
+    "browse": "Browse",
+    "audio_settings": {
+      "title": "Audio Download Settings",
+      "format": "Audio Format",
+      "bitrate": "Audio Bitrate"
+    },
+    "video_settings": {
+      "title": "Video Download Settings",
+      "format": "Video Format",
+      "quality": "Video Quality",
+      "codec": "Video Codec"
+    },
+    "api_settings": {
+      "title": "API Configuration",
+      "youtube_api_key": "YouTube API Key (Required)"
+    }
+  },
+
+  "url_download": {
+    "title": "Direct URL Download",
+    "placeholder": "Paste YouTube URL or video ID here...",
+    "download_audio": "Download Audio",
+    "download_video": "Download Video",
+    "toggle_show": "Show URL Download",
+    "toggle_hide": "Hide URL Download"
+  },
+
+  "notifications": {
+    "download_started": "Download Started",
+    "download_started_msg": "Your download has been queued successfully. Check the progress notifications for updates.",
+    "download_failed": "Download Failed",
+    "download_cancelled": "Download Cancelled",
+    "cancel_failed": "Cancel Failed",
+    "settings_saved": "Settings Saved",
+    "settings_saved_msg": "Your preferences have been saved successfully.",
+    "browser_limitation": "Browser Mode Limitation",
+    "browser_limitation_msg": "URL downloads are only available in the desktop app. Please download and install ClipPilot to use this feature."
+  },
+
+  "main_screen": {
+    "direct_url": "Direct URL",
+    "direct_url_toggle": "Toggle Direct URL Download",
+    "refresh": "Refresh",
+    "refresh_tooltip": "Refresh Video List",
+    "settings_tooltip": "Download Settings",
+    "about_tooltip": "About ClipPilot",
+    "exit_tooltip": "Exit ClipPilot",
+    "preview": "Preview",
+    "preview_tooltip": "Preview Video",
+    "loading": "Loading...",
+    "loading_more": "Loading more videos...",
+    "no_more_results": "No more results to load"
+  }
 }

@@ -1,0 +1,157 @@
+{
+  "search_placeholder": "Buscar videos",
+  "download_policy": "Usar responsablemente y respetar las leyes de derechos de autor",
+  "language": "idioma",
+
+  "notifications": {
+    "download_started": "Descarga iniciada",
+    "download_started_msg": "Tu descarga se ha añadido a la cola correctamente. Revisa las notificaciones de progreso para actualizaciones.",
+    "download_failed": "Descarga fallida",
+    "download_cancelled": "Descarga cancelada",
+    "cancel_failed": "Cancelación fallida",
+    "settings_saved": "Configuración guardada",
+    "settings_saved_msg": "Tus preferencias se han guardado correctamente.",
+    "browser_limitation": "Limitación del modo navegador",
+    "browser_limitation_msg": "Las descargas por URL solo están disponibles en la aplicación de escritorio. Por favor descarga e instala ClipPilot para usar esta función."
+  },
+
+  "main_screen": {
+    "direct_url": "URL Directa",
+    "direct_url_toggle": "Alternar descarga directa por URL",
+    "refresh": "Actualizar",
+    "refresh_tooltip": "Actualizar lista de videos",
+    "settings_tooltip": "Configuración de descarga",
+    "about_tooltip": "Acerca de ClipPilot",
+    "exit_tooltip": "Salir de ClipPilot",
+    "preview": "Vista previa",
+    "preview_tooltip": "Vista previa del video",
+    "loading": "Cargando...",
+    "loading_more": "Cargando más videos...",
+    "no_more_results": "No hay más resultados para cargar"
+  }
+}derechos de autor",
+  "language": "Idioma",
+  "settings": "Configuración",
+  "results": "Resultados",
+  "allowed": "Permitido",
+  "blocked": "Bloqueado",
+  "license_cc": "Creative Commons",
+  "license_mine": "Mis subidas",
+  "license_standard": "Licencia estándar",
+  "theme": "Tema",
+  "grid": "Cuadrícula",
+  "list": "Lista",
+  
+  "common": {
+    "loading": "Cargando...",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "browse": "Examinar",
+    "refresh": "Actualizar",
+    "download": "Descargar",
+    "preview": "Vista previa",
+    "search": "Buscar",
+    "about": "Acerca de",
+    "exit": "Salir"
+  },
+
+  "exit_modal": {
+    "title": "Salir de ClipPilot",
+    "message": "¿Estás seguro de que quieres salir de ClipPilot? Todas las descargas en curso se cancelarán.",
+    "cancel": "Cancelar",
+    "confirm": "Salir de la aplicación"
+  },
+
+  "categories": {
+    "label": "Categoría:",
+    "all": "Todas las categorías",
+    "music": "Música",
+    "entertainment": "Entretenimiento",
+    "comedy": "Comedia",
+    "education": "Educación",
+    "science_tech": "Ciencia y tecnología",
+    "howto_style": "Tutoriales y estilo",
+    "news_politics": "Noticias y política",
+    "people_blogs": "Personas y blogs",
+    "film_animation": "Películas y animación",
+    "gaming": "Videojuegos",
+    "sports": "Deportes",
+    "travel_events": "Viajes y eventos",
+    "pets_animals": "Mascotas y animales",
+    "autos_vehicles": "Automóviles y vehículos"
+  },
+
+  "download_progress": {
+    "preparing": "Preparando descarga...",
+    "extracting": "Extrayendo información del video...",
+    "downloading": "Descargando video...",
+    "converting": "Convirtiendo formato...",
+    "finalizing": "Finalizando...",
+    "completed": "¡Descarga completada!",
+    "failed": "Descarga fallida",
+    "cancelled": "Descarga cancelada",
+    "cancel_button": "Cancelar descarga"
+  },
+
+  "settings_modal": {
+    "title": "Configuración de descarga",
+    "save_settings": "Guardar configuración",
+    "download_folder": {
+      "label": "Carpeta de descargas",
+      "browser_warning": "Modo navegador: La selección de carpeta requiere la aplicación de escritorio. Las descargas usarán la ubicación predeterminada del navegador."
+    },
+    "browse": "Examinar",
+    "audio_settings": {
+      "title": "Configuración de descarga de audio",
+      "format": "Formato de audio",
+      "bitrate": "Tasa de bits de audio"
+    },
+    "video_settings": {
+      "title": "Configuración de descarga de video",
+      "format": "Formato de video",
+      "quality": "Calidad de video",
+      "codec": "Códec de video"
+    },
+    "api_settings": {
+      "title": "Configuración de API",
+      "youtube_api_key": "Clave API de YouTube (Requerida)"
+    }
+  },
+
+  "url_download": {
+    "title": "Descarga directa por URL",
+    "placeholder": "Pega aquí la URL de YouTube o ID del video...",
+    "download_audio": "Descargar audio",
+    "download_video": "Descargar video", 
+    "toggle_show": "Mostrar descarga por URL",
+    "toggle_hide": "Ocultar descarga por URL"
+  },
+
+  "notifications": {
+    "download_started": "Descarga iniciada",
+    "download_started_msg": "Tu descarga se ha puesto en cola exitosamente. Revisa las notificaciones de progreso para actualizaciones.",
+    "download_failed": "Descarga fallida",
+    "download_cancelled": "Descarga cancelada",
+    "cancel_failed": "Cancelación fallida",
+    "settings_saved": "Configuración guardada",
+    "settings_saved_msg": "Tus preferencias se han guardado exitosamente.",
+    "browser_limitation": "Limitación del modo navegador",
+    "browser_limitation_msg": "Las descargas por URL solo están disponibles en la aplicación de escritorio. Por favor descarga e instala ClipPilot para usar esta función."
+  },
+
+  "main_screen": {
+    "direct_url": "URL Directa",
+    "direct_url_toggle": "Alternar descarga directa por URL",
+    "refresh": "Actualizar",
+    "refresh_tooltip": "Actualizar lista de videos",
+    "settings_tooltip": "Configuración de descarga",
+    "about_tooltip": "Acerca de ClipPilot",
+    "exit_tooltip": "Salir de ClipPilot",
+    "preview": "Vista previa",
+    "preview_tooltip": "Vista previa del video",
+    "loading": "Cargando...",
+    "loading_more": "Cargando más videos...",
+    "no_more_results": "No hay más resultados para cargar"
+  }
+}

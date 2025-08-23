@@ -1,0 +1,121 @@
+{
+  "search_placeholder": "搜索视频",
+  "download_policy": "请负责任地使用并遵守版权法",
+  "language": "语言",
+
+  "common": {
+    "cancel": "取消",
+    "close": "关闭",
+    "ok": "确定",
+    "yes": "是",
+    "no": "否"
+  },
+
+  "license_cc": "知识共享",
+  "license_mine": "自有许可",
+  "license_standard": "标准许可",
+
+  "exit_modal": {
+    "title": "确定要退出吗？",
+    "message": "您有正在后台运行的活跃下载。确定要退出ClipPilot吗？",
+    "cancel_downloads": "取消下载并退出",
+    "cancel_downloads_tooltip": "停止所有活跃下载并退出应用程序",
+    "keep_running": "继续在后台运行",
+    "keep_running_tooltip": "允许ClipPilot继续在后台运行以完成下载",
+    "stay_open": "保持打开",
+    "stay_open_tooltip": "返回应用程序而不做任何更改"
+  },
+
+  "categories": {
+    "film_animation": "电影和动画",
+    "autos_vehicles": "汽车和车辆",
+    "music": "音乐",
+    "pets_animals": "宠物和动物",
+    "sports": "体育",
+    "short_movies": "短片",
+    "travel_events": "旅游和活动",
+    "gaming": "游戏",
+    "videoblogging": "视频博客",
+    "people_blogs": "人物和博客",
+    "comedy": "喜剧",
+    "entertainment": "娱乐",
+    "news_politics": "新闻和政治",
+    "howto_style": "教程和风格",
+    "education": "教育",
+    "science_technology": "科学技术",
+    "nonprofits_activism": "非营利组织和活动"
+  },
+
+  "download_progress": {
+    "preparing": "准备中...",
+    "extracting": "提取信息中...",
+    "downloading": "下载中...",
+    "converting": "转换格式中...",
+    "finalizing": "完成中...",
+    "completed": "下载完成！",
+    "failed": "下载失败",
+    "cancelled": "下载已取消",
+    "cancel_button": "取消下载"
+  },
+
+  "settings_modal": {
+    "title": "下载设置",
+    "save_settings": "保存设置",
+    "download_folder": {
+      "label": "下载文件夹",
+      "browser_warning": "浏览器模式：选择文件夹需要桌面应用程序。下载将使用浏览器的默认位置。"
+    },
+    "browse": "浏览",
+    "audio_settings": {
+      "title": "音频下载设置",
+      "format": "音频格式",
+      "bitrate": "音频比特率"
+    },
+    "video_settings": {
+      "title": "视频下载设置",
+      "format": "视频格式",
+      "quality": "视频质量",
+      "codec": "视频编解码器"
+    },
+    "api_settings": {
+      "title": "API配置",
+      "youtube_api_key": "YouTube API密钥（必需）"
+    }
+  },
+
+  "url_download": {
+    "title": "直接URL下载",
+    "placeholder": "在此粘贴YouTube URL或视频ID...",
+    "download_audio": "下载音频",
+    "download_video": "下载视频",
+    "toggle_show": "显示URL下载",
+    "toggle_hide": "隐藏URL下载"
+  },
+
+  "notifications": {
+    "download_started": "下载已开始",
+    "download_started_msg": "您的下载已成功添加到队列。请查看进度通知以获取更新。",
+    "download_failed": "下载失败",
+    "download_cancelled": "下载已取消",
+    "cancel_failed": "取消失败",
+    "settings_saved": "设置已保存",
+    "settings_saved_msg": "您的偏好设置已成功保存。",
+    "browser_limitation": "浏览器模式限制",
+    "browser_limitation_msg": "URL下载仅在桌面应用中可用。请下载并安装ClipPilot以使用此功能。"
+  },
+
+  "main_screen": {
+    "direct_url": "直接URL",
+    "direct_url_toggle": "切换直接URL下载",
+    "refresh": "刷新",
+    "refresh_tooltip": "刷新视频列表",
+    "settings_tooltip": "下载设置",
+    "about_tooltip": "关于ClipPilot",
+    "exit_tooltip": "退出ClipPilot",
+    "preview": "预览",
+    "preview_tooltip": "预览视频",
+    "loading": "加载中...",
+    "loading_more": "加载更多视频...",
+    "no_more_results": "没有更多结果可加载"
+  }
+}

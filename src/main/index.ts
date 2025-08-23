@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, dialog } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, dialog, globalShortcut } from 'electron'
 import { spawn } from 'child_process'
 import * as path from 'path'
 import * as url from 'url'
@@ -17,7 +17,7 @@ let win: BrowserWindow | null = null
 
 function createWindow() {
   // Try to use custom icon, fall back gracefully if not found
-  const iconPath = path.join(__dirname, '../../assets/icon.png')
+  const iconPath = path.join(__dirname, '../../assets/logo.png')
   const windowOptions: any = {
     width: 1200,
     height: 800,
@@ -38,6 +38,10 @@ function createWindow() {
 
   win = new BrowserWindow(windowOptions)
 
+  // Hide menu bar by default for cleaner interface
+  win.setMenuBarVisibility(false)
+  win.setAutoHideMenuBar(true)
+
   win.on('ready-to-show', () => win?.show())
 
   if (isDev) {
@@ -55,13 +59,47 @@ function createWindow() {
   })
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set application user model ID for Windows
   if (process.platform === 'win32') {
     app.setAppUserModelId('com.ronled.clippilot')
   }
   
+  // Load settings from file
+  try {
+    appSettings = await loadSettings()
+    console.log('Settings loaded from file')
+  } catch (error) {
+    console.error('Failed to load settings, using defaults:', error)
+  }
+  
   createWindow()
+  
+  // Register global shortcuts
+  globalShortcut.register('F12', () => {
+    if (win && win.webContents) {
+      win.webContents.toggleDevTools()
+    }
+  })
+
+  globalShortcut.register('CommandOrControl+Shift+I', () => {
+    if (win && win.webContents) {
+      win.webContents.toggleDevTools()
+    }
+  })
+
+  globalShortcut.register('Alt+M', () => {
+    if (win) {
+      const isVisible = win.isMenuBarVisible()
+      const newVisibility = !isVisible
+      
+      console.log(`Menu toggle: currently ${isVisible ? 'visible' : 'hidden'}, setting to ${newVisibility ? 'visible' : 'hidden'}`)
+      
+      win.setMenuBarVisibility(newVisibility)
+      win.setAutoHideMenuBar(!newVisibility) // When showing menu, disable auto-hide; when hiding, enable auto-hide
+    }
+  })
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
@@ -69,6 +107,11 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
+})
+
+app.on('will-quit', () => {
+  // Unregister all shortcuts
+  globalShortcut.unregisterAll()
 })
 
 // Simple IPC stubs
@@ -270,7 +313,35 @@ ipcMain.handle('search', async (_evt, q: string, apiKey?: string): Promise<any> 
     }
 
   } catch (error) {
-    console.error('YouTube search failed:', error)
+    // Handle specific error types with clean logging
+    if ((error as any)?.status === 403 && (error as any)?.message?.includes('quota')) {
+      console.log('ℹ️ YouTube API quota exceeded during search')
+      const quotaResults: SearchResult[] = [
+        {
+          id: 'quota-error',
+          title: 'API Quota Exceeded - Daily limit of 10,000 requests reached',
+          channel: 'ClipPilot Notice',
+          duration: '0:00',
+          thumbnail: '',
+          license: 'standard',
+          publishedAt: 'Quotas reset at midnight Pacific Time'
+        },
+        {
+          id: 'quota-solution',
+          title: 'Solution: Create a new API key or wait for quota reset',
+          channel: 'ClipPilot Help',
+          duration: '0:00',
+          thumbnail: '',
+          license: 'standard',
+          publishedAt: 'Visit Google Cloud Console for new key'
+        }
+      ]
+      cachedResults = quotaResults
+      return { items: quotaResults, nextPageToken: null }
+    }
+    
+    // Generic search error with clean logging
+    console.log(`⚠️ YouTube search failed: ${(error as any)?.message || 'Unknown error'}`)
     
     // Return helpful fallback
     const errorResults: SearchResult[] = [
@@ -356,13 +427,30 @@ ipcMain.handle('search-more', async (_evt, q: string, pageToken: string, apiKey?
     }
 
   } catch (error) {
-    console.error('YouTube API search-more failed:', error)
+    console.log(`⚠️ Failed to load more search results: ${(error as any)?.message || 'Unknown error'}`)
+    
+    // Handle quota exceeded error specifically
+    if ((error as any)?.status === 403 && (error as any)?.message?.includes('quota')) {
+      return { 
+        items: [{
+          id: 'quota-error',
+          title: 'API Quota Exceeded - Daily limit reached (10,000 requests)',
+          channel: 'ClipPilot Error',
+          duration: '0:00',
+          thumbnail: '',
+          license: 'standard',
+          publishedAt: 'Quotas reset at midnight PT'
+        }], 
+        nextPageToken: null 
+      }
+    }
+    
     return { items: [], nextPageToken: null }
   }
 })
 
 // Handler for getting trending/popular videos
-ipcMain.handle('get-trending', async (_evt, apiKey?: string): Promise<any> => {
+ipcMain.handle('get-trending', async (_evt, apiKey?: string, categoryId?: string): Promise<any> => {
   try {
     // Check if API key is available (from settings or env)
     const availableApiKey = apiKey || process.env.YOUTUBE_API_KEY
@@ -371,51 +459,100 @@ ipcMain.handle('get-trending', async (_evt, apiKey?: string): Promise<any> => {
       throw new Error('YouTube API key is required for trending videos')
     }
     
-    console.log('Trending request with API key')
+    console.log(`Trending request with API key for category: ${categoryId || 'all'}`)
     
     // Initialize YouTube API with the provided key
     const { google } = require('googleapis')
     const youtubeApi = google.youtube({
       version: 'v3',
+      auth: availableApiKey
     })
 
-    // Get trending videos using YouTube Data API
-    const trendingResponse = await youtubeApi.videos.list({
-      part: ['snippet', 'contentDetails'],
-      chart: 'mostPopular',
-      regionCode: 'US', // You can change this or make it configurable
-      maxResults: 50, // Increased from 20 to get more initial content
-      videoCategoryId: '10' // Music category - you can remove this for all categories
-    })
+    try {
+      // Prepare request parameters
+      const requestParams: any = {
+        part: ['snippet', 'contentDetails'],
+        chart: 'mostPopular',
+        regionCode: 'US', // You can change this or make it configurable
+        maxResults: 50 // Increased from 20 to get more initial content
+      }
 
-    if (!trendingResponse.data.items) {
-      return { items: [] }
+      // Add category filter if specified
+      if (categoryId && categoryId !== '0') {
+        requestParams.videoCategoryId = categoryId
+      }
+
+      // Get trending videos using YouTube Data API
+      const trendingResponse = await youtubeApi.videos.list(requestParams)
+
+      if (!trendingResponse.data.items) {
+        return { items: [] }
+      }
+
+      const results: SearchResult[] = trendingResponse.data.items.map((video: any) => ({
+        id: video.id!,
+        title: video.snippet!.title!,
+        channel: video.snippet!.channelTitle!,
+        duration: formatDuration(video.contentDetails!.duration!),
+        thumbnail: video.snippet!.thumbnails!.medium?.url || '',
+        license: determineLicense(video),
+        publishedAt: formatPublishedDate(video.snippet!.publishedAt!)
+      }))
+
+      // Cache results for license checking
+      cachedResults = results
+      
+      return { items: results }
+
+    } catch (error: any) {
+      // Handle specific error types with user-friendly messages
+      if (error?.status === 403 && error?.message?.includes('quota')) {
+        console.log('ℹ️ YouTube API quota exceeded - daily limit reached')
+        const quotaError = new Error('YouTube API quota exceeded. The daily limit of 10,000 requests has been reached. Quotas reset at midnight Pacific Time. Consider creating a new API key if you need immediate access.')
+        ;(quotaError as any).code = 'QUOTA_EXCEEDED'
+        ;(quotaError as any).status = 403
+        throw quotaError
+      }
+      
+      if (error?.status === 404) {
+        console.log(`ℹ️ No trending videos found for the selected category - trying fallback to all categories`)
+        // Fallback: try without category restriction
+        try {
+          const fallbackResponse = await youtubeApi.videos.list({
+            part: ['snippet', 'contentDetails'],
+            chart: 'mostPopular',
+            regionCode: 'US',
+            maxResults: 50
+          })
+          
+          if (fallbackResponse.data.items) {
+            const results: SearchResult[] = fallbackResponse.data.items.map((video: any) => ({
+              id: video.id!,
+              title: video.snippet!.title!,
+              channel: video.snippet!.channelTitle!,
+              duration: formatDuration(video.contentDetails!.duration!),
+              thumbnail: video.snippet!.thumbnails!.medium?.url || '',
+              license: determineLicense(video),
+              publishedAt: formatPublishedDate(video.snippet!.publishedAt!)
+            }))
+            
+            cachedResults = results
+            return { items: results }
+          }
+        } catch (fallbackError) {
+          console.log('⚠️ Fallback trending request also failed')
+        }
+      }
+      
+      // Generic error handling with clean logging
+      console.log(`⚠️ YouTube trending request failed: ${error?.message || 'Unknown error'}`)
+      
+      throw error
     }
-
-    const results: SearchResult[] = trendingResponse.data.items.map((video: any) => ({
-      id: video.id!,
-      title: video.snippet!.title!,
-      channel: video.snippet!.channelTitle!,
-      duration: formatDuration(video.contentDetails!.duration!),
-      thumbnail: video.snippet!.thumbnails!.medium?.url || '',
-      license: determineLicense(video),
-      publishedAt: formatPublishedDate(video.snippet!.publishedAt!)
-    }))
-
-    // Cache results for license checking
-    cachedResults = results
-    
-    return { items: results }
-
-  } catch (error: any) {
-    // Sanitize error to prevent API key exposure in logs
-    const sanitizedError = {
-      status: error?.status,
-      code: error?.code,
-      message: error?.message?.replace(/key=[^&\s]*/g, 'key=***')
-    }
-    console.error('YouTube API trending failed:', sanitizedError)
-    throw error
+  } catch (outerError) {
+    // This catches any errors from the API setup itself
+    console.log(`⚠️ YouTube API setup failed: ${(outerError as any)?.message || 'Unknown error'}`)
+    throw outerError
   }
 })
 
@@ -494,7 +631,30 @@ ipcMain.handle('get-more-trending', async (_evt, apiKey?: string, offset: number
     }
 
   } catch (error) {
-    console.error('YouTube API more trending failed:', error)
+    // Handle specific error types with clean, user-friendly messages
+    if ((error as any)?.status === 403 && (error as any)?.message?.includes('quota')) {
+      console.log('ℹ️ YouTube API quota exceeded - cannot load more trending videos')
+      return { 
+        items: [{
+          id: 'quota-error-trending',
+          title: 'API Quota Exceeded - Cannot load more trending videos',
+          channel: 'ClipPilot Notice',
+          duration: '0:00',
+          thumbnail: '',
+          license: 'standard',
+          publishedAt: 'Daily limit reached - resets at midnight PT'
+        }] 
+      }
+    }
+    
+    if ((error as any)?.status === 404) {
+      console.log('ℹ️ No more trending videos found for this category')
+      return { items: [] }
+    }
+    
+    // Generic error with clean logging
+    console.log(`⚠️ Failed to load more trending videos: ${(error as any)?.message || 'Unknown error'}`)
+    
     return { items: [] }
   }
 })
@@ -759,29 +919,168 @@ ipcMain.handle('enqueue-download', async (_evt, id: string, opts: any) => {
         detached: false
       })
 
+      // Register the download for cancellation support
+      const downloadTimeout = setTimeout(() => {
+        console.log(`Download ${jobId} timed out after 10 minutes, cancelling...`)
+        cancelDownload(jobId)
+      }, 10 * 60 * 1000) // 10 minute timeout
+
+      activeDownloads.set(jobId, {
+        process: child,
+        startTime: Date.now(),
+        timeout: downloadTimeout
+      })
+
+      // Send initial status to renderer
+      if (win && win.webContents) {
+        win.webContents.send('job-progress', {
+          jobId: jobId,
+          progress: 0,
+          status: 'preparing'
+        })
+      }
+
       let output = ''
       let errorOutput = ''
+      let lastProgressTime = Date.now()
+      let hasSeenProgress = false
+      let lastKnownProgress = 0
+      let downloadCompleted = false // Track if main download is completed
 
       child.stdout?.on('data', (data) => {
-        output += data.toString()
-        console.log('yt-dlp output:', data.toString())
+        const outputLine = data.toString()
+        output += outputLine
+        console.log('yt-dlp output:', outputLine)
+        
+        // Update last activity time
+        lastProgressTime = Date.now()
+        
+        // Initialize progress tracking
+        let currentStatus = 'downloading'
+        let progress = lastKnownProgress // Start with last known progress
+        let statusMessage = ''
+        
+        // Parse yt-dlp progress output first - this is the main download progress
+        // Example: [download]  45.2% of 10.5MiB at 1.2MiB/s ETA 00:03
+        const progressMatch = outputLine.match(/\[download\]\s+(\d+(?:\.\d+)?)%/)
+        if (progressMatch) {
+          progress = parseFloat(progressMatch[1])
+          lastKnownProgress = progress
+          hasSeenProgress = true
+          currentStatus = 'downloading'
+          statusMessage = `${progress.toFixed(1)}% downloaded`
+          console.log(`Download progress: ${progress}%`)
+          
+          // Check if download completed
+          if (progress >= 100) {
+            downloadCompleted = true
+          }
+        } else if (outputLine.includes('[download] 100%') || outputLine.includes('has already been downloaded')) {
+          // Explicit download completion detection
+          progress = 100
+          lastKnownProgress = 100
+          downloadCompleted = true
+          currentStatus = 'downloading'
+          statusMessage = 'Download completed'
+          console.log('Download completed (100%)')
+        } else {
+          // Handle different phases with stage-based progress
+          if (!downloadCompleted) {
+            // Pre-download phases - reset progress to 0 for each stage
+            if (outputLine.includes('[youtube]') || outputLine.includes('Extracting URL')) {
+              currentStatus = 'extracting'
+              statusMessage = 'Extracting video information...'
+              progress = hasSeenProgress ? Math.min(lastKnownProgress, 100) : 20 // Stage progress
+            } else if (outputLine.includes('[info]') && outputLine.includes('format')) {
+              currentStatus = 'preparing'
+              statusMessage = 'Selecting best format...'
+              progress = hasSeenProgress ? Math.min(lastKnownProgress, 100) : 50 // Stage progress
+            }
+          } else {
+            // Post-download phases - each gets its own 0-100% range
+            if (outputLine.includes('[ExtractAudio]') || outputLine.includes('[ffmpeg]')) {
+              currentStatus = 'converting'
+              statusMessage = 'Converting audio format...'
+              progress = 30 // Starting conversion stage
+            } else if (outputLine.includes('Deleting original file')) {
+              currentStatus = 'finalizing'
+              statusMessage = 'Finalizing conversion...'
+              progress = 90 // Almost done
+            }
+          }
+        }
+        
+        // Send progress update to renderer
+        if (win && win.webContents) {
+          win.webContents.send('job-progress', {
+            jobId: jobId,
+            progress: progress,
+            status: currentStatus,
+            message: statusMessage
+          })
+        }
       })
 
       child.stderr?.on('data', (data) => {
-        errorOutput += data.toString()
-        console.error('yt-dlp error:', data.toString())
+        const errorLine = data.toString()
+        errorOutput += errorLine
+        console.error('yt-dlp error:', errorLine)
+        
+        // Check for specific error patterns
+        if (errorLine.includes('ERROR:') || errorLine.includes('FATAL:')) {
+          console.error('Download error detected')
+          if (win && win.webContents) {
+            win.webContents.send('job-progress', {
+              jobId: jobId,
+              progress: 0,
+              status: 'failed',
+              error: errorLine.trim()
+            })
+          }
+        }
       })
 
       // Return immediately with job info, download continues in background
       child.on('close', (code) => {
         const title = videoInfo?.title || opts.url || id
+        
+        // Clean up from active downloads
+        const download = activeDownloads.get(jobId)
+        if (download) {
+          if (download.timeout) {
+            clearTimeout(download.timeout)
+          }
+          activeDownloads.delete(jobId)
+        }
+        
         if (code === 0) {
           console.log(`Download completed successfully for: ${title}`)
-          // Could emit an event to notify the renderer of completion
+          // Send completion status to renderer
+          if (win && win.webContents) {
+            win.webContents.send('job-progress', {
+              jobId: jobId,
+              progress: 100,
+              status: 'completed',
+              message: 'Download completed successfully'
+            })
+          }
+        } else if (code === null) {
+          // Process was killed (likely cancelled)
+          console.log(`Download cancelled for: ${title}`)
         } else {
           console.error(`Download failed with code ${code} for: ${title}`)
           console.error('Error output:', errorOutput)
           console.error('Full output:', output)
+          
+          // Send error status to renderer
+          if (win && win.webContents) {
+            win.webContents.send('job-progress', {
+              jobId: jobId,
+              progress: 0,
+              status: 'failed',
+              error: `Download failed with exit code ${code}`
+            })
+          }
           
           // Specific error handling for audio format issues
           if (errorOutput.includes('ffprobe and ffmpeg not found') || errorOutput.includes('ffmpeg-location')) {
@@ -865,7 +1164,9 @@ ipcMain.handle('preview-video', async (_evt, id: string) => {
 })
 
 // Settings storage
-let appSettings = {
+const settingsPath = path.join(app.getPath('userData'), 'settings.json')
+
+const defaultSettings = {
   downloadFolder: path.join(os.homedir(), 'Downloads', 'ClipPilot'),
   defaultFormat: 'mp4' as 'mp3' | 'mp4',
   defaultQuality: 'best',
@@ -873,7 +1174,72 @@ let appSettings = {
   audioBitrate: '192k',
   videoFormat: 'mp4',
   videoQuality: '720p',
-  videoCodec: 'h264'
+  videoCodec: 'h264',
+  youtubeApiKey: ''
+}
+
+// Load settings from file or create with defaults
+const loadSettings = async () => {
+  try {
+    const data = await fs.promises.readFile(settingsPath, 'utf-8')
+    const saved = JSON.parse(data)
+    return { ...defaultSettings, ...saved }
+  } catch (error) {
+    console.log('Settings file not found, using defaults')
+    return defaultSettings
+  }
+}
+
+// Save settings to file
+const saveSettingsToFile = async (settings: typeof defaultSettings) => {
+  try {
+    const userDataDir = path.dirname(settingsPath)
+    await fs.promises.mkdir(userDataDir, { recursive: true })
+    await fs.promises.writeFile(settingsPath, JSON.stringify(settings, null, 2))
+    console.log('Settings saved to:', settingsPath)
+  } catch (error) {
+    console.error('Failed to save settings to file:', error)
+    throw error
+  }
+}
+
+let appSettings = defaultSettings
+
+// Active downloads tracking for cancellation support
+const activeDownloads = new Map<string, {
+  process: any,
+  startTime: number,
+  timeout?: NodeJS.Timeout
+}>()
+
+// Function to cancel a download
+const cancelDownload = (jobId: string) => {
+  const download = activeDownloads.get(jobId)
+  if (download) {
+    try {
+      download.process.kill('SIGTERM')
+      if (download.timeout) {
+        clearTimeout(download.timeout)
+      }
+      activeDownloads.delete(jobId)
+      
+      // Send cancellation notification
+      if (win && win.webContents) {
+        win.webContents.send('job-progress', {
+          jobId: jobId,
+          progress: 0,
+          status: 'cancelled'
+        })
+      }
+      
+      console.log(`Download ${jobId} cancelled`)
+      return true
+    } catch (error) {
+      console.error(`Failed to cancel download ${jobId}:`, error)
+      return false
+    }
+  }
+  return false
 }
 
 // Folder selection handler
@@ -902,16 +1268,22 @@ ipcMain.handle('get-settings', async () => {
 })
 
 ipcMain.handle('save-settings', async (_evt, settings) => {
-  appSettings = { ...appSettings, ...settings }
-  
-  // Create download folder if it doesn't exist
   try {
-    await fs.promises.mkdir(appSettings.downloadFolder, { recursive: true })
+    appSettings = { ...appSettings, ...settings }
+    await saveSettingsToFile(appSettings)
+    
+    // Create download folder if it doesn't exist
+    try {
+      await fs.promises.mkdir(appSettings.downloadFolder, { recursive: true })
+    } catch (error) {
+      console.error('Failed to create download folder:', error)
+    }
+    
+    return { success: true }
   } catch (error) {
-    console.error('Failed to create download folder:', error)
+    console.error('Failed to save settings:', error)
+    return { success: false, error: (error as Error).message }
   }
-  
-  return { success: true }
 })
 
 // Open folder handler
@@ -922,6 +1294,64 @@ ipcMain.handle('open-folder', async (_evt, filePath: string) => {
     return { success: true }
   } catch (error) {
     console.error('Failed to open folder:', error)
+    return { success: false, error: (error as Error).message }
+  }
+})
+
+// Toggle developer tools
+ipcMain.handle('toggle-dev-tools', async () => {
+  try {
+    if (win && win.webContents) {
+      win.webContents.toggleDevTools()
+      return { success: true }
+    }
+    return { success: false, error: 'No active window' }
+  } catch (error) {
+    console.error('Failed to toggle dev tools:', error)
+    return { success: false, error: (error as Error).message }
+  }
+})
+
+// Cancel download
+ipcMain.handle('cancel-download', async (_evt, jobId: string) => {
+  try {
+    const success = cancelDownload(jobId)
+    return { success, message: success ? 'Download cancelled' : 'Download not found or already completed' }
+  } catch (error) {
+    console.error('Failed to cancel download:', error)
+    return { success: false, error: (error as Error).message }
+  }
+})
+
+// Toggle menu bar
+ipcMain.handle('toggle-menu-bar', async () => {
+  try {
+    if (win) {
+      const isVisible = win.isMenuBarVisible()
+      const newVisibility = !isVisible
+      
+      console.log(`IPC Menu toggle: currently ${isVisible ? 'visible' : 'hidden'}, setting to ${newVisibility ? 'visible' : 'hidden'}`)
+      
+      win.setMenuBarVisibility(newVisibility)
+      win.setAutoHideMenuBar(!newVisibility) // When showing menu, disable auto-hide; when hiding, enable auto-hide
+      
+      return { success: true, visible: newVisibility }
+    }
+    return { success: false, error: 'No active window' }
+  } catch (error) {
+    console.error('Failed to toggle menu bar:', error)
+    return { success: false, error: (error as Error).message }
+  }
+})
+
+// Exit application
+ipcMain.handle('exit-app', async () => {
+  try {
+    console.log('Exit app requested via IPC')
+    app.quit()
+    return { success: true }
+  } catch (error) {
+    console.error('Failed to exit app:', error)
     return { success: false, error: (error as Error).message }
   }
 })

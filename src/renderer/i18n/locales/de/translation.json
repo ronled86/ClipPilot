@@ -1,0 +1,128 @@
+{
+  "search_placeholder": "Videos suchen",
+  "download_policy": "Verantwortungsbewusst verwenden und Urheberrechtsgesetze respektieren",
+  "language": "Sprache",
+  "settings": "Einstellungen",
+  "results": "Ergebnisse",
+  "allowed": "Erlaubt",
+  "blocked": "Blockiert",
+  "license_cc": "Creative Commons",
+  "license_mine": "Meine Uploads",
+  "license_standard": "Standard-Lizenz",
+  "theme": "Design",
+  "grid": "Raster",
+  "list": "Liste",
+  
+  "common": {
+    "loading": "Wird geladen...",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "close": "Schließen",
+    "browse": "Durchsuchen",
+    "refresh": "Aktualisieren",
+    "download": "Herunterladen",
+    "preview": "Vorschau",
+    "search": "Suchen",
+    "about": "Über",
+    "exit": "Beenden"
+  },
+
+  "exit_modal": {
+    "title": "ClipPilot beenden",
+    "message": "Sind Sie sicher, dass Sie ClipPilot beenden möchten? Alle laufenden Downloads werden abgebrochen.",
+    "cancel": "Abbrechen",
+    "confirm": "App beenden"
+  },
+
+  "categories": {
+    "label": "Kategorie:",
+    "all": "Alle Kategorien",
+    "music": "Musik",
+    "entertainment": "Unterhaltung",
+    "comedy": "Komödie",
+    "education": "Bildung",
+    "science_tech": "Wissenschaft & Technik",
+    "howto_style": "Anleitungen & Stil",
+    "news_politics": "Nachrichten & Politik",
+    "people_blogs": "Menschen & Blogs",
+    "film_animation": "Film & Animation",
+    "gaming": "Gaming",
+    "sports": "Sport",
+    "travel_events": "Reisen & Events",
+    "pets_animals": "Haustiere & Tiere",
+    "autos_vehicles": "Autos & Fahrzeuge"
+  },
+
+  "download_progress": {
+    "preparing": "Download wird vorbereitet...",
+    "extracting": "Video-Informationen werden extrahiert...",
+    "downloading": "Video wird heruntergeladen...",
+    "converting": "Format wird konvertiert...",
+    "finalizing": "Wird abgeschlossen...",
+    "completed": "Download abgeschlossen!",
+    "failed": "Download fehlgeschlagen",
+    "cancelled": "Download abgebrochen",
+    "cancel_button": "Download abbrechen"
+  },
+
+  "settings_modal": {
+    "title": "Download-Einstellungen",
+    "save_settings": "Einstellungen speichern",
+    "download_folder": {
+      "label": "Download-Ordner",
+      "browser_warning": "Browser-Modus: Ordnerauswahl erfordert die Desktop-App. Downloads verwenden den Standard-Download-Ordner des Browsers."
+    },
+    "browse": "Durchsuchen",
+    "audio_settings": {
+      "title": "Audio-Download-Einstellungen",
+      "format": "Audio-Format",
+      "bitrate": "Audio-Bitrate"
+    },
+    "video_settings": {
+      "title": "Video-Download-Einstellungen",
+      "format": "Video-Format",
+      "quality": "Video-Qualität",
+      "codec": "Video-Codec"
+    },
+    "api_settings": {
+      "title": "API-Konfiguration",
+      "youtube_api_key": "YouTube-API-Schlüssel (Erforderlich)"
+    }
+  },
+
+  "url_download": {
+    "title": "Direkter URL-Download",
+    "placeholder": "YouTube-URL oder Video-ID hier einfügen...",
+    "download_audio": "Audio herunterladen",
+    "download_video": "Video herunterladen",
+    "toggle_show": "URL-Download anzeigen",
+    "toggle_hide": "URL-Download ausblenden"
+  },
+
+  "notifications": {
+    "download_started": "Download gestartet",
+    "download_started_msg": "Ihr Download wurde erfolgreich in die Warteschlange eingereiht. Überprüfen Sie die Fortschrittsbenachrichtigungen für Updates.",
+    "download_failed": "Download fehlgeschlagen",
+    "download_cancelled": "Download abgebrochen",
+    "cancel_failed": "Abbruch fehlgeschlagen",
+    "settings_saved": "Einstellungen gespeichert",
+    "settings_saved_msg": "Ihre Einstellungen wurden erfolgreich gespeichert.",
+    "browser_limitation": "Browser-Modus-Einschränkung",
+    "browser_limitation_msg": "URL-Downloads sind nur in der Desktop-App verfügbar. Bitte laden Sie ClipPilot herunter und installieren Sie es, um diese Funktion zu nutzen."
+  },
+
+  "main_screen": {
+    "direct_url": "Direkte URL",
+    "direct_url_toggle": "Direkten URL-Download umschalten",
+    "refresh": "Aktualisieren",
+    "refresh_tooltip": "Videoliste aktualisieren",
+    "settings_tooltip": "Download-Einstellungen",
+    "about_tooltip": "Über ClipPilot",
+    "exit_tooltip": "ClipPilot beenden",
+    "preview": "Vorschau",
+    "preview_tooltip": "Video-Vorschau",
+    "loading": "Wird geladen...",
+    "loading_more": "Weitere Videos werden geladen...",
+    "no_more_results": "Keine weiteren Ergebnisse zu laden"
+  }
+}

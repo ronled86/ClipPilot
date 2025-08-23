@@ -1,23 +1,54 @@
 import React, { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export interface DownloadJob {
   id: string
   title: string
   format: 'mp3' | 'mp4'
   actualFormat?: string // The actual format name like "AAC", "FLAC", "WebM", etc.
-  status: 'downloading' | 'completed' | 'failed'
-  progress?: number
+  status: 'preparing' | 'extracting' | 'downloading' | 'converting' | 'finalizing' | 'completed' | 'failed' | 'cancelled'
+  progress?: number // Progress within the current stage (0-100)
+  stageProgress?: number // Overall stage completion (0-100)
   outputPath?: string
   error?: string
   startTime: number
+  message?: string // Detailed status message
 }
 
 interface DownloadNotificationsProps {
   downloads: DownloadJob[]
   onDismiss: (jobId: string) => void
+  onCancel?: (jobId: string) => void
 }
 
-export default function DownloadNotifications({ downloads, onDismiss }: DownloadNotificationsProps) {
+const getStatusMessage = (status: string, t: any) => {
+  switch (status) {
+    case 'preparing': return t('download_progress.preparing')
+    case 'extracting': return t('download_progress.extracting')
+    case 'downloading': return t('download_progress.downloading')
+    case 'converting': return t('download_progress.converting')
+    case 'finalizing': return t('download_progress.finalizing')
+    default: return t('download_progress.preparing')
+  }
+}
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'preparing': return '⚙️'
+    case 'extracting': return '🔍'
+    case 'downloading': return '⬇️'
+    case 'converting': return '🔄'
+    case 'finalizing': return '✨'
+    case 'completed': return '✅'
+    case 'failed': return '❌'
+    case 'cancelled': return '🚫'
+    default: return '📦'
+  }
+}
+
+export default function DownloadNotifications({ downloads, onDismiss, onCancel }: DownloadNotificationsProps) {
+  const { t } = useTranslation()
+  
   if (downloads.length === 0) return null
 
   const ProgressBar = ({ progress }: { progress: number }) => {
@@ -47,6 +78,7 @@ export default function DownloadNotifications({ downloads, onDismiss }: Download
           className={`bg-white border rounded-lg shadow-lg p-4 transition-all duration-300 ${
             download.status === 'completed' ? 'border-green-200 bg-green-50' :
             download.status === 'failed' ? 'border-red-200 bg-red-50' :
+            download.status === 'cancelled' ? 'border-gray-200 bg-gray-50' :
             'border-blue-200 bg-blue-50'
           }`}
         >
@@ -59,9 +91,13 @@ export default function DownloadNotifications({ downloads, onDismiss }: Download
                 <span className={`text-xs px-2 py-0.5 rounded ${
                   download.status === 'completed' ? 'bg-green-100 text-green-700' :
                   download.status === 'failed' ? 'bg-red-100 text-red-700' :
+                  download.status === 'cancelled' ? 'bg-gray-100 text-gray-700' :
                   'bg-blue-100 text-blue-700'
                 }`}>
                   {(download.actualFormat || download.format).toUpperCase()}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {new Date(download.startTime).toLocaleTimeString()}
                 </span>
               </div>
               
@@ -69,19 +105,30 @@ export default function DownloadNotifications({ downloads, onDismiss }: Download
                 {download.title}
               </h4>
               
-              {download.status === 'downloading' && (
+              {(['preparing', 'extracting', 'downloading', 'converting', 'finalizing'].includes(download.status)) && (
                 <div className="mt-2">
                   <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
-                    <span>Downloading...</span>
-                    {download.progress && <span>{Math.round(download.progress)}%</span>}
+                    <span className="flex items-center gap-1">
+                      <span>{getStatusIcon(download.status)}</span>
+                      <span>{download.message || getStatusMessage(download.status, t)}</span>
+                    </span>
+                    {download.progress !== undefined && <span>{Math.round(download.progress)}%</span>}
                   </div>
                   <ProgressBar progress={download.progress || 0} />
+                  {onCancel && (
+                    <button
+                      onClick={() => onCancel(download.id)}
+                      className="mt-2 w-full text-xs bg-red-100 hover:bg-red-200 text-red-700 py-1 px-2 rounded"
+                    >
+                      ❌ {t('download_progress.cancel_button')}
+                    </button>
+                  )}
                 </div>
               )}
               
               {download.status === 'completed' && (
                 <div className="mt-1">
-                  <p className="text-xs text-green-600">✅ Download completed!</p>
+                  <p className="text-xs text-green-600">✅ {t('download_progress.completed')}</p>
                   {download.outputPath && (
                     <p className="text-xs text-gray-500 truncate" title={download.outputPath}>
                       📁 {download.outputPath.split('\\').pop()}
@@ -92,12 +139,18 @@ export default function DownloadNotifications({ downloads, onDismiss }: Download
               
               {download.status === 'failed' && (
                 <div className="mt-1">
-                  <p className="text-xs text-red-600">❌ Download failed</p>
+                  <p className="text-xs text-red-600">❌ {t('download_progress.failed')}</p>
                   {download.error && (
                     <p className="text-xs text-gray-500 truncate" title={download.error}>
                       {download.error}
                     </p>
                   )}
+                </div>
+              )}
+
+              {download.status === 'cancelled' && (
+                <div className="mt-1">
+                  <p className="text-xs text-gray-600">🚫 {t('download_progress.cancelled')}</p>
                 </div>
               )}
             </div>

@@ -1,0 +1,121 @@
+{
+  "search_placeholder": "Buscar vídeos",
+  "download_policy": "Use responsavelmente e respeite as leis de direitos autorais",
+  "language": "idioma",
+
+  "common": {
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "ok": "OK",
+    "yes": "Sim",
+    "no": "Não"
+  },
+
+  "license_cc": "Creative Commons",
+  "license_mine": "Licença Própria",
+  "license_standard": "Licença Padrão",
+
+  "exit_modal": {
+    "title": "Tem certeza que deseja sair?",
+    "message": "Você tem downloads ativos ainda rodando em segundo plano. Tem certeza que deseja sair do ClipPilot?",
+    "cancel_downloads": "Cancelar downloads e sair",
+    "cancel_downloads_tooltip": "Interromper todos os downloads ativos e sair da aplicação",
+    "keep_running": "Continuar rodando em segundo plano",
+    "keep_running_tooltip": "Permitir que o ClipPilot continue rodando em segundo plano para completar os downloads",
+    "stay_open": "Permanecer aberto",
+    "stay_open_tooltip": "Voltar para a aplicação sem fazer mudanças"
+  },
+
+  "categories": {
+    "film_animation": "Filmes e Animação",
+    "autos_vehicles": "Carros e Veículos",
+    "music": "Música",
+    "pets_animals": "Animais de Estimação e Animais",
+    "sports": "Esportes",
+    "short_movies": "Filmes Curtos",
+    "travel_events": "Viagens e Eventos",
+    "gaming": "Jogos",
+    "videoblogging": "Videoblog",
+    "people_blogs": "Pessoas e Blogs",
+    "comedy": "Comédia",
+    "entertainment": "Entretenimento",
+    "news_politics": "Notícias e Política",
+    "howto_style": "Como Fazer e Estilo",
+    "education": "Educação",
+    "science_technology": "Ciência e Tecnologia",
+    "nonprofits_activism": "Organizações sem Fins Lucrativos e Ativismo"
+  },
+
+  "download_progress": {
+    "preparing": "Preparando...",
+    "extracting": "Extraindo informações...",
+    "downloading": "Baixando...",
+    "converting": "Convertendo formato...",
+    "finalizing": "Finalizando...",
+    "completed": "Download concluído!",
+    "failed": "Download falhou",
+    "cancelled": "Download cancelado",
+    "cancel_button": "Cancelar Download"
+  },
+
+  "settings_modal": {
+    "title": "Configurações de Download",
+    "save_settings": "Salvar Configurações",
+    "download_folder": {
+      "label": "Pasta de Downloads",
+      "browser_warning": "Modo Navegador: A seleção de pasta requer o aplicativo desktop. Downloads usariam o local padrão do seu navegador."
+    },
+    "browse": "Procurar",
+    "audio_settings": {
+      "title": "Configurações de Download de Áudio",
+      "format": "Formato de Áudio",
+      "bitrate": "Taxa de Bits de Áudio"
+    },
+    "video_settings": {
+      "title": "Configurações de Download de Vídeo",
+      "format": "Formato de Vídeo",
+      "quality": "Qualidade do Vídeo",
+      "codec": "Codec de Vídeo"
+    },
+    "api_settings": {
+      "title": "Configuração da API",
+      "youtube_api_key": "Chave da API do YouTube (Obrigatória)"
+    }
+  },
+
+  "url_download": {
+    "title": "Download Direto por URL",
+    "placeholder": "Cole a URL do YouTube ou ID do vídeo aqui...",
+    "download_audio": "Baixar Áudio",
+    "download_video": "Baixar Vídeo",
+    "toggle_show": "Mostrar Download por URL",
+    "toggle_hide": "Ocultar Download por URL"
+  },
+
+  "notifications": {
+    "download_started": "Download Iniciado",
+    "download_started_msg": "Seu download foi adicionado à fila com sucesso. Verifique as notificações de progresso para atualizações.",
+    "download_failed": "Download Falhou",
+    "download_cancelled": "Download Cancelado",
+    "cancel_failed": "Cancelamento Falhou",
+    "settings_saved": "Configurações Salvas",
+    "settings_saved_msg": "Suas preferências foram salvas com sucesso.",
+    "browser_limitation": "Limitação do Modo Navegador",
+    "browser_limitation_msg": "Downloads por URL estão disponíveis apenas no aplicativo desktop. Por favor, baixe e instale o ClipPilot para usar este recurso."
+  },
+
+  "main_screen": {
+    "direct_url": "URL Direta",
+    "direct_url_toggle": "Alternar download direto por URL",
+    "refresh": "Atualizar",
+    "refresh_tooltip": "Atualizar lista de vídeos",
+    "settings_tooltip": "Configurações de download",
+    "about_tooltip": "Sobre o ClipPilot",
+    "exit_tooltip": "Sair do ClipPilot",
+    "preview": "Visualizar",
+    "preview_tooltip": "Visualizar vídeo",
+    "loading": "Carregando...",
+    "loading_more": "Carregando mais vídeos...",
+    "no_more_results": "Não há mais resultados para carregar"
+  }
+}

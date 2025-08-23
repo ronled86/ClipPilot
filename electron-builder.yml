@@ -1,7 +1,7 @@
 appId: com.ronled.clippilot
 productName: ClipPilot
 copyright: "Copyright © 2025 Ron Led"
-# icon: assets/icon.png  # Commented out for now, will use default
+icon: assets/logo.png  # Custom ClipPilot icon
 files:
   - dist/**
   - package.json
@@ -10,7 +10,7 @@ directories:
   output: release
   buildResources: assets
 win:
-  # icon: assets/icon.png  # Commented out for now, will use default
+  icon: assets/logo.png  # Custom ClipPilot icon for Windows
   target:
     - target: nsis
       arch: [x64]

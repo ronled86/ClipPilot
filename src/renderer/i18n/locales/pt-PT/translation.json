@@ -1,0 +1,121 @@
+{
+  "search_placeholder": "Pesquisar vídeos",
+  "download_policy": "Utilize responsavelmente e respeite as leis de direitos de autor",
+  "language": "idioma",
+
+  "common": {
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "ok": "OK",
+    "yes": "Sim",
+    "no": "Não"
+  },
+
+  "license_cc": "Creative Commons",
+  "license_mine": "Licença Própria",
+  "license_standard": "Licença Padrão",
+
+  "exit_modal": {
+    "title": "Tem a certeza de que quer sair?",
+    "message": "Tem transferências activas ainda a decorrer em segundo plano. Tem a certeza de que quer sair do ClipPilot?",
+    "cancel_downloads": "Cancelar transferências e sair",
+    "cancel_downloads_tooltip": "Interromper todas as transferências activas e sair da aplicação",
+    "keep_running": "Continuar a executar em segundo plano",
+    "keep_running_tooltip": "Permitir que o ClipPilot continue a executar em segundo plano para completar as transferências",
+    "stay_open": "Permanecer aberto",
+    "stay_open_tooltip": "Voltar à aplicação sem fazer alterações"
+  },
+
+  "categories": {
+    "film_animation": "Filmes e Animação",
+    "autos_vehicles": "Automóveis e Veículos",
+    "music": "Música",
+    "pets_animals": "Animais de Estimação e Animais",
+    "sports": "Desportos",
+    "short_movies": "Filmes Curtos",
+    "travel_events": "Viagens e Eventos",
+    "gaming": "Jogos",
+    "videoblogging": "Videoblog",
+    "people_blogs": "Pessoas e Blogues",
+    "comedy": "Comédia",
+    "entertainment": "Entretenimento",
+    "news_politics": "Notícias e Política",
+    "howto_style": "Como Fazer e Estilo",
+    "education": "Educação",
+    "science_technology": "Ciência e Tecnologia",
+    "nonprofits_activism": "Organizações sem Fins Lucrativos e Activismo"
+  },
+
+  "download_progress": {
+    "preparing": "A preparar...",
+    "extracting": "A extrair informações...",
+    "downloading": "A transferir...",
+    "converting": "A converter formato...",
+    "finalizing": "A finalizar...",
+    "completed": "Transferência concluída!",
+    "failed": "Transferência falhou",
+    "cancelled": "Transferência cancelada",
+    "cancel_button": "Cancelar Transferência"
+  },
+
+  "settings_modal": {
+    "title": "Definições de Transferência",
+    "save_settings": "Guardar Definições",
+    "download_folder": {
+      "label": "Pasta de Transferências",
+      "browser_warning": "Modo Navegador: A selecção de pasta requer a aplicação de ambiente de trabalho. As transferências utilizariam a localização predefinida do seu navegador."
+    },
+    "browse": "Procurar",
+    "audio_settings": {
+      "title": "Definições de Transferência de Áudio",
+      "format": "Formato de Áudio",
+      "bitrate": "Taxa de Bits de Áudio"
+    },
+    "video_settings": {
+      "title": "Definições de Transferência de Vídeo",
+      "format": "Formato de Vídeo",
+      "quality": "Qualidade do Vídeo",
+      "codec": "Codec de Vídeo"
+    },
+    "api_settings": {
+      "title": "Configuração da API",
+      "youtube_api_key": "Chave da API do YouTube (Obrigatória)"
+    }
+  },
+
+  "url_download": {
+    "title": "Transferência Directa por URL",
+    "placeholder": "Cole o URL do YouTube ou ID do vídeo aqui...",
+    "download_audio": "Transferir Áudio",
+    "download_video": "Transferir Vídeo",
+    "toggle_show": "Mostrar Transferência por URL",
+    "toggle_hide": "Ocultar Transferência por URL"
+  },
+
+  "notifications": {
+    "download_started": "Transferência Iniciada",
+    "download_started_msg": "A sua transferência foi adicionada à fila com sucesso. Verifique as notificações de progresso para actualizações.",
+    "download_failed": "Transferência Falhou",
+    "download_cancelled": "Transferência Cancelada",
+    "cancel_failed": "Cancelamento Falhou",
+    "settings_saved": "Definições Guardadas",
+    "settings_saved_msg": "As suas preferências foram guardadas com sucesso.",
+    "browser_limitation": "Limitação do Modo Navegador",
+    "browser_limitation_msg": "Transferências por URL estão disponíveis apenas na aplicação de ambiente de trabalho. Por favor, transfira e instale o ClipPilot para utilizar este recurso."
+  },
+
+  "main_screen": {
+    "direct_url": "URL Directa",
+    "direct_url_toggle": "Alternar transferência directa por URL",
+    "refresh": "Actualizar",
+    "refresh_tooltip": "Actualizar lista de vídeos",
+    "settings_tooltip": "Definições de transferência",
+    "about_tooltip": "Acerca do ClipPilot",
+    "exit_tooltip": "Sair do ClipPilot",
+    "preview": "Pré-visualizar",
+    "preview_tooltip": "Pré-visualizar vídeo",
+    "loading": "A carregar...",
+    "loading_more": "A carregar mais vídeos...",
+    "no_more_results": "Não há mais resultados para carregar"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "search_placeholder": "Rechercher des vidéos",
+  "download_policy": "Utiliser de manière responsable et respecter les lois sur le droit d'auteur",
+  "language": "langue",
+
+  "notifications": {
+    "download_started": "Téléchargement démarré",
+    "download_started_msg": "Votre téléchargement a été ajouté à la file d'attente avec succès. Vérifiez les notifications de progression pour les mises à jour.",
+    "download_failed": "Téléchargement échoué",
+    "download_cancelled": "Téléchargement annulé",
+    "cancel_failed": "Annulation échouée",
+    "settings_saved": "Paramètres sauvegardés",
+    "settings_saved_msg": "Vos préférences ont été sauvegardées avec succès.",
+    "browser_limitation": "Limitation du mode navigateur",
+    "browser_limitation_msg": "Les téléchargements par URL ne sont disponibles que dans l'application de bureau. Veuillez télécharger et installer ClipPilot pour utiliser cette fonctionnalité."
+  },
+
+  "main_screen": {
+    "direct_url": "URL Directe",
+    "direct_url_toggle": "Basculer le téléchargement par URL directe",
+    "refresh": "Actualiser",
+    "refresh_tooltip": "Actualiser la liste des vidéos",
+    "settings_tooltip": "Paramètres de téléchargement",
+    "about_tooltip": "À propos de ClipPilot",
+    "exit_tooltip": "Quitter ClipPilot",
+    "preview": "Aperçu",
+    "preview_tooltip": "Aperçu de la vidéo",
+    "loading": "Chargement...",
+    "loading_more": "Chargement de plus de vidéos...",
+    "no_more_results": "Aucun autre résultat à charger"
+  }
+}pecter les lois sur le droit d'auteur",
+  "language": "Langue",
+  "settings": "Paramètres",
+  "results": "Résultats",
+  "allowed": "Autorisé",
+  "blocked": "Bloqué",
+  "license_cc": "Creative Commons",
+  "license_mine": "Mes téléchargements",
+  "license_standard": "Licence standard",
+  "theme": "Thème",
+  "grid": "Grille",
+  "list": "Liste",
+  
+  "common": {
+    "loading": "Chargement...",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "close": "Fermer",
+    "browse": "Parcourir",
+    "refresh": "Actualiser",
+    "download": "Télécharger",
+    "preview": "Aperçu",
+    "search": "Rechercher",
+    "about": "À propos",
+    "exit": "Quitter"
+  },
+
+  "exit_modal": {
+    "title": "Quitter ClipPilot",
+    "message": "Êtes-vous sûr de vouloir quitter ClipPilot ? Tous les téléchargements en cours seront annulés.",
+    "cancel": "Annuler",
+    "confirm": "Quitter l'application"
+  },
+
+  "categories": {
+    "label": "Catégorie :",
+    "all": "Toutes les catégories",
+    "music": "Musique",
+    "entertainment": "Divertissement",
+    "comedy": "Comédie",
+    "education": "Éducation",
+    "science_tech": "Science et technologie",
+    "howto_style": "Tutoriels et style",
+    "news_politics": "Actualités et politique",
+    "people_blogs": "Personnes et blogs",
+    "film_animation": "Films et animation",
+    "gaming": "Jeux vidéo",
+    "sports": "Sports",
+    "travel_events": "Voyages et événements",
+    "pets_animals": "Animaux de compagnie",
+    "autos_vehicles": "Automobiles et véhicules"
+  },
+
+  "download_progress": {
+    "preparing": "Préparation du téléchargement...",
+    "extracting": "Extraction des informations vidéo...",
+    "downloading": "Téléchargement de la vidéo...",
+    "converting": "Conversion du format...",
+    "finalizing": "Finalisation...",
+    "completed": "Téléchargement terminé !",
+    "failed": "Téléchargement échoué",
+    "cancelled": "Téléchargement annulé",
+    "cancel_button": "Annuler le téléchargement"
+  },
+
+  "settings_modal": {
+    "title": "Paramètres de téléchargement",
+    "save_settings": "Enregistrer les paramètres",
+    "download_folder": {
+      "label": "Dossier de téléchargement",
+      "browser_warning": "Mode navigateur : La sélection de dossier nécessite l'application de bureau. Les téléchargements utiliseront l'emplacement par défaut du navigateur."
+    },
+    "browse": "Parcourir",
+    "audio_settings": {
+      "title": "Paramètres de téléchargement audio",
+      "format": "Format audio",
+      "bitrate": "Débit audio"
+    },
+    "video_settings": {
+      "title": "Paramètres de téléchargement vidéo",
+      "format": "Format vidéo",
+      "quality": "Qualité vidéo",
+      "codec": "Codec vidéo"
+    },
+    "api_settings": {
+      "title": "Configuration API",
+      "youtube_api_key": "Clé API YouTube (Requise)"
+    }
+  },
+
+  "url_download": {
+    "title": "Téléchargement direct par URL",
+    "placeholder": "Collez ici l'URL YouTube ou l'ID de la vidéo...",
+    "download_audio": "Télécharger l'audio",
+    "download_video": "Télécharger la vidéo",
+    "toggle_show": "Afficher le téléchargement par URL",
+    "toggle_hide": "Masquer le téléchargement par URL"
+  },
+
+  "notifications": {
+    "download_started": "Téléchargement démarré",
+    "download_started_msg": "Votre téléchargement a été mis en file d'attente avec succès. Vérifiez les notifications de progression pour les mises à jour.",
+    "download_failed": "Téléchargement échoué",
+    "download_cancelled": "Téléchargement annulé",
+    "cancel_failed": "Annulation échouée",
+    "settings_saved": "Paramètres enregistrés",
+    "settings_saved_msg": "Vos préférences ont été enregistrées avec succès.",
+    "browser_limitation": "Limitation du mode navigateur",
+    "browser_limitation_msg": "Les téléchargements par URL ne sont disponibles que dans l'application de bureau. Veuillez télécharger et installer ClipPilot pour utiliser cette fonctionnalité."
+  },
+
+  "main_screen": {
+    "direct_url": "URL Directe",
+    "direct_url_toggle": "Basculer le téléchargement par URL directe",
+    "refresh": "Actualiser",
+    "refresh_tooltip": "Actualiser la liste des vidéos",
+    "settings_tooltip": "Paramètres de téléchargement",
+    "about_tooltip": "À propos de ClipPilot",
+    "exit_tooltip": "Quitter ClipPilot",
+    "preview": "Aperçu",
+    "preview_tooltip": "Aperçu de la vidéo",
+    "loading": "Chargement...",
+    "loading_more": "Chargement de plus de vidéos...",
+    "no_more_results": "Aucun autre résultat à charger"
+  }
+}

@@ -3,11 +3,28 @@ import { initReactI18next } from 'react-i18next'
 
 import en from './locales/en/translation.json'
 import he from './locales/he/translation.json'
+import es from './locales/es/translation.json'
+import fr from './locales/fr/translation.json'
+import de from './locales/de/translation.json'
+import ptBR from './locales/pt-BR/translation.json'
+import ptPT from './locales/pt-PT/translation.json'
+import ja from './locales/ja/translation.json'
+import zhCN from './locales/zh-CN/translation.json'
 
 void i18n
   .use(initReactI18next)
   .init({
-    resources: { en: { translation: en }, he: { translation: he } },
+    resources: { 
+      en: { translation: en }, 
+      he: { translation: he },
+      es: { translation: es },
+      fr: { translation: fr },
+      de: { translation: de },
+      'pt-BR': { translation: ptBR },
+      'pt-PT': { translation: ptPT },
+      ja: { translation: ja },
+      'zh-CN': { translation: zhCN }
+    },
     lng: 'en',
     fallbackLng: 'en',
     interpolation: { escapeValue: false }
