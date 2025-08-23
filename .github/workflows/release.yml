@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version (e.g., v1.0.0)'
+        description: 'Release version (e.g., v1.0.11.6)'
         required: true
-        default: 'v1.0.0'
+        default: 'v1.0.11'
 
 jobs:
   release:
@@ -36,43 +36,54 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Get release version
-        id: version
+      - name: Get versions
+        id: versions
         shell: bash
         run: |
+          # Get the buildVersion from electron-builder.yml
+          BUILD_VERSION=$(grep "buildVersion:" electron-builder.yml | sed 's/.*"\(.*\)".*/\1/')
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            TAG_VERSION="${{ github.event.inputs.version }}"
           else
-            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+            TAG_VERSION="${GITHUB_REF#refs/tags/}"
           fi
+          
+          echo "build_version=$BUILD_VERSION" >> $GITHUB_OUTPUT
+          echo "package_version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+          echo "tag_version=$TAG_VERSION" >> $GITHUB_OUTPUT
+          
+          echo "Build Version: $BUILD_VERSION"
+          echo "Package Version: $PACKAGE_VERSION"
+          echo "Tag Version: $TAG_VERSION"
           
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          release_name: ClipPAilot ${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.versions.outputs.tag_version }}
+          name: ClipPAilot ${{ steps.versions.outputs.tag_version }}
           body: |
-            ## ClipPAilot ${{ steps.version.outputs.version }}
+            ## ClipPAilot ${{ steps.versions.outputs.tag_version }} (Build ${{ steps.versions.outputs.build_version }})
             
             ### 🎉 What's New
-            - Multi-language support (9 languages including English, Hebrew, Spanish, French, German, Portuguese, Japanese, Chinese)
-            - Comprehensive About modal with keyboard shortcuts and feature overview
-            - Improved settings persistence including language preferences
-            - Enhanced UI with proper internationalization
+            - Streamlined installer with single-popup upgrade experience
+            - Fixed installer filename to include full build version
+            - Improved header RTL/LTR handling for multilingual support
+            - Enhanced Chrome-style versioning system
+            - Professional installer with logo and clean finish screen
             
             ### 📥 Installation
-            1. Download `ClipPAilot-Setup-${{ steps.version.outputs.version }}.exe` below
-            2. Run the installer and follow the setup wizard
+            1. Download `ClipPAilot-Setup-${{ steps.versions.outputs.build_version }}.exe` below
+            2. Run the installer - upgrades are seamless with a single confirmation
             3. Get your free YouTube API key from [Google Cloud Console](https://console.cloud.google.com/)
             4. Enable "YouTube Data API v3" and create an API key
             5. Paste your API key in ClipPAilot settings
             
             ### 🌍 Supported Languages
             - English
-            - עברית (Hebrew)
+            - עברית (Hebrew) - with proper RTL support
             - Español (Spanish)
             - Français (French)
             - Deutsch (German)
@@ -83,35 +94,30 @@ jobs:
             
             ### 🎯 Features
             - YouTube video search and download
-            - Multiple format support (MP3, MP4)
-            - Quality selection (720p, 1080p, etc.)
+            - Multiple format support (MP3, MP4, AAC, FLAC)
+            - Quality selection (720p, 1080p, best)
             - Direct URL downloads
             - Real-time progress tracking
             - Video previews
+            - Comprehensive logging for support
             - Clean, intuitive interface
+            - Professional installer with upgrade detection
             
             ### 🔧 System Requirements
             - Windows 10 or later
             - Internet connection
             - YouTube API key (free from Google)
             
+            ### 📊 Version Information
+            - **Application Version**: ${{ steps.versions.outputs.build_version }}
+            - **Package Version**: ${{ steps.versions.outputs.package_version }}
+            - **Release Tag**: ${{ steps.versions.outputs.tag_version }}
+            
             ---
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ github.event.repository.default_branch }}...${{ steps.version.outputs.version }}
+            **Full Changelog**: https://github.com/${{ github.repository }}/commits/${{ steps.versions.outputs.tag_version }}
+          files: |
+            ./release/ClipPAilot-Setup-${{ steps.versions.outputs.build_version }}.exe
           draft: false
           prerelease: false
-          
-      - name: Get package version
-        id: package_version
-        shell: bash
-        run: |
-          echo "package_version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-          
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/ClipPAilot-Setup-${{ steps.package_version.outputs.package_version }}.exe
-          asset_name: ClipPAilot-Setup-${{ steps.version.outputs.version }}.exe
-          asset_content_type: application/octet-stream

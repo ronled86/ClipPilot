@@ -7,9 +7,9 @@ export const VERSION = {
   major: 1,
   minor: 0,
   patch: 11,
-  build: 6,
-  fullVersion: '1.0.11.6',
-  buildDate: '2025-08-23T13:59:46.644Z',
+  build: 7,
+  fullVersion: '1.0.11.7',
+  buildDate: '2025-08-23T14:04:13.641Z',
   features: [
     'YouTube Search & Preview',
     'Intelligent Search Autocomplete',

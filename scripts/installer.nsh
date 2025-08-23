@@ -6,18 +6,18 @@ Var PreviousInstallDir
 Var PreviousVersion
 Var UpgradeMode
 
-# Custom installer initialization with clean upgrade process
+# Custom installer initialization with streamlined upgrade process
 !macro customInit
   # Check for existing installation in registry
   ReadRegStr $PreviousInstallDir HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "InstallLocation"
   ReadRegStr $PreviousVersion HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${UNINSTALL_APP_KEY}}" "DisplayVersion"
   
-  # If previous installation found, handle upgrade cleanly
+  # If previous installation found, handle upgrade with single interaction
   ${If} $PreviousInstallDir != ""
     StrCpy $UpgradeMode "true"
     
-    # Show professional upgrade dialog
-    MessageBox MB_YESNO|MB_ICONQUESTION "ClipPAilot $PreviousVersion is already installed.$\r$\n$\r$\nThis installer will upgrade to version ${VERSION}.$\r$\n$\r$\nYour settings and downloaded files will be preserved.$\r$\n$\r$\nContinue with upgrade?" IDYES proceed_upgrade IDNO cancel_install
+    # Single comprehensive upgrade dialog with all options
+    MessageBox MB_YESNO|MB_ICONQUESTION "ClipPAilot $PreviousVersion is already installed.$\r$\n$\r$\nUpgrade to version ${VERSION}?$\r$\n$\r$\n• Your settings and downloaded files will be preserved$\r$\n• ClipPAilot will be closed automatically if running$\r$\n• Installation will proceed without further prompts$\r$\n$\r$\nContinue with seamless upgrade?" IDYES proceed_upgrade IDNO cancel_install
     
     cancel_install:
       MessageBox MB_OK|MB_ICONINFORMATION "Installation cancelled by user."
@@ -27,20 +27,17 @@ Var UpgradeMode
       # Set installation directory to existing location for seamless upgrade
       StrCpy $INSTDIR $PreviousInstallDir
       
-      # Close running ClipPAilot process if any
-      DetailPrint "Checking for running ClipPAilot processes..."
+      # Automatically close running ClipPAilot process without additional prompts
+      DetailPrint "Preparing seamless upgrade..."
       
-      # Try to close gracefully first
+      # Close ClipPAilot silently
       FindWindow $0 "" "ClipPAilot - YouTube Search & Download"
       ${If} $0 != 0
-        MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "ClipPAilot is currently running.$\r$\n$\r$\nClick OK to close it automatically and continue the upgrade, or Cancel to exit the installer." IDOK close_app IDCANCEL cancel_install
-        
-        close_app:
         DetailPrint "Closing ClipPAilot application..."
         SendMessage $0 ${WM_CLOSE} 0 0
         Sleep 3000  # Wait for graceful shutdown
         
-        # Check if still running and force close if needed
+        # Force close if still running
         FindWindow $0 "" "ClipPAilot - YouTube Search & Download"
         ${If} $0 != 0
           DetailPrint "Force closing ClipPAilot..."
@@ -52,7 +49,7 @@ Var UpgradeMode
       ${EndIf}
       
       # Clean upgrade - remove old files but preserve user data
-      DetailPrint "Preparing for upgrade - removing old application files..."
+      DetailPrint "Removing old application files..."
       
       # Remove old application files (but not user data)
       Delete "$PreviousInstallDir\ClipPAilot.exe"
@@ -65,7 +62,7 @@ Var UpgradeMode
       # Keep user data directories intact
       # $LOCALAPPDATA\ClipPAilot\* - settings, logs, downloads
       
-      DetailPrint "Upgrade preparation complete. Installing new version..."
+      DetailPrint "Installing new version..."
   ${Else}
     StrCpy $UpgradeMode "false"
     DetailPrint "Fresh installation detected."
