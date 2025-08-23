@@ -4,15 +4,14 @@ copyright: "Copyright © 2025 Ron Lederer"
 # Use custom build version for proper Chrome-style versioning
 buildVersion: "1.0.12.3"
 # Explicitly disable publishing
-publish: []
+publish: false
+beforeBuild: false
+afterSign: false
 icon: assets/icon.ico
 files:
   - dist/**
   - package.json
 extraResources:
-  - from: tools
-    to: tools
-    filter: ["**/*"]
   - from: assets/icon.ico
     to: icon.ico
 directories:

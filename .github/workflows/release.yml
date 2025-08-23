@@ -28,43 +28,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Download tools for CI
-        shell: bash
-        run: |
-          # Create tools directories
-          mkdir -p tools/ffmpeg tools/yt-dlp
-          
-          # Download yt-dlp
-          echo "Downloading yt-dlp..."
-          if curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -o "tools/yt-dlp/yt-dlp.exe"; then
-            echo "✅ yt-dlp downloaded successfully"
-          else
-            echo "⚠️ Warning: Failed to download yt-dlp, creating placeholder"
-            touch "tools/yt-dlp/yt-dlp.exe"
-          fi
-          
-          # Download ffmpeg (using a known working build)
-          echo "Downloading ffmpeg..."
-          if curl -L "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip" -o "ffmpeg.zip"; then
-            if unzip -q ffmpeg.zip 2>/dev/null && cp ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe tools/ffmpeg/ffmpeg.exe 2>/dev/null; then
-              echo "✅ ffmpeg downloaded successfully"
-              rm -rf ffmpeg-master-latest-win64-gpl ffmpeg.zip
-            else
-              echo "⚠️ Warning: Failed to extract ffmpeg, creating placeholder"
-              touch "tools/ffmpeg/ffmpeg.exe"
-              rm -f ffmpeg.zip
-            fi
-          else
-            echo "⚠️ Warning: Failed to download ffmpeg, creating placeholder"
-            touch "tools/ffmpeg/ffmpeg.exe"
-          fi
-          
-          # Verify tools directory structure
-          echo "📁 Tools directory structure:"
-          find tools -type f -name "*.exe" -exec ls -la {} \; || echo "No executable files found"
-          
-          echo "✅ Tools setup completed"
-        
       - name: Build application
         run: npm run build
         
@@ -80,12 +43,13 @@ jobs:
           node -p "require('./package.json').version"
         
       - name: Build installer
-        run: npm run build && npx electron-builder --win nsis --publish never
+        run: npm run build && npx electron-builder --win nsis --publish=never
         env:
-          CI: ""
-          GITHUB_ACTIONS: ""
-          CONTINUOUS_INTEGRATION: ""
+          CI: false
+          GITHUB_ACTIONS: false
+          CONTINUOUS_INTEGRATION: false
           NODE_ENV: "production"
+          ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
           
       - name: Get versions
         id: versions
