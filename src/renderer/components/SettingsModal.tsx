@@ -81,11 +81,11 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
           {/* Download Folder - Top Section */}
           <div className="border rounded-lg p-4 bg-gray-50">
             <label className="block text-sm font-medium text-gray-700 mb-3">
-              📁 {t('settings_modal.download_folder')}
+              📁 {t('settings_modal.download_folder.label')}
             </label>
             {!window.clippilot && (
               <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-700">
-                🌐 <strong>{t('settings_modal.browser_mode_folder')}</strong>
+                🌐 <strong>{t('settings_modal.download_folder.browser_warning')}</strong>
               </div>
             )}
             <div className="flex gap-2">
@@ -114,12 +114,12 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
           <div className="grid grid-cols-2 gap-6">
             {/* Audio Settings */}
             <div className="border rounded-lg p-4 bg-blue-50">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">🎵 {t('settings_modal.audio_settings')}</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">🎵 {t('settings_modal.audio_settings.title')}</h3>
               
               <div className="space-y-4">
                 <div>
                   <label htmlFor="audio-format" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('settings_modal.audio_format')}
+                    {t('settings_modal.audio_settings.format')}
                   </label>
                   <select
                     id="audio-format"
@@ -138,7 +138,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                 
                 <div>
                   <label htmlFor="audio-bitrate" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('settings_modal.audio_bitrate')}
+                    {t('settings_modal.audio_settings.bitrate')}
                   </label>
                   <select
                     id="audio-bitrate"

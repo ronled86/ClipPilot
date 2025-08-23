@@ -1,0 +1,128 @@
+{
+  "search_placeholder": "חפש סרטונים",
+  "download_policy": "השתמש באחריות וכבד חוקי זכויות יוצרים",
+  "language": "שפה",
+  "settings": "הגדרות",
+  "results": "תוצאות",
+  "allowed": "מותר",
+  "blocked": "חסום",
+  "license_cc": "קריאטיב קומנס",
+  "license_mine": "העלאות שלי",
+  "license_standard": "רישיון רגיל",
+  "theme": "ערכת נושא",
+  "grid": "רשת",
+  "list": "רשימה",
+  
+  "common": {
+    "loading": "טוען...",
+    "cancel": "ביטול",
+    "save": "שמור",
+    "close": "סגור",
+    "browse": "עיון",
+    "refresh": "רענן",
+    "download": "הורד",
+    "preview": "תצוגה מקדימה",
+    "search": "חיפוש",
+    "about": "אודות",
+    "exit": "יציאה"
+  },
+
+  "exit_modal": {
+    "title": "יציאה מקליפ פיילוט",
+    "message": "האם אתה בטוח שברצונך לצאת מקליפ פיילוט? כל ההורדות הפעילות יבוטלו.",
+    "cancel": "ביטול",
+    "confirm": "יציאה מהאפליקציה"
+  },
+
+  "categories": {
+    "label": "קטגוריה:",
+    "all": "כל הקטגוריות",
+    "music": "מוזיקה",
+    "entertainment": "בידור",
+    "comedy": "קומדיה",
+    "education": "חינוך",
+    "science_tech": "מדע וטכנולוגיה",
+    "howto_style": "מדריכים וסגנון",
+    "news_politics": "חדשות ופוליטיקה",
+    "people_blogs": "אנשים ובלוגים",
+    "film_animation": "סרטים ואנימציה",
+    "gaming": "משחקים",
+    "sports": "ספורט",
+    "travel_events": "טיולים ואירועים",
+    "pets_animals": "חיות מחמד ובעלי חיים",
+    "autos_vehicles": "רכבים וכלי תחבורה"
+  },
+
+  "download_progress": {
+    "preparing": "מכין הורדה...",
+    "extracting": "חולץ מידע על הוידאו...",
+    "downloading": "מוריד וידאו...",
+    "converting": "ממיר פורמט...",
+    "finalizing": "מסיים...",
+    "completed": "ההורדה הושלמה!",
+    "failed": "ההורדה נכשלה",
+    "cancelled": "ההורדה בוטלה",
+    "cancel_button": "בטל הורדה"
+  },
+
+  "settings_modal": {
+    "title": "הגדרות הורדה",
+    "save_settings": "שמור הגדרות",
+    "download_folder": {
+      "label": "תיקיית הורדות",
+      "browser_warning": "מצב דפדפן: בחירת תיקייה דורשת את אפליקציית השולחן. הורדות ישתמשו במיקום ברירת המחדל של הדפדפן."
+    },
+    "browse": "עיון",
+    "audio_settings": {
+      "title": "הגדרות הורדת שמע",
+      "format": "פורמט שמע",
+      "bitrate": "קצב סיביות שמע"
+    },
+    "video_settings": {
+      "title": "הגדרות הורדת וידאו",
+      "format": "פורמט וידאו",
+      "quality": "איכות וידאו",
+      "codec": "קודק וידאו"
+    },
+    "api_settings": {
+      "title": "הגדרות API",
+      "youtube_api_key": "מפתח API של YouTube (נדרש)"
+    }
+  },
+
+  "url_download": {
+    "title": "הורדת URL ישירה",
+    "placeholder": "הדבק כאן URL של YouTube או מזהה וידאו...",
+    "download_audio": "הורד שמע",
+    "download_video": "הורד וידאו",
+    "toggle_show": "הצג הורדת URL",
+    "toggle_hide": "הסתר הורדת URL"
+  },
+
+  "notifications": {
+    "download_started": "הורדה החלה",
+    "download_started_msg": "ההורדה נוספה לתור בהצלחה. בדוק את הודעות ההתקדמות לעדכונים.",
+    "download_failed": "ההורדה נכשלה",
+    "download_cancelled": "ההורדה בוטלה",
+    "cancel_failed": "הביטול נכשל",
+    "settings_saved": "הגדרות נשמרו",
+    "settings_saved_msg": "ההעדפות שלך נשמרו בהצלחה.",
+    "browser_limitation": "מגבלת מצב דפדפן",
+    "browser_limitation_msg": "הורדות URL זמינות רק באפליקציית השולחן. אנא הורד והתקן את ClipPilot כדי להשתמש בתכונה זו."
+  },
+
+  "main_screen": {
+    "direct_url": "URL ישיר",
+    "direct_url_toggle": "החלף הורדת URL ישיר",
+    "refresh": "רענן",
+    "refresh_tooltip": "רענן רשימת וידאו",
+    "settings_tooltip": "הגדרות הורדה",
+    "about_tooltip": "אודות ClipPilot",
+    "exit_tooltip": "צא מ-ClipPilot",
+    "preview": "תצוגה מקדימה",
+    "preview_tooltip": "תצוגה מקדימה של וידאו",
+    "loading": "טוען...",
+    "loading_more": "טוען עוד וידאו...",
+    "no_more_results": "אין עוד תוצאות לטעינה"
+  }
+}
