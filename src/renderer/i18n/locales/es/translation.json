@@ -1,35 +1,6 @@
 {
   "search_placeholder": "Buscar videos",
   "download_policy": "Usar responsablemente y respetar las leyes de derechos de autor",
-  "language": "idioma",
-
-  "notifications": {
-    "download_started": "Descarga iniciada",
-    "download_started_msg": "Tu descarga se ha añadido a la cola correctamente. Revisa las notificaciones de progreso para actualizaciones.",
-    "download_failed": "Descarga fallida",
-    "download_cancelled": "Descarga cancelada",
-    "cancel_failed": "Cancelación fallida",
-    "settings_saved": "Configuración guardada",
-    "settings_saved_msg": "Tus preferencias se han guardado correctamente.",
-    "browser_limitation": "Limitación del modo navegador",
-    "browser_limitation_msg": "Las descargas por URL solo están disponibles en la aplicación de escritorio. Por favor descarga e instala ClipPilot para usar esta función."
-  },
-
-  "main_screen": {
-    "direct_url": "URL Directa",
-    "direct_url_toggle": "Alternar descarga directa por URL",
-    "refresh": "Actualizar",
-    "refresh_tooltip": "Actualizar lista de videos",
-    "settings_tooltip": "Configuración de descarga",
-    "about_tooltip": "Acerca de ClipPilot",
-    "exit_tooltip": "Salir de ClipPilot",
-    "preview": "Vista previa",
-    "preview_tooltip": "Vista previa del video",
-    "loading": "Cargando...",
-    "loading_more": "Cargando más videos...",
-    "no_more_results": "No hay más resultados para cargar"
-  }
-}derechos de autor",
   "language": "Idioma",
   "settings": "Configuración",
   "results": "Resultados",

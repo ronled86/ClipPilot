@@ -1,34 +1,7 @@
 {
   "search_placeholder": "חפש סרטונים",
   "download_policy": "השתמש באחריות וכבד חוקי זכויות יוצרים",
-
-  "notifications": {
-    "download_started": "הורדה החלה",
-    "download_started_msg": "ההורדה נוספה לתור בהצלחה. בדוק את הודעות ההתקדמות לעדכונים.",
-    "download_failed": "ההורדה נכשלה",
-    "download_cancelled": "ההורדה בוטלה",
-    "cancel_failed": "הביטול נכשל",
-    "settings_saved": "הגדרות נשמרו",
-    "settings_saved_msg": "ההעדפות שלך נשמרו בהצלחה.",
-    "browser_limitation": "מגבלת מצב דפדפן",
-    "browser_limitation_msg": "הורדות URL זמינות רק באפליקציית השולחן. אנא הורד והתקן את ClipPilot כדי להשתמש בתכונה זו."
-  },
-
-  "main_screen": {
-    "direct_url": "URL ישיר",
-    "direct_url_toggle": "החלף הורדת URL ישיר",
-    "refresh": "רענן",
-    "refresh_tooltip": "רענן רשימת וידאו",
-    "settings_tooltip": "הגדרות הורדה",
-    "about_tooltip": "אודות ClipPilot",
-    "exit_tooltip": "צא מ-ClipPilot",
-    "preview": "תצוגה מקדימה",
-    "preview_tooltip": "תצוגה מקדימה של וידאו",
-    "loading": "טוען...",
-    "loading_more": "טוען עוד וידאו...",
-    "no_more_results": "אין עוד תוצאות לטעינה"
-  }
-}e": "שפה",
+  "language": "שפה",
   "settings": "הגדרות",
   "results": "תוצאות",
   "allowed": "מותר",
@@ -66,24 +39,24 @@
     "all": "כל הקטגוריות",
     "music": "מוזיקה",
     "entertainment": "בידור",
-    "comedy": "קומדיה", 
+    "comedy": "קומדיה",
     "education": "חינוך",
     "science_tech": "מדע וטכנולוגיה",
-    "howto_style": "איך לעשות וסטייל",
+    "howto_style": "מדריכים וסגנון",
     "news_politics": "חדשות ופוליטיקה",
     "people_blogs": "אנשים ובלוגים",
     "film_animation": "סרטים ואנימציה",
     "gaming": "משחקים",
     "sports": "ספורט",
-    "travel_events": "נסיעות ואירועים",
+    "travel_events": "טיולים ואירועים",
     "pets_animals": "חיות מחמד ובעלי חיים",
-    "autos_vehicles": "רכב וכלי תחבורה"
+    "autos_vehicles": "רכבים וכלי תחבורה"
   },
 
   "download_progress": {
     "preparing": "מכין הורדה...",
-    "extracting": "מחלץ מידע על הסרטון...",
-    "downloading": "מוריד סרטון...",
+    "extracting": "חולץ מידע על הוידאו...",
+    "downloading": "מוריד וידאו...",
     "converting": "ממיר פורמט...",
     "finalizing": "מסיים...",
     "completed": "ההורדה הושלמה!",
@@ -101,9 +74,9 @@
     },
     "browse": "עיון",
     "audio_settings": {
-      "title": "הגדרות הורדת אודיו",
-      "format": "פורמט אודיו",
-      "bitrate": "קצב סיביות אודיו"
+      "title": "הגדרות הורדת שמע",
+      "format": "פורמט שמע",
+      "bitrate": "קצב סיביות שמע"
     },
     "video_settings": {
       "title": "הגדרות הורדת וידאו",
@@ -112,21 +85,32 @@
       "codec": "קודק וידאו"
     },
     "api_settings": {
-      "title": "הגדרת API",
-      "youtube_api_key": "מפתח API של יוטיוב (נדרש)"
+      "title": "הגדרות API",
+      "youtube_api_key": "מפתח API של YouTube (נדרש)"
     }
   },
 
   "url_download": {
-    "title": "הורדה ישירה מכתובת",
-    "placeholder": "הדבק כאן כתובת יוטיוב או מזהה סרטון...",
-    "download_audio": "הורד אודיו",
+    "title": "הורדת URL ישירה",
+    "placeholder": "הדבק כאן URL של YouTube או מזהה וידאו...",
+    "download_audio": "הורד שמע",
     "download_video": "הורד וידאו",
-    "toggle_show": "הצג הורדת כתובת",
-    "toggle_hide": "הסתר הורדת כתובת"
+    "toggle_show": "הצג הורדת URL",
+    "toggle_hide": "הסתר הורדת URL"
   },
 
   "notifications": {
+    "download_started": "הורדה החלה",
+    "download_started_msg": "ההורדה נוספה לתור בהצלחה. בדוק את הודעות ההתקדמות לעדכונים.",
+    "download_failed": "ההורדה נכשלה",
+    "download_cancelled": "ההורדה בוטלה",
+    "cancel_failed": "הביטול נכשל",
+    "settings_saved": "הגדרות נשמרו",
+    "settings_saved_msg": "ההעדפות שלך נשמרו בהצלחה.",
+    "browser_limitation": "מגבלת מצב דפדפן",
+    "browser_limitation_msg": "הורדות URL זמינות רק באפליקציית השולחן. אנא הורד והתקן את ClipPilot כדי להשתמש בתכונה זו."
+  },
+
   "main_screen": {
     "direct_url": "URL ישיר",
     "direct_url_toggle": "החלף הורדת URL ישיר",

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ClipPilot Icon Generator</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: Arial, sans-serif; 
+            background: #f0f0f0;
+        }
+        .icon-preview {
+            width: 256px;
+            height: 256px;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .instructions {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #6EE7F9;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #A78BFA;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h1>🎬 ClipPilot Icon Generator</h1>
+        
+        <div class="icon-preview">
+            <svg width="200" height="200" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#6EE7F9"/>
+                        <stop offset="100%" stop-color="#A78BFA"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="40" cy="40" r="36" fill="url(#g)" opacity="0.15"/>
+                <polygon points="32,26 56,40 32,54" fill="url(#g)"/>
+                <path d="M40 28 v16" stroke="#A78BFA" stroke-width="3" stroke-linecap="round"/>
+                <path d="M36 44 l4 4 l4 -4" fill="none" stroke="#A78BFA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <h3>📋 Quick Setup Instructions:</h3>
+        <ol>
+            <li><strong>Right-click</strong> on the icon above</li>
+            <li>Select <strong>"Save image as..."</strong></li>
+            <li>Save as <code>icon.png</code> in your <code>assets/</code> folder</li>
+            <li>Run <code>npm run build</code> in your terminal</li>
+            <li>Restart your app to see the new icon!</li>
+        </ol>
+
+        <h3>🔧 Alternative Methods:</h3>
+        
+        <button onclick="downloadSVG()">📁 Download SVG</button>
+        <button onclick="openConverter()">🔄 Open Online Converter</button>
+        
+        <h4>Method 1: Screenshot Method</h4>
+        <ul>
+            <li>Take a screenshot of the icon above</li>
+            <li>Crop to square and resize to 256x256</li>
+            <li>Save as <code>assets/icon.png</code></li>
+        </ul>
+        
+        <h4>Method 2: Browser Save</h4>
+        <ul>
+            <li>Right-click the icon → "Save image as"</li>
+            <li>Choose PNG format</li>
+            <li>Save to <code>assets/icon.png</code></li>
+        </ul>
+        
+        <div style="background: #e8f4f8; padding: 15px; border-radius: 5px; margin-top: 20px;">
+            <strong>💡 Pro Tip:</strong> After creating the icon, your app will have a custom ClipPilot icon in:
+            <ul>
+                <li>✅ Window title bar</li>
+                <li>✅ Windows taskbar</li>
+                <li>✅ Alt+Tab switcher</li>
+                <li>✅ Desktop shortcuts</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function downloadSVG() {
+            const svgContent = `<svg width="256" height="256" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#6EE7F9"/>
+                        <stop offset="100%" stop-color="#A78BFA"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="40" cy="40" r="36" fill="url(#g)" opacity="0.15"/>
+                <polygon points="32,26 56,40 32,54" fill="url(#g)"/>
+                <path d="M40 28 v16" stroke="#A78BFA" stroke-width="3" stroke-linecap="round"/>
+                <path d="M36 44 l4 4 l4 -4" fill="none" stroke="#A78BFA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`;
+            
+            const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'clippilot-icon.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function openConverter() {
+            window.open('https://convertio.co/svg-png/', '_blank');
+        }
+    </script>
+</body>
+</html>

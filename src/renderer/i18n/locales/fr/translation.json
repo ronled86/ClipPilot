@@ -1,35 +1,6 @@
 {
   "search_placeholder": "Rechercher des vidéos",
   "download_policy": "Utiliser de manière responsable et respecter les lois sur le droit d'auteur",
-  "language": "langue",
-
-  "notifications": {
-    "download_started": "Téléchargement démarré",
-    "download_started_msg": "Votre téléchargement a été ajouté à la file d'attente avec succès. Vérifiez les notifications de progression pour les mises à jour.",
-    "download_failed": "Téléchargement échoué",
-    "download_cancelled": "Téléchargement annulé",
-    "cancel_failed": "Annulation échouée",
-    "settings_saved": "Paramètres sauvegardés",
-    "settings_saved_msg": "Vos préférences ont été sauvegardées avec succès.",
-    "browser_limitation": "Limitation du mode navigateur",
-    "browser_limitation_msg": "Les téléchargements par URL ne sont disponibles que dans l'application de bureau. Veuillez télécharger et installer ClipPilot pour utiliser cette fonctionnalité."
-  },
-
-  "main_screen": {
-    "direct_url": "URL Directe",
-    "direct_url_toggle": "Basculer le téléchargement par URL directe",
-    "refresh": "Actualiser",
-    "refresh_tooltip": "Actualiser la liste des vidéos",
-    "settings_tooltip": "Paramètres de téléchargement",
-    "about_tooltip": "À propos de ClipPilot",
-    "exit_tooltip": "Quitter ClipPilot",
-    "preview": "Aperçu",
-    "preview_tooltip": "Aperçu de la vidéo",
-    "loading": "Chargement...",
-    "loading_more": "Chargement de plus de vidéos...",
-    "no_more_results": "Aucun autre résultat à charger"
-  }
-}pecter les lois sur le droit d'auteur",
   "language": "Langue",
   "settings": "Paramètres",
   "results": "Résultats",
