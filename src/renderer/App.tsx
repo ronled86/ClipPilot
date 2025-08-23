@@ -725,7 +725,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <header className="sticky top-0 bg-white/80 backdrop-blur border-b">
-        <div className="w-full px-4 py-3 flex items-center gap-3">
+        <div className="w-full px-4 py-3 flex items-center gap-3" dir="ltr">
           <AnimatedLogo />
           <h1 className="text-xl font-semibold">ClipPAilot</h1>
           <div className="flex-1" />

@@ -5,6 +5,7 @@ const path = require('path')
 
 const versionFile = path.join(__dirname, '..', 'src', 'version.ts')
 const packageFile = path.join(__dirname, '..', 'package.json')
+const electronBuilderFile = path.join(__dirname, '..', 'electron-builder.yml')
 
 function updateDocumentationFiles(oldVersion, newVersion) {
   const filesToUpdate = [
@@ -89,10 +90,25 @@ function updateVersion(type = 'patch') {
   const newVersion = `${newMajor}.${newMinor}.${newPatch}`
   const newFullVersion = `${newMajor}.${newMinor}.${newPatch}.${newBuild}` // Chrome-style version
   
-  // Update package.json only if version changed
+  // Update package.json with 3-part version (for compatibility)
   if (versionChanged) {
     pkg.version = newVersion
     fs.writeFileSync(packageFile, JSON.stringify(pkg, null, 2))
+  }
+  
+  // Update electron-builder.yml with full 4-part version for installer naming
+  if (fs.existsSync(electronBuilderFile)) {
+    let builderContent = fs.readFileSync(electronBuilderFile, 'utf8')
+    // Update or add buildVersion
+    if (builderContent.includes('buildVersion:')) {
+      builderContent = builderContent.replace(/buildVersion: ".+?"/, `buildVersion: "${newFullVersion}"`)
+    } else {
+      builderContent = builderContent.replace(
+        /(productName: ClipPAilot\n)/,
+        `$1buildVersion: "${newFullVersion}"\n`
+      )
+    }
+    fs.writeFileSync(electronBuilderFile, builderContent)
   }
 
   // Always update version.ts with Chrome-style versioning
@@ -145,11 +161,11 @@ export const getAppInfo = () => ({
 
   if (versionChanged) {
     console.log(`✅ Version updated to ${newFullVersion} (Chrome-style)`)
-    console.log(`📦 Updated package.json (${newVersion}) and src/version.ts (${newFullVersion})`)
+    console.log(`📦 Updated package.json (${newVersion}), src/version.ts and electron-builder.yml (${newFullVersion})`)
     console.log(`📚 Updated all documentation files`)
   } else {
     console.log(`✅ Build number updated to ${newFullVersion} (Chrome-style)`)
-    console.log(`📦 Updated src/version.ts with new build number`)
+    console.log(`📦 Updated src/version.ts and electron-builder.yml with new build number`)
   }
   return versionChanged ? newVersion : oldVersion
 }

@@ -120,9 +120,9 @@ Var UpgradeMode
   
   ${If} $UpgradeMode == "true"
     DetailPrint "Upgrade completed successfully!"
-    MessageBox MB_OK|MB_ICONINFORMATION "ClipPAilot has been successfully upgraded to version ${VERSION}!$\r$\n$\r$\nYour settings, logs, and downloaded files have been preserved.$\r$\n$\r$\nClick OK to launch ClipPAilot."
   ${Else}
     DetailPrint "Installation completed successfully!"
-    MessageBox MB_OK|MB_ICONINFORMATION "ClipPAilot ${VERSION} has been successfully installed!$\r$\n$\r$\nClick OK to launch the application."
   ${EndIf}
+  
+  # No popup needed - installer's finish page will handle the completion message
 !macroend
