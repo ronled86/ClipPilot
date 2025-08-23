@@ -79,7 +79,16 @@
     },
     "api_settings": {
       "title": "Configuração da API",
-      "youtube_api_key": "Chave da API do YouTube (Obrigatória)"
+      "youtube_api_key": "Chave da API do YouTube (Obrigatória)",
+      "instructions": {
+        "title": "Como obter uma chave de API gratuita:",
+        "step1": "Visite o Google Cloud Console",
+        "step2": "Crie um projeto e habilite \"YouTube Data API v3\"",
+        "step3": "Vá para Credenciais → Criar → Chave de API",
+        "step4": "Copie e cole a chave acima",
+        "free_note": "Grátis: 10.000 solicitações/dia",
+        "private_note": "Privado: Armazenado apenas localmente"
+      }
     }
   },
 

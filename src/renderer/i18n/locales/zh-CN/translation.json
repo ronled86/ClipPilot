@@ -79,7 +79,16 @@
     },
     "api_settings": {
       "title": "API配置",
-      "youtube_api_key": "YouTube API密钥（必需）"
+      "youtube_api_key": "YouTube API密钥（必需）",
+      "instructions": {
+        "title": "如何获取免费API密钥：",
+        "step1": "访问Google Cloud Console",
+        "step2": "创建项目并启用\"YouTube Data API v3\"",
+        "step3": "转到凭据 → 创建 → API密钥",
+        "step4": "复制并粘贴上面的密钥",
+        "free_note": "免费：每天10,000次请求",
+        "private_note": "私密：仅本地存储"
+      }
     }
   },
 

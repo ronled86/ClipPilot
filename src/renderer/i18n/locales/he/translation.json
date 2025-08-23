@@ -86,7 +86,16 @@
     },
     "api_settings": {
       "title": "הגדרות API",
-      "youtube_api_key": "מפתח API של YouTube (נדרש)"
+      "youtube_api_key": "מפתח API של YouTube (נדרש)",
+      "instructions": {
+        "title": "איך להשיג מפתח API חינמי:",
+        "step1": "בקר ב-Google Cloud Console",
+        "step2": "צור פרויקט והפעל \"YouTube Data API v3\"",
+        "step3": "עבור ל-Credentials → Create → API Key",
+        "step4": "העתק והדבק את המפתח למעלה",
+        "free_note": "חינמי: 10,000 בקשות ליום",
+        "private_note": "פרטי: נשמר מקומית בלבד"
+      }
     }
   },
 

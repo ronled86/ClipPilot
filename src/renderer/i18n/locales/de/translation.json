@@ -86,7 +86,16 @@
     },
     "api_settings": {
       "title": "API-Konfiguration",
-      "youtube_api_key": "YouTube-API-Schlüssel (Erforderlich)"
+      "youtube_api_key": "YouTube-API-Schlüssel (Erforderlich)",
+      "instructions": {
+        "title": "So erhalten Sie einen kostenlosen API-Schlüssel:",
+        "step1": "Besuchen Sie die Google Cloud Console",
+        "step2": "Erstellen Sie ein Projekt und aktivieren Sie \"YouTube Data API v3\"",
+        "step3": "Gehen Sie zu Anmeldedaten → Erstellen → API-Schlüssel",
+        "step4": "Kopieren Sie den Schlüssel und fügen Sie ihn oben ein",
+        "free_note": "Kostenlos: 10.000 Anfragen/Tag",
+        "private_note": "Privat: Nur lokal gespeichert"
+      }
     }
   },
 

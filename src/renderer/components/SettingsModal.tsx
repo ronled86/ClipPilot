@@ -273,15 +273,15 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                 </div>
                 
                 <div className="bg-blue-50 border border-blue-300 rounded-md p-3 text-xs">
-                  <p className="font-medium text-blue-800 mb-2">📋 How to get a free API key:</p>
+                  <p className="font-medium text-blue-800 mb-2">📋 {t('settings_modal.api_settings.instructions.title')}</p>
                   <ol className="text-blue-700 space-y-1 list-decimal list-inside">
-                    <li>Visit <a href="https://console.developers.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Google Cloud Console</a></li>
-                    <li>Create a project and enable "YouTube Data API v3"</li>
-                    <li>Go to Credentials → Create → API Key</li>
-                    <li>Copy and paste the key above</li>
+                    <li>{t('settings_modal.api_settings.instructions.step1')} <a href="https://console.developers.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Google Cloud Console</a></li>
+                    <li>{t('settings_modal.api_settings.instructions.step2')}</li>
+                    <li>{t('settings_modal.api_settings.instructions.step3')}</li>
+                    <li>{t('settings_modal.api_settings.instructions.step4')}</li>
                   </ol>
                   <p className="text-blue-700 mt-2 text-xs">
-                    <strong>Free:</strong> 10,000 requests/day • <strong>Private:</strong> Stored locally only
+                    <strong>{t('settings_modal.api_settings.instructions.free_note')}</strong> • <strong>{t('settings_modal.api_settings.instructions.private_note')}</strong>
                   </p>
                 </div>
               </div>

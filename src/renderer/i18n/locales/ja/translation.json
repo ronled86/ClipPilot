@@ -79,7 +79,16 @@
     },
     "api_settings": {
       "title": "API設定",
-      "youtube_api_key": "YouTube APIキー（必須）"
+      "youtube_api_key": "YouTube APIキー（必須）",
+      "instructions": {
+        "title": "無料のAPIキーを取得する方法：",
+        "step1": "Google Cloud Consoleにアクセス",
+        "step2": "プロジェクトを作成し「YouTube Data API v3」を有効化",
+        "step3": "認証情報 → 作成 → APIキーに移動",
+        "step4": "上記にキーをコピー＆ペースト",
+        "free_note": "無料：10,000リクエスト/日",
+        "private_note": "プライベート：ローカルのみに保存"
+      }
     }
   },
 
