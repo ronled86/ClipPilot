@@ -20,6 +20,8 @@ export interface DownloadSettings {
   videoCodec: string
   // API Settings
   youtubeApiKey?: string
+  // UI Settings
+  language?: string
 }
 
 export default function SettingsModal({ isOpen, onClose, onSave, currentSettings }: SettingsModalProps) {

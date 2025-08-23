@@ -133,5 +133,57 @@
     "loading": "Loading...",
     "loading_more": "Loading more videos...",
     "no_more_results": "No more results to load"
+  },
+
+  "about_modal": {
+    "title": "About ClipPilot",
+    "close": "Close",
+    "welcome": {
+      "title": "Welcome to ClipPilot",
+      "description": "ClipPilot is a powerful desktop application that lets you search, preview, and download videos from YouTube and other platforms. With support for multiple formats and qualities, built-in progress tracking, and a clean interface, it's designed to make video downloading simple and efficient."
+    },
+    "version_info": {
+      "title": "Version Information",
+      "version": "Version:",
+      "platform": "Platform:",
+      "user_agent": "User Agent:"
+    },
+    "shortcuts": {
+      "title": "Keyboard Shortcuts",
+      "developer_tools": "Developer Tools",
+      "toggle_menu": "Toggle Menu Bar",
+      "settings": "Settings",
+      "about": "About",
+      "or": "or"
+    },
+    "features": {
+      "title": "Key Features",
+      "youtube_search": "YouTube search & download",
+      "direct_url": "Direct URL downloads",
+      "multiple_formats": "Multiple formats (MP3, MP4)",
+      "quality_selection": "Quality selection",
+      "progress_tracking": "Real-time progress tracking",
+      "video_previews": "Video previews"
+    },
+    "licenses": {
+      "title": "Open Source Licenses",
+      "description": "ClipPilot is built with these amazing open source libraries:",
+      "electron_desc": "Cross-platform desktop apps",
+      "react_desc": "UI framework by Meta",
+      "typescript_desc": "Type-safe JavaScript",
+      "tailwind_desc": "Utility-first CSS framework",
+      "vite_desc": "Fast build tool",
+      "google_apis_desc": "YouTube Data API integration",
+      "react_i18next_desc": "Internationalization",
+      "yt_dlp_desc": "Video download engine",
+      "ffmpeg_desc": "Media processing",
+      "nodejs_desc": "JavaScript runtime",
+      "clippilot_license": "ClipPilot License:",
+      "view_source": "View source code"
+    },
+    "footer": {
+      "built_with": "ClipPilot - Built with ❤️ using Electron, React & TypeScript",
+      "support": "For support and updates, visit the project repository"
+    }
   }
 }

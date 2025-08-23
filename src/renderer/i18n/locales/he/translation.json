@@ -21,7 +21,7 @@
     "browse": "עיון",
     "refresh": "רענן",
     "download": "הורד",
-    "preview": "תצוגה מקדימה",
+    "preview": "צפייה",
     "search": "חיפוש",
     "about": "אודות",
     "exit": "יציאה"
@@ -128,10 +128,62 @@
     "settings_tooltip": "הגדרות הורדה",
     "about_tooltip": "אודות ClipPilot",
     "exit_tooltip": "צא מ-ClipPilot",
-    "preview": "תצוגה מקדימה",
+    "preview": "צפייה",
     "preview_tooltip": "תצוגה מקדימה של וידאו",
     "loading": "טוען...",
     "loading_more": "טוען עוד וידאו...",
     "no_more_results": "אין עוד תוצאות לטעינה"
+  },
+
+  "about_modal": {
+    "title": "אודות ClipPilot",
+    "close": "סגור",
+    "welcome": {
+      "title": "ברוכים הבאים ל-ClipPilot",
+      "description": "ClipPilot היא אפליקציית שולחן עבודה חזקה המאפשרת לחפש, לצפות בתצוגה מקדימה ולהוריד סרטונים מיוטיוב ופלטפורמות אחרות. עם תמיכה בפורמטים ואיכויות מרובות, מעקב התקדמות מובנה וממשק נקי, היא מיועדת להפוך הורדת וידאו לפשוטה ויעילה."
+    },
+    "version_info": {
+      "title": "מידע גרסה",
+      "version": "גרסה:",
+      "platform": "פלטפורמה:",
+      "user_agent": "סוכן משתמש:"
+    },
+    "shortcuts": {
+      "title": "קיצורי מקלדת",
+      "developer_tools": "כלי מפתח",
+      "toggle_menu": "החלף תפריט",
+      "settings": "הגדרות",
+      "about": "אודות",
+      "or": "או"
+    },
+    "features": {
+      "title": "תכונות מרכזיות",
+      "youtube_search": "חיפוש והורדה מיוטיוב",
+      "direct_url": "הורדות URL ישירות",
+      "multiple_formats": "פורמטים מרובים (MP3, MP4)",
+      "quality_selection": "בחירת איכות",
+      "progress_tracking": "מעקב התקדמות בזמן אמת",
+      "video_previews": "תצוגות מקדימות של וידאו"
+    },
+    "licenses": {
+      "title": "רישיונות קוד פתוח",
+      "description": "ClipPilot בנוי עם ספריות קוד פתוח מדהימות אלה:",
+      "electron_desc": "אפליקציות שולחן עבודה חוצות פלטפורמות",
+      "react_desc": "מסגרת UI של Meta",
+      "typescript_desc": "JavaScript בטוח מבחינת סוגים",
+      "tailwind_desc": "מסגרת CSS מבוססת utility",
+      "vite_desc": "כלי בנייה מהיר",
+      "google_apis_desc": "אינטגרציה עם YouTube Data API",
+      "react_i18next_desc": "בינאומיות",
+      "yt_dlp_desc": "מנוע הורדת וידאו",
+      "ffmpeg_desc": "עיבוד מדיה",
+      "nodejs_desc": "סביבת JavaScript",
+      "clippilot_license": "רישיון ClipPilot:",
+      "view_source": "צפה בקוד המקור"
+    },
+    "footer": {
+      "built_with": "ClipPilot - נבנה עם ❤️ באמצעות Electron, React ו-TypeScript",
+      "support": "לתמיכה ועדכונים, בקר במאגר הפרויקט"
+    }
   }
 }

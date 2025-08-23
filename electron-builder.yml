@@ -1,7 +1,7 @@
 appId: com.ronled.clippilot
 productName: ClipPilot
-copyright: "Copyright © 2025 Ron Led"
-icon: assets/logo.png  # Custom ClipPilot icon
+copyright: "Copyright © 2025 Ron Lederer"
+icon: assets/icon.ico  # Windows ICO format for proper taskbar icon
 files:
   - dist/**
   - package.json
@@ -10,7 +10,7 @@ directories:
   output: release
   buildResources: assets
 win:
-  icon: assets/logo.png  # Custom ClipPilot icon for Windows
+  icon: assets/icon.ico  # Windows ICO format for proper taskbar icon
   target:
     - target: nsis
       arch: [x64]
@@ -18,6 +18,11 @@ win:
   requestedExecutionLevel: asInvoker
   signAndEditExecutable: false
   verifyUpdateCodeSignature: false
+  # Enable publishing to GitHub Releases
+  publish:
+    provider: github
+    owner: ronled86
+    repo: ClipPilot
 nsis:
   oneClick: false
   perMachine: false

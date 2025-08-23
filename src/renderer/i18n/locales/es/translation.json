@@ -133,5 +133,57 @@
     "loading": "Cargando...",
     "loading_more": "Cargando más videos...",
     "no_more_results": "No hay más resultados para cargar"
+  },
+
+  "about_modal": {
+    "title": "Acerca de ClipPilot",
+    "close": "Cerrar",
+    "welcome": {
+      "title": "Bienvenido a ClipPilot",
+      "description": "ClipPilot es una potente aplicación de escritorio que te permite buscar, previsualizar y descargar videos de YouTube y otras plataformas. Con soporte para múltiples formatos y calidades, seguimiento de progreso integrado e interfaz limpia, está diseñado para hacer la descarga de videos simple y eficiente."
+    },
+    "version_info": {
+      "title": "Información de Versión",
+      "version": "Versión:",
+      "platform": "Plataforma:",
+      "user_agent": "Agente Usuario:"
+    },
+    "shortcuts": {
+      "title": "Atajos de Teclado",
+      "developer_tools": "Herramientas de Desarrollador",
+      "toggle_menu": "Alternar Barra de Menú",
+      "settings": "Configuración",
+      "about": "Acerca de",
+      "or": "o"
+    },
+    "features": {
+      "title": "Características Principales",
+      "youtube_search": "Búsqueda y descarga de YouTube",
+      "direct_url": "Descargas de URL directa",
+      "multiple_formats": "Múltiples formatos (MP3, MP4)",
+      "quality_selection": "Selección de calidad",
+      "progress_tracking": "Seguimiento de progreso en tiempo real",
+      "video_previews": "Vistas previas de video"
+    },
+    "licenses": {
+      "title": "Licencias de Código Abierto",
+      "description": "ClipPilot está construido con estas increíbles bibliotecas de código abierto:",
+      "electron_desc": "Aplicaciones de escritorio multiplataforma",
+      "react_desc": "Framework UI de Meta",
+      "typescript_desc": "JavaScript con tipos seguros",
+      "tailwind_desc": "Framework CSS basado en utilidades",
+      "vite_desc": "Herramienta de construcción rápida",
+      "google_apis_desc": "Integración con YouTube Data API",
+      "react_i18next_desc": "Internacionalización",
+      "yt_dlp_desc": "Motor de descarga de video",
+      "ffmpeg_desc": "Procesamiento de medios",
+      "nodejs_desc": "Runtime de JavaScript",
+      "clippilot_license": "Licencia ClipPilot:",
+      "view_source": "Ver código fuente"
+    },
+    "footer": {
+      "built_with": "ClipPilot - Construido con ❤️ usando Electron, React y TypeScript",
+      "support": "Para soporte y actualizaciones, visita el repositorio del proyecto"
+    }
   }
 }

@@ -46,7 +46,8 @@ export default function App() {
     videoFormat: 'mp4',
     videoQuality: '720p',
     videoCodec: 'h264',
-    youtubeApiKey: ''
+    youtubeApiKey: '',
+    language: 'en'
   })
 
   const [downloads, setDownloads] = useState<DownloadJob[]>([])
@@ -73,8 +74,22 @@ export default function App() {
         try {
           const savedSettings = await window.clippilot.getSettings()
           setSettings(savedSettings)
+          // Apply saved language to i18n
+          if (savedSettings.language && savedSettings.language !== i18n.language) {
+            await i18n.changeLanguage(savedSettings.language)
+          }
         } catch (error) {
           console.error('Failed to load settings:', error)
+        }
+      } else {
+        // Browser mode - try to load language from localStorage
+        try {
+          const savedLanguage = localStorage.getItem('clippilot-language')
+          if (savedLanguage && savedLanguage !== i18n.language) {
+            await i18n.changeLanguage(savedLanguage)
+          }
+        } catch (error) {
+          console.error('Failed to load language from localStorage:', error)
         }
       }
     }
@@ -419,6 +434,28 @@ export default function App() {
     }
   }
 
+  const handleLanguageChange = async (newLanguage: string) => {
+    try {
+      // Change the language in i18n
+      await i18n.changeLanguage(newLanguage)
+      
+      // Update settings with new language
+      const updatedSettings = { ...settings, language: newLanguage }
+      
+      if (isBrowserMode) {
+        // In browser mode, save to localStorage
+        localStorage.setItem('clippilot-language', newLanguage)
+        setSettings(updatedSettings)
+      } else if (window.clippilot?.saveSettings) {
+        // In desktop mode, save to settings file
+        await window.clippilot.saveSettings(updatedSettings)
+        setSettings(updatedSettings)
+      }
+    } catch (error) {
+      console.error('Failed to save language preference:', error)
+    }
+  }
+
   const handleSaveSettings = async (newSettings: DownloadSettings) => {
     try {
       if (isBrowserMode) {
@@ -719,7 +756,7 @@ export default function App() {
           <select
             className="border rounded px-2 py-1"
             value={i18n.language}
-            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            onChange={(e) => handleLanguageChange(e.target.value)}
             aria-label={t('language')}
           >
             <option value="en">English</option>
@@ -915,7 +952,7 @@ export default function App() {
               </div>
               <div className="flex gap-2 mt-2">
                 <button 
-                  className="flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-gray-50 transition-colors" 
+                  className="flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-gray-50 transition-colors min-w-0" 
                   onClick={() => {
                     setPreviewModal({
                       isOpen: true,
@@ -925,30 +962,30 @@ export default function App() {
                   }}
                   title={t('main_screen.preview_tooltip')}
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
-                  <span className="text-xs">{t('main_screen.preview')}</span>
+                  <span className="text-xs truncate">{t('main_screen.preview')}</span>
                 </button>
                 <button 
-                  className={`flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-blue-50 hover:border-blue-300 transition-colors ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                  className={`flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-blue-50 hover:border-blue-300 transition-colors min-w-0 ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
                   disabled={downloadingVideos.has(v.id)}
                   title={`Download ${settings.videoFormat.toUpperCase()} (Video)`} 
                   onClick={() => handleDownload(v.id, 'mp4')}
                 >
                   {downloadingVideos.has(v.id) ? (
                     <>
-                      <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 animate-spin flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                      <span className="text-xs">{t('main_screen.loading')}</span>
+                      <span className="text-xs truncate">{t('main_screen.loading')}</span>
                     </>
                   ) : (
                     <>
-                      <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
                       </svg>
-                      <span className="text-xs text-blue-600 font-medium">{settings.videoFormat.toUpperCase()}</span>
+                      <span className="text-xs text-blue-600 font-medium truncate">{settings.videoFormat.toUpperCase()}</span>
                     </>
                   )}
                 </button>

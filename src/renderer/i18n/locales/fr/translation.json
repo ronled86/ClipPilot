@@ -1,6 +1,6 @@
 {
   "search_placeholder": "Rechercher des vidéos",
-  "download_policy": "Utiliser de manière responsable et respecter les lois sur le droit d'auteur",
+  "download_policy": "Utiliser de manière responsable et respecter le droit d'auteur",
   "language": "Langue",
   "settings": "Paramètres",
   "results": "Résultats",
@@ -122,7 +122,7 @@
 
   "main_screen": {
     "direct_url": "URL Directe",
-    "direct_url_toggle": "Basculer le téléchargement par URL directe",
+    "direct_url_toggle": "Basculer le téléchargement d'URL directe",
     "refresh": "Actualiser",
     "refresh_tooltip": "Actualiser la liste des vidéos",
     "settings_tooltip": "Paramètres de téléchargement",
@@ -133,5 +133,57 @@
     "loading": "Chargement...",
     "loading_more": "Chargement de plus de vidéos...",
     "no_more_results": "Aucun autre résultat à charger"
+  },
+
+  "about_modal": {
+    "title": "À propos de ClipPilot",
+    "close": "Fermer",
+    "welcome": {
+      "title": "Bienvenue dans ClipPilot",
+      "description": "ClipPilot est une application de bureau puissante qui vous permet de rechercher, prévisualiser et télécharger des vidéos depuis YouTube et d'autres plateformes. Avec le support de multiples formats et qualités, un suivi de progression intégré et une interface propre, elle est conçue pour rendre le téléchargement de vidéos simple et efficace."
+    },
+    "version_info": {
+      "title": "Informations de Version",
+      "version": "Version :",
+      "platform": "Plateforme :",
+      "user_agent": "Agent Utilisateur :"
+    },
+    "shortcuts": {
+      "title": "Raccourcis Clavier",
+      "developer_tools": "Outils de Développeur",
+      "toggle_menu": "Basculer la Barre de Menu",
+      "settings": "Paramètres",
+      "about": "À propos",
+      "or": "ou"
+    },
+    "features": {
+      "title": "Fonctionnalités Principales",
+      "youtube_search": "Recherche et téléchargement YouTube",
+      "direct_url": "Téléchargements d'URL directe",
+      "multiple_formats": "Multiples formats (MP3, MP4)",
+      "quality_selection": "Sélection de qualité",
+      "progress_tracking": "Suivi de progression en temps réel",
+      "video_previews": "Aperçus vidéo"
+    },
+    "licenses": {
+      "title": "Licences Open Source",
+      "description": "ClipPilot est construit avec ces incroyables bibliothèques open source :",
+      "electron_desc": "Applications de bureau multiplateformes",
+      "react_desc": "Framework UI de Meta",
+      "typescript_desc": "JavaScript avec types sûrs",
+      "tailwind_desc": "Framework CSS basé sur les utilitaires",
+      "vite_desc": "Outil de construction rapide",
+      "google_apis_desc": "Intégration YouTube Data API",
+      "react_i18next_desc": "Internationalisation",
+      "yt_dlp_desc": "Moteur de téléchargement vidéo",
+      "ffmpeg_desc": "Traitement multimédia",
+      "nodejs_desc": "Runtime JavaScript",
+      "clippilot_license": "Licence ClipPilot :",
+      "view_source": "Voir le code source"
+    },
+    "footer": {
+      "built_with": "ClipPilot - Construit avec ❤️ en utilisant Electron, React et TypeScript",
+      "support": "Pour le support et les mises à jour, visitez le dépôt du projet"
+    }
   }
 }

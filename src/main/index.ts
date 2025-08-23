@@ -17,7 +17,16 @@ let win: BrowserWindow | null = null
 
 function createWindow() {
   // Try to use custom icon, fall back gracefully if not found
-  const iconPath = path.join(__dirname, '../../assets/logo.png')
+  let iconPath: string
+  
+  if (isDev) {
+    // In development, use icon from project root assets folder
+    iconPath = path.join(process.cwd(), 'assets', 'icon.ico')
+  } else {
+    // In production, use icon from app resources
+    iconPath = path.join(__dirname, '../../assets/icon.ico')
+  }
+  
   const windowOptions: any = {
     width: 1200,
     height: 800,
@@ -34,6 +43,9 @@ function createWindow() {
   // Only set icon if the file exists
   if (require('fs').existsSync(iconPath)) {
     windowOptions.icon = iconPath
+    console.log(`🎨 Using custom icon: ${iconPath}`)
+  } else {
+    console.log(`⚠️ Icon not found at: ${iconPath}`)
   }
 
   win = new BrowserWindow(windowOptions)
@@ -1175,7 +1187,8 @@ const defaultSettings = {
   videoFormat: 'mp4',
   videoQuality: '720p',
   videoCodec: 'h264',
-  youtubeApiKey: ''
+  youtubeApiKey: '',
+  language: 'en'
 }
 
 // Load settings from file or create with defaults

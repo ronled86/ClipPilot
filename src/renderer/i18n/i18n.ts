@@ -11,6 +11,16 @@ import ptPT from './locales/pt-PT/translation.json'
 import ja from './locales/ja/translation.json'
 import zhCN from './locales/zh-CN/translation.json'
 
+// Get saved language from settings (will be set by App.tsx after loading settings)
+const getSavedLanguage = (): string => {
+  try {
+    // Try to get from localStorage as fallback for browser mode
+    return localStorage.getItem('clippilot-language') || 'en'
+  } catch {
+    return 'en'
+  }
+}
+
 void i18n
   .use(initReactI18next)
   .init({
@@ -25,7 +35,7 @@ void i18n
       ja: { translation: ja },
       'zh-CN': { translation: zhCN }
     },
-    lng: 'en',
+    lng: getSavedLanguage(),
     fallbackLng: 'en',
     interpolation: { escapeValue: false }
   })

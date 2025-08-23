@@ -1,6 +1,6 @@
 {
   "search_placeholder": "Videos suchen",
-  "download_policy": "Verantwortungsbewusst verwenden und Urheberrechtsgesetze respektieren",
+  "download_policy": "Verantwortungsbewusst verwenden und Urheberrechtsgesetz beachten",
   "language": "Sprache",
   "settings": "Einstellungen",
   "results": "Ergebnisse",
@@ -133,5 +133,57 @@
     "loading": "Wird geladen...",
     "loading_more": "Weitere Videos werden geladen...",
     "no_more_results": "Keine weiteren Ergebnisse zu laden"
+  },
+
+  "about_modal": {
+    "title": "Über ClipPilot",
+    "close": "Schließen",
+    "welcome": {
+      "title": "Willkommen bei ClipPilot",
+      "description": "ClipPilot ist eine leistungsstarke Desktop-Anwendung, mit der Sie Videos von YouTube und anderen Plattformen suchen, in der Vorschau anzeigen und herunterladen können. Mit Unterstützung für mehrere Formate und Qualitäten, integrierter Fortschrittsverfolgung und einer sauberen Benutzeroberfläche ist sie darauf ausgelegt, das Herunterladen von Videos einfach und effizient zu gestalten."
+    },
+    "version_info": {
+      "title": "Versionsinformationen",
+      "version": "Version:",
+      "platform": "Plattform:",
+      "user_agent": "Benutzer-Agent:"
+    },
+    "shortcuts": {
+      "title": "Tastenkürzel",
+      "developer_tools": "Entwicklertools",
+      "toggle_menu": "Menüleiste umschalten",
+      "settings": "Einstellungen",
+      "about": "Über",
+      "or": "oder"
+    },
+    "features": {
+      "title": "Hauptfunktionen",
+      "youtube_search": "YouTube-Suche und -Download",
+      "direct_url": "Direkte URL-Downloads",
+      "multiple_formats": "Mehrere Formate (MP3, MP4)",
+      "quality_selection": "Qualitätsauswahl",
+      "progress_tracking": "Echtzeit-Fortschrittsverfolgung",
+      "video_previews": "Video-Vorschauen"
+    },
+    "licenses": {
+      "title": "Open-Source-Lizenzen",
+      "description": "ClipPilot ist mit diesen großartigen Open-Source-Bibliotheken erstellt:",
+      "electron_desc": "Cross-Platform-Desktop-Apps",
+      "react_desc": "UI-Framework von Meta",
+      "typescript_desc": "JavaScript mit sicheren Typen",
+      "tailwind_desc": "Utility-First CSS-Framework",
+      "vite_desc": "Schnelles Build-Tool",
+      "google_apis_desc": "YouTube Data API-Integration",
+      "react_i18next_desc": "Internationalisierung",
+      "yt_dlp_desc": "Video-Download-Engine",
+      "ffmpeg_desc": "Medienverarbeitung",
+      "nodejs_desc": "JavaScript-Laufzeit",
+      "clippilot_license": "ClipPilot-Lizenz:",
+      "view_source": "Quellcode anzeigen"
+    },
+    "footer": {
+      "built_with": "ClipPilot - Mit ❤️ erstellt mit Electron, React und TypeScript",
+      "support": "Für Support und Updates besuchen Sie das Projekt-Repository"
+    }
   }
 }

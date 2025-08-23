@@ -19,12 +19,12 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-              📺 About ClipPilot
+              📺 {t('about_modal.title')}
             </h2>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
-              title="Close"
+              title={t('about_modal.close')}
             >
               ×
             </button>
@@ -33,11 +33,9 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           {/* App Introduction */}
           <div className="mb-6">
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">🚀 Welcome to ClipPilot</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">🚀 {t('about_modal.welcome.title')}</h3>
               <p className="text-gray-700 text-sm leading-relaxed">
-                ClipPilot is a powerful desktop application that lets you search, preview, and download videos from YouTube and other platforms. 
-                With support for multiple formats and qualities, built-in progress tracking, and a clean interface, 
-                it's designed to make video downloading simple and efficient.
+                {t('about_modal.welcome.description')}
               </p>
             </div>
           </div>
@@ -45,18 +43,18 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           {/* Version Info */}
           <div className="mb-6">
             <div className="border rounded-lg p-4 bg-gray-50">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">ℹ️ Version Information</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">ℹ️ {t('about_modal.version_info.title')}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Version:</span>
+                  <span className="text-gray-600">{t('about_modal.version_info.version')}</span>
                   <span className="font-mono text-gray-800">{getVersionString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Platform:</span>
+                  <span className="text-gray-600">{t('about_modal.version_info.platform')}</span>
                   <span className="font-mono text-gray-800">{navigator.platform}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">User Agent:</span>
+                  <span className="text-gray-600">{t('about_modal.version_info.user_agent')}</span>
                   <span className="font-mono text-xs text-gray-600 truncate max-w-xs" title={navigator.userAgent}>
                     {navigator.userAgent.substring(0, 60)}...
                   </span>
@@ -68,26 +66,26 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           {/* Keyboard Shortcuts */}
           <div className="mb-6">
             <div className="border rounded-lg p-4 bg-yellow-50">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">⌨️ Keyboard Shortcuts</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">⌨️ {t('about_modal.shortcuts.title')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700">Developer Tools</span>
+                  <span className="text-gray-700">{t('about_modal.shortcuts.developer_tools')}</span>
                   <div className="flex gap-1">
                     <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">F12</kbd>
-                    <span className="text-gray-400">or</span>
+                    <span className="text-gray-400">{t('about_modal.shortcuts.or')}</span>
                     <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl+Shift+I</kbd>
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700">Toggle Menu Bar</span>
+                  <span className="text-gray-700">{t('about_modal.shortcuts.toggle_menu')}</span>
                   <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Alt+M</kbd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700">Settings</span>
+                  <span className="text-gray-700">{t('about_modal.shortcuts.settings')}</span>
                   <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl+,</kbd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700">About</span>
+                  <span className="text-gray-700">{t('about_modal.shortcuts.about')}</span>
                   <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">F1</kbd>
                 </div>
               </div>
@@ -97,31 +95,31 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           {/* Features */}
           <div className="mb-6">
             <div className="border rounded-lg p-4 bg-green-50">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">✨ Key Features</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">✨ {t('about_modal.features.title')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="text-green-600">✓</span>
-                  <span className="text-gray-700">YouTube search & download</span>
+                  <span className="text-gray-700">{t('about_modal.features.youtube_search')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-green-600">✓</span>
-                  <span className="text-gray-700">Direct URL downloads</span>
+                  <span className="text-gray-700">{t('about_modal.features.direct_url')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-green-600">✓</span>
-                  <span className="text-gray-700">Multiple formats (MP3, MP4)</span>
+                  <span className="text-gray-700">{t('about_modal.features.multiple_formats')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-green-600">✓</span>
-                  <span className="text-gray-700">Quality selection</span>
+                  <span className="text-gray-700">{t('about_modal.features.quality_selection')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-green-600">✓</span>
-                  <span className="text-gray-700">Real-time progress tracking</span>
+                  <span className="text-gray-700">{t('about_modal.features.progress_tracking')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-green-600">✓</span>
-                  <span className="text-gray-700">Video previews</span>
+                  <span className="text-gray-700">{t('about_modal.features.video_previews')}</span>
                 </div>
               </div>
             </div>
@@ -130,69 +128,69 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           {/* Open Source Licenses */}
           <div className="mb-6">
             <div className="border rounded-lg p-4 bg-purple-50">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">📜 Open Source Licenses</h3>
-              <p className="text-xs text-gray-600 mb-3">ClipPilot is built with these amazing open source libraries:</p>
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">📜 {t('about_modal.licenses.title')}</h3>
+              <p className="text-xs text-gray-600 mb-3">{t('about_modal.licenses.description')}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div className="space-y-2">
                   <div>
                     <strong className="text-gray-800">Electron</strong>
                     <span className="text-gray-600"> - MIT License</span>
-                    <p className="text-gray-500">Cross-platform desktop apps</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.electron_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">React</strong>
                     <span className="text-gray-600"> - MIT License</span>
-                    <p className="text-gray-500">UI framework by Meta</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.react_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">TypeScript</strong>
                     <span className="text-gray-600"> - Apache 2.0</span>
-                    <p className="text-gray-500">Type-safe JavaScript</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.typescript_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">Tailwind CSS</strong>
                     <span className="text-gray-600"> - MIT License</span>
-                    <p className="text-gray-500">Utility-first CSS framework</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.tailwind_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">Vite</strong>
                     <span className="text-gray-600"> - MIT License</span>
-                    <p className="text-gray-500">Fast build tool</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.vite_desc')}</p>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div>
                     <strong className="text-gray-800">Google APIs</strong>
                     <span className="text-gray-600"> - Apache 2.0</span>
-                    <p className="text-gray-500">YouTube Data API integration</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.google_apis_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">react-i18next</strong>
                     <span className="text-gray-600"> - MIT License</span>
-                    <p className="text-gray-500">Internationalization</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.react_i18next_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">yt-dlp</strong>
                     <span className="text-gray-600"> - Unlicense</span>
-                    <p className="text-gray-500">Video download engine</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.yt_dlp_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">FFmpeg</strong>
                     <span className="text-gray-600"> - LGPL/GPL</span>
-                    <p className="text-gray-500">Media processing</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.ffmpeg_desc')}</p>
                   </div>
                   <div>
                     <strong className="text-gray-800">Node.js</strong>
                     <span className="text-gray-600"> - MIT License</span>
-                    <p className="text-gray-500">JavaScript runtime</p>
+                    <p className="text-gray-500">{t('about_modal.licenses.nodejs_desc')}</p>
                   </div>
                 </div>
               </div>
               <div className="mt-3 pt-3 border-t border-purple-200">
                 <p className="text-xs text-gray-600">
-                  <strong>ClipPilot License:</strong> Apache 2.0 - 
+                  <strong>{t('about_modal.licenses.clippilot_license')}</strong> Apache 2.0 - 
                   <a href="https://github.com/ronled86/ClipPilot" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:text-purple-800 underline ml-1">
-                    View source code
+                    {t('about_modal.licenses.view_source')}
                   </a>
                 </p>
               </div>
@@ -201,8 +199,8 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
 
           {/* Footer */}
           <div className="text-center text-xs text-gray-500 border-t pt-4">
-            <p>ClipPilot - Built with ❤️ using Electron, React & TypeScript</p>
-            <p className="mt-1">For support and updates, visit the project repository</p>
+            <p>{t('about_modal.footer.built_with')}</p>
+            <p className="mt-1">{t('about_modal.footer.support')}</p>
           </div>
         </div>
       </div>

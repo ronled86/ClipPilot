@@ -1,81 +1,88 @@
 {
   "search_placeholder": "Buscar vídeos",
   "download_policy": "Use responsavelmente e respeite as leis de direitos autorais",
-  "language": "idioma",
-
+  "language": "Idioma",
+  "settings": "Configurações",
+  "results": "Resultados",
+  "allowed": "Permitido",
+  "blocked": "Bloqueado",
+  "license_cc": "Creative Commons",
+  "license_mine": "Meus downloads",
+  "license_standard": "Licença padrão",
+  "theme": "Tema",
+  "grid": "Grade",
+  "list": "Lista",
+  
   "common": {
+    "loading": "Carregando...",
     "cancel": "Cancelar",
+    "save": "Salvar",
     "close": "Fechar",
-    "ok": "OK",
-    "yes": "Sim",
-    "no": "Não"
+    "browse": "Navegar",
+    "refresh": "Atualizar",
+    "download": "Baixar",
+    "preview": "Visualizar",
+    "search": "Buscar",
+    "about": "Sobre",
+    "exit": "Sair"
   },
 
-  "license_cc": "Creative Commons",
-  "license_mine": "Licença Própria",
-  "license_standard": "Licença Padrão",
-
   "exit_modal": {
-    "title": "Tem certeza que deseja sair?",
-    "message": "Você tem downloads ativos ainda rodando em segundo plano. Tem certeza que deseja sair do ClipPilot?",
-    "cancel_downloads": "Cancelar downloads e sair",
-    "cancel_downloads_tooltip": "Interromper todos os downloads ativos e sair da aplicação",
-    "keep_running": "Continuar rodando em segundo plano",
-    "keep_running_tooltip": "Permitir que o ClipPilot continue rodando em segundo plano para completar os downloads",
-    "stay_open": "Permanecer aberto",
-    "stay_open_tooltip": "Voltar para a aplicação sem fazer mudanças"
+    "title": "Sair do ClipPilot",
+    "message": "Tem certeza que deseja sair do ClipPilot? Todos os downloads em andamento serão cancelados.",
+    "cancel": "Cancelar",
+    "confirm": "Sair da aplicação"
   },
 
   "categories": {
-    "film_animation": "Filmes e Animação",
-    "autos_vehicles": "Carros e Veículos",
+    "label": "Categoria:",
+    "all": "Todas as categorias",
     "music": "Música",
-    "pets_animals": "Animais de Estimação e Animais",
-    "sports": "Esportes",
-    "short_movies": "Filmes Curtos",
-    "travel_events": "Viagens e Eventos",
-    "gaming": "Jogos",
-    "videoblogging": "Videoblog",
-    "people_blogs": "Pessoas e Blogs",
-    "comedy": "Comédia",
     "entertainment": "Entretenimento",
-    "news_politics": "Notícias e Política",
-    "howto_style": "Como Fazer e Estilo",
+    "comedy": "Comédia",
     "education": "Educação",
-    "science_technology": "Ciência e Tecnologia",
-    "nonprofits_activism": "Organizações sem Fins Lucrativos e Ativismo"
+    "science_tech": "Ciência e tecnologia",
+    "howto_style": "Tutoriais e estilo",
+    "news_politics": "Notícias e política",
+    "people_blogs": "Pessoas e blogs",
+    "film_animation": "Filmes e animação",
+    "gaming": "Jogos",
+    "sports": "Esportes",
+    "travel_events": "Viagens e eventos",
+    "pets_animals": "Animais de estimação",
+    "autos_vehicles": "Automóveis e veículos"
   },
 
   "download_progress": {
-    "preparing": "Preparando...",
-    "extracting": "Extraindo informações...",
-    "downloading": "Baixando...",
+    "preparing": "Preparando download...",
+    "extracting": "Extraindo informações do vídeo...",
+    "downloading": "Baixando vídeo...",
     "converting": "Convertendo formato...",
     "finalizing": "Finalizando...",
     "completed": "Download concluído!",
-    "failed": "Download falhou",
+    "failed": "Falha no download",
     "cancelled": "Download cancelado",
-    "cancel_button": "Cancelar Download"
+    "cancel_button": "Cancelar download"
   },
 
   "settings_modal": {
-    "title": "Configurações de Download",
-    "save_settings": "Salvar Configurações",
+    "title": "Configurações de download",
+    "save_settings": "Salvar configurações",
     "download_folder": {
-      "label": "Pasta de Downloads",
-      "browser_warning": "Modo Navegador: A seleção de pasta requer o aplicativo desktop. Downloads usariam o local padrão do seu navegador."
+      "label": "Pasta de download",
+      "browser_warning": "Modo navegador: Seleção de pasta requer aplicação desktop. Downloads usarão local padrão do navegador."
     },
-    "browse": "Procurar",
+    "browse": "Navegar",
     "audio_settings": {
-      "title": "Configurações de Download de Áudio",
-      "format": "Formato de Áudio",
-      "bitrate": "Taxa de Bits de Áudio"
+      "title": "Configurações de download de áudio",
+      "format": "Formato de áudio",
+      "bitrate": "Taxa de bits do áudio"
     },
     "video_settings": {
-      "title": "Configurações de Download de Vídeo",
-      "format": "Formato de Vídeo",
-      "quality": "Qualidade do Vídeo",
-      "codec": "Codec de Vídeo"
+      "title": "Configurações de download de vídeo",
+      "format": "Formato de vídeo",
+      "quality": "Qualidade do vídeo",
+      "codec": "Codec de vídeo"
     },
     "api_settings": {
       "title": "Configuração da API",
@@ -83,39 +90,39 @@
       "instructions": {
         "title": "Como obter uma chave de API gratuita:",
         "step1": "Visite o Google Cloud Console",
-        "step2": "Crie um projeto e habilite \"YouTube Data API v3\"",
+        "step2": "Crie um projeto e ative a \"YouTube Data API v3\"",
         "step3": "Vá para Credenciais → Criar → Chave de API",
         "step4": "Copie e cole a chave acima",
-        "free_note": "Grátis: 10.000 solicitações/dia",
+        "free_note": "Gratuito: 10.000 solicitações/dia",
         "private_note": "Privado: Armazenado apenas localmente"
       }
     }
   },
 
   "url_download": {
-    "title": "Download Direto por URL",
-    "placeholder": "Cole a URL do YouTube ou ID do vídeo aqui...",
-    "download_audio": "Baixar Áudio",
-    "download_video": "Baixar Vídeo",
-    "toggle_show": "Mostrar Download por URL",
-    "toggle_hide": "Ocultar Download por URL"
+    "title": "Download direto por URL",
+    "placeholder": "Cole aqui a URL do YouTube ou ID do vídeo...",
+    "download_audio": "Baixar áudio",
+    "download_video": "Baixar vídeo",
+    "toggle_show": "Mostrar download por URL",
+    "toggle_hide": "Ocultar download por URL"
   },
 
   "notifications": {
-    "download_started": "Download Iniciado",
-    "download_started_msg": "Seu download foi adicionado à fila com sucesso. Verifique as notificações de progresso para atualizações.",
-    "download_failed": "Download Falhou",
-    "download_cancelled": "Download Cancelado",
-    "cancel_failed": "Cancelamento Falhou",
-    "settings_saved": "Configurações Salvas",
+    "download_started": "Download iniciado",
+    "download_started_msg": "Seu download foi enfileirado com sucesso. Verifique as notificações de progresso para atualizações.",
+    "download_failed": "Falha no download",
+    "download_cancelled": "Download cancelado",
+    "cancel_failed": "Falha ao cancelar",
+    "settings_saved": "Configurações salvas",
     "settings_saved_msg": "Suas preferências foram salvas com sucesso.",
-    "browser_limitation": "Limitação do Modo Navegador",
-    "browser_limitation_msg": "Downloads por URL estão disponíveis apenas no aplicativo desktop. Por favor, baixe e instale o ClipPilot para usar este recurso."
+    "browser_limitation": "Limitação do modo navegador",
+    "browser_limitation_msg": "Downloads por URL estão disponíveis apenas na aplicação desktop. Por favor, baixe e instale o ClipPilot para usar este recurso."
   },
 
   "main_screen": {
     "direct_url": "URL Direta",
-    "direct_url_toggle": "Alternar download direto por URL",
+    "direct_url_toggle": "Alternar download de URL direta",
     "refresh": "Atualizar",
     "refresh_tooltip": "Atualizar lista de vídeos",
     "settings_tooltip": "Configurações de download",
@@ -125,6 +132,58 @@
     "preview_tooltip": "Visualizar vídeo",
     "loading": "Carregando...",
     "loading_more": "Carregando mais vídeos...",
-    "no_more_results": "Não há mais resultados para carregar"
+    "no_more_results": "Nenhum resultado adicional para carregar"
+  },
+
+  "about_modal": {
+    "title": "Sobre o ClipPilot",
+    "close": "Fechar",
+    "welcome": {
+      "title": "Bem-vindo ao ClipPilot",
+      "description": "ClipPilot é uma aplicação desktop poderosa que permite pesquisar, visualizar e baixar vídeos do YouTube e outras plataformas. Com suporte a múltiplos formatos e qualidades, rastreamento de progresso integrado e interface limpa, foi projetado para tornar o download de vídeos simples e eficiente."
+    },
+    "version_info": {
+      "title": "Informações da Versão",
+      "version": "Versão:",
+      "platform": "Plataforma:",
+      "user_agent": "User Agent:"
+    },
+    "shortcuts": {
+      "title": "Atalhos do Teclado",
+      "developer_tools": "Ferramentas do Desenvolvedor",
+      "toggle_menu": "Alternar Barra de Menu",
+      "settings": "Configurações",
+      "about": "Sobre",
+      "or": "ou"
+    },
+    "features": {
+      "title": "Recursos Principais",
+      "youtube_search": "Pesquisa e download do YouTube",
+      "direct_url": "Downloads de URL direta",
+      "multiple_formats": "Múltiplos formatos (MP3, MP4)",
+      "quality_selection": "Seleção de qualidade",
+      "progress_tracking": "Rastreamento de progresso em tempo real",
+      "video_previews": "Visualizações de vídeo"
+    },
+    "licenses": {
+      "title": "Licenças Open Source",
+      "description": "ClipPilot é construído com essas incríveis bibliotecas open source:",
+      "electron_desc": "Aplicações desktop multiplataforma",
+      "react_desc": "Framework UI da Meta",
+      "typescript_desc": "JavaScript com tipagem segura",
+      "tailwind_desc": "Framework CSS baseado em utilitários",
+      "vite_desc": "Ferramenta de build rápida",
+      "google_apis_desc": "Integração com YouTube Data API",
+      "react_i18next_desc": "Internacionalização",
+      "yt_dlp_desc": "Motor de download de vídeo",
+      "ffmpeg_desc": "Processamento de mídia",
+      "nodejs_desc": "Runtime JavaScript",
+      "clippilot_license": "Licença ClipPilot:",
+      "view_source": "Ver código fonte"
+    },
+    "footer": {
+      "built_with": "ClipPilot - Construído com ❤️ usando Electron, React e TypeScript",
+      "support": "Para suporte e atualizações, visite o repositório do projeto"
+    }
   }
 }
