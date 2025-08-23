@@ -32,7 +32,7 @@ export default function VideoPreviewModal({ isOpen, onClose, videoId, title }: V
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-6"
       onClick={(e) => {
         // Close modal when clicking on backdrop
         if (e.target === e.currentTarget) {
@@ -40,9 +40,9 @@ export default function VideoPreviewModal({ isOpen, onClose, videoId, title }: V
         }
       }}
     >
-      <div className="bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl">
+      <div className="bg-white rounded-lg w-full max-w-6xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b bg-gray-50">
+        <div className="flex items-center justify-between p-4 border-b bg-gray-50 flex-shrink-0">
           <h3 className="text-lg font-medium truncate pr-4" title={title}>{title}</h3>
           <button
             onClick={onClose}
@@ -54,11 +54,11 @@ export default function VideoPreviewModal({ isOpen, onClose, videoId, title }: V
         </div>
         
         {/* Video Player */}
-        <div className="aspect-video bg-black relative">
+        <div className="bg-black relative aspect-video">
           <iframe
             width="100%"
             height="100%"
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&fs=1&origin=${window.location.origin}`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&fs=1`}
             title={title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -66,26 +66,10 @@ export default function VideoPreviewModal({ isOpen, onClose, videoId, title }: V
             className="w-full h-full"
             referrerPolicy="strict-origin-when-cross-origin"
           />
-          
-          {/* Fallback overlay if embedding fails */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 opacity-0 hover:opacity-100 transition-opacity">
-            <button
-              onClick={() => {
-                const url = `https://www.youtube.com/watch?v=${videoId}`
-                window.open(url, '_blank')
-              }}
-              className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2 text-lg"
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-              </svg>
-              Watch on YouTube
-            </button>
-          </div>
         </div>
         
         {/* Footer */}
-        <div className="p-4 bg-gray-50 flex justify-between items-center">
+        <div className="p-4 bg-gray-50 flex justify-between items-center flex-shrink-0">
           <div className="text-sm text-gray-600">
             Press <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">Esc</kbd> to close
           </div>
