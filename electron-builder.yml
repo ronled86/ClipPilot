@@ -27,7 +27,7 @@ nsis:
   oneClick: false
   perMachine: false
   allowElevation: true
-  deleteAppDataOnUninstall: true
+  deleteAppDataOnUninstall: false  # Don't auto-delete settings, let user choose
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
@@ -36,3 +36,8 @@ nsis:
   uninstallDisplayName: "ClipPAilot"
   # Auto-detect and handle previous versions
   artifactName: "${productName}-Setup-${version}.${ext}"
+  # Custom installer/uninstaller behavior
+  include: "scripts/installer.nsh"
+  # Upgrade detection and handling
+  upgradeAppId: "com.ronled.clippailot"
+  allowElevation: true
