@@ -38,6 +38,5 @@ nsis:
   artifactName: "${productName}-Setup-${version}.${ext}"
   # Custom installer/uninstaller behavior
   include: "scripts/installer.nsh"
-  # Upgrade detection and handling
-  upgradeAppId: "com.ronled.clippailot"
-  allowElevation: true
+  # Don't treat warnings as errors
+  warningsAsErrors: false
