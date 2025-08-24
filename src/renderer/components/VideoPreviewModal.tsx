@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 interface VideoPreviewModalProps {
   isOpen: boolean
@@ -8,8 +8,6 @@ interface VideoPreviewModalProps {
 }
 
 export default function VideoPreviewModal({ isOpen, onClose, videoId, title }: VideoPreviewModalProps) {
-  const [loadError, setLoadError] = useState(false)
-  
   // Handle escape key to close modal
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -22,7 +20,6 @@ export default function VideoPreviewModal({ isOpen, onClose, videoId, title }: V
       document.addEventListener('keydown', handleEscape)
       // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden'
-      setLoadError(false) // Reset error state when modal opens
     }
 
     return () => {
@@ -58,61 +55,17 @@ export default function VideoPreviewModal({ isOpen, onClose, videoId, title }: V
         
         {/* Video Player */}
         <div className="bg-black relative aspect-video">
-          {loadError ? (
-            // Fallback content when iframe fails to load
-            <div className="w-full h-full flex flex-col items-center justify-center text-white bg-gray-900">
-              <div className="text-center p-8">
-                <div className="text-6xl mb-4">🚫</div>
-                <h3 className="text-xl font-semibold mb-2">Video Preview Blocked</h3>
-                <p className="text-gray-300 mb-4">
-                  This video has embedding restrictions or is not available for preview.
-                </p>
-                <button
-                  onClick={() => {
-                    const url = `https://www.youtube.com/watch?v=${videoId}`
-                    window.open(url, '_blank')
-                  }}
-                  className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors inline-flex items-center gap-2"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
-                  Watch on YouTube
-                </button>
-              </div>
-            </div>
-          ) : (
-            <iframe
-              width="100%"
-              height="100%"
-              src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&fs=1`}
-              title={title}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="w-full h-full"
-              referrerPolicy="strict-origin-when-cross-origin"
-              onError={() => setLoadError(true)}
-              onLoad={(e) => {
-                // Check if iframe content loaded successfully
-                try {
-                  const iframe = e.target as HTMLIFrameElement
-                  setTimeout(() => {
-                    try {
-                      // If we can't access iframe content, it might be blocked
-                      if (iframe.contentWindow && iframe.contentDocument === null) {
-                        setLoadError(true)
-                      }
-                    } catch {
-                      // This is expected for cross-origin iframes
-                    }
-                  }, 2000)
-                } catch {
-                  // Ignore errors from cross-origin access
-                }
-              }}
-            />
-          )}
+          <iframe
+            width="100%"
+            height="100%"
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&fs=1`}
+            title={title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="w-full h-full"
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
         </div>
         
         {/* Footer */}

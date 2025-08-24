@@ -2,7 +2,7 @@ appId: com.ronled.clippailot
 productName: ClipPAilot
 copyright: "Copyright © 2025 Ron Lederer"
 # Use custom build version for proper Chrome-style versioning
-buildVersion: "1.0.12.4"
+buildVersion: "1.0.20.1"
 # Explicitly disable publishing
 publish: false
 afterSign: false
@@ -32,24 +32,16 @@ nsis:
   oneClick: false
   perMachine: false
   allowElevation: true
-  deleteAppDataOnUninstall: false  # Don't auto-delete settings, let user choose
+  deleteAppDataOnUninstall: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
   runAfterFinish: true
-  # Handle existing installations intelligently
   uninstallDisplayName: "ClipPAilot"
-  # Auto-detect and handle previous versions
   artifactName: "${productName}-Setup-${buildVersion}.${ext}"
-  # Custom installer/uninstaller behavior
   include: "scripts/installer.nsh"
-  # Don't treat warnings as errors
   warningsAsErrors: false
-  # NSIS installer branding - using proper paths and fallbacks
   installerSidebar: "assets/installer-sidebar.bmp"
   uninstallerSidebar: "assets/installer-sidebar.bmp"
   installerHeaderIcon: "assets/logo.png"
-  # Include icon and branding
   displayLanguageSelector: false
-  # Better upgrade handling with unique GUID
-  guid: "com.ronled.clippailot"

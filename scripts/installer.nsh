@@ -1,113 +1,62 @@
 # Custom NSIS installer script for ClipPAilot
-# Clean upgrade process without confusing Un_A.exe popup
+# Simple approach: basic detection and standard installer behavior
 
-# Variables for upgrade detection
+# Variables for existing installation detection
 Var PreviousInstallDir
 Var PreviousVersion
-Var UpgradeMode
 
-# Custom installer initialization with streamlined upgrade process
+# Custom installer initialization - simple detection only
 !macro customInit
-  # Check for existing installation in registry using electron-builder's standard key
+  # Check for existing installation in registry
   ReadRegStr $PreviousInstallDir HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
   ReadRegStr $PreviousVersion HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion"
   
-  # Also check HKLM for system-wide installations (Program Files)
+  # Also check HKLM for system-wide installations
   ${If} $PreviousInstallDir == ""
     ReadRegStr $PreviousInstallDir HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
     ReadRegStr $PreviousVersion HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion"
   ${EndIf}
   
-  # Check for orphaned installations with old keys or different locations
-  ${If} $PreviousInstallDir == ""
-    ReadRegStr $PreviousInstallDir HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{com.ronled.clippailot}" "InstallLocation"
-    ReadRegStr $PreviousVersion HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{com.ronled.clippailot}" "DisplayVersion"
-  ${EndIf}
-  
-  # If previous installation found, handle upgrade with single interaction
+  # If previous installation found, show simple warning
   ${If} $PreviousInstallDir != ""
-    StrCpy $UpgradeMode "true"
-    
-    # Single comprehensive upgrade dialog with all options
-    MessageBox MB_YESNO|MB_ICONQUESTION "ClipPAilot $PreviousVersion is already installed.$\r$\n$\r$\nUpgrade to version ${VERSION}?$\r$\n$\r$\n• Your settings and downloaded files will be preserved$\r$\n• ClipPAilot will be closed automatically if running$\r$\n• Installation will proceed without further prompts$\r$\n$\r$\nContinue with seamless upgrade?" IDYES proceed_upgrade IDNO cancel_install
+    MessageBox MB_OKCANCEL|MB_ICONINFORMATION "ClipPAilot $PreviousVersion is already installed.$\r$\n$\r$\nPlease uninstall the existing version first using$\r$\nControl Panel > Programs and Features.$\r$\n$\r$\nContinue anyway?" IDCANCEL cancel_install
     
     cancel_install:
-      MessageBox MB_OK|MB_ICONINFORMATION "Installation cancelled by user."
       Abort
-    
-    proceed_upgrade:
-      # Set installation directory to existing location for seamless upgrade
-      StrCpy $INSTDIR $PreviousInstallDir
-      
-      # Automatically close running ClipPAilot process without additional prompts
-      DetailPrint "Preparing seamless upgrade..."
-      
-      # Close ClipPAilot silently
-      FindWindow $0 "" "ClipPAilot - YouTube Search & Download"
-      ${If} $0 != 0
-        DetailPrint "Closing ClipPAilot application..."
-        SendMessage $0 ${WM_CLOSE} 0 0
-        Sleep 3000  # Wait for graceful shutdown
-        
-        # Force close if still running
-        FindWindow $0 "" "ClipPAilot - YouTube Search & Download"
-        ${If} $0 != 0
-          DetailPrint "Force closing ClipPAilot..."
-          System::Call "kernel32::OpenProcess(i 1, i 0, i $0) i .r1"
-          System::Call "kernel32::TerminateProcess(i r1, i 0)"
-          System::Call "kernel32::CloseHandle(i r1)"
-          Sleep 1000
-        ${EndIf}
-      ${EndIf}
-      
-      # Clean upgrade - remove old files but preserve user data
-      DetailPrint "Removing old application files..."
-      
-      # Remove old application files (but not user data)
-      Delete "$PreviousInstallDir\ClipPAilot.exe"
-      Delete "$PreviousInstallDir\*.dll"
-      RMDir /r "$PreviousInstallDir\resources\app.asar*"
-      RMDir /r "$PreviousInstallDir\resources\electron.asar"
-      RMDir /r "$PreviousInstallDir\swiftshader"
-      RMDir /r "$PreviousInstallDir\locales"
-      
-      # Keep user data directories intact
-      # $LOCALAPPDATA\ClipPAilot\* - settings, logs, downloads
-      
-      DetailPrint "Installing new version..."
-  ${Else}
-    StrCpy $UpgradeMode "false"
-    DetailPrint "Fresh installation detected."
   ${EndIf}
 !macroend
 
-# Custom uninstaller section - only used for manual uninstalls
+# Standard uninstaller - clean removal
 !macro customUnInstall
-  # This is only called for manual uninstalls, not upgrades
   DetailPrint "Uninstalling ClipPAilot..."
   
-  # Ask user about settings only for manual uninstalls
-  MessageBox MB_YESNO|MB_ICONQUESTION "Do you want to remove your ClipPAilot settings, logs, and downloaded files?$\r$\n$\r$\nSelect 'No' to keep your data for future installations." IDYES delete_all_data IDNO keep_user_data
+  # Close running application
+  FindWindow $0 "" "ClipPAilot"
+  ${If} $0 != 0
+    DetailPrint "Closing ClipPAilot application..."
+    SendMessage $0 ${WM_CLOSE} 0 0
+    Sleep 2000
+  ${EndIf}
   
-  delete_all_data:
+  # Force close any remaining processes
+  nsExec::ExecToLog 'taskkill /f /im "ClipPAilot.exe" /t'
+  
+  # Ask user about keeping data
+  MessageBox MB_YESNO|MB_ICONQUESTION "Remove ClipPAilot settings and downloaded files?$\r$\n$\r$\nYes = Remove all data$\r$\nNo = Keep data for future use" IDYES remove_data IDNO keep_data
+  
+  remove_data:
     DetailPrint "Removing all user data..."
-    # Remove application data folders
     RMDir /r "$LOCALAPPDATA\ClipPAilot"
     RMDir /r "$APPDATA\ClipPAilot"
-    
-    # Remove any cached data
-    RMDir /r "$LOCALAPPDATA\Temp\clippailot-desktop"
-    
-    # Remove registry entries
     DeleteRegKey /ifempty HKCU "Software\ClipPAilot"
+    Goto cleanup_files
     
-    Goto finish_uninstall
-    
-  keep_user_data:
+  keep_data:
     DetailPrint "Preserving user settings and data..."
   
-  finish_uninstall:
-    # Always clean up application files
+  cleanup_files:
+    # Always remove application files
+    DetailPrint "Removing application files..."
     RMDir /r "$INSTDIR"
     
     # Remove shortcuts
@@ -119,19 +68,7 @@ Var UpgradeMode
     DetailPrint "Uninstallation completed."
 !macroend
 
-# Custom installer finish
+# Standard installation completion
 !macro customInstall
-  # Create registry entries for future upgrade detection - use electron-builder's standard key
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation" "$INSTDIR"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "Publisher" "Ron Lederer"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayName" "ClipPAilot"
-  
-  ${If} $UpgradeMode == "true"
-    DetailPrint "Upgrade completed successfully!"
-  ${Else}
-    DetailPrint "Installation completed successfully!"
-  ${EndIf}
-  
-  # No popup needed - installer's finish page will handle the completion message
+  DetailPrint "Installation completed successfully!"
 !macroend
