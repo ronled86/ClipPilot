@@ -4,16 +4,28 @@
 # Custom finish page configuration
 !include "MUI2.nsh"
 
+# Hide console windows during uninstall process
+ShowUninstDetails hide
+ShowInstDetails show
+
+# Suppress external program output during uninstall
+!define NSISUNZ_QUIET
+
+# Make uninstaller run silently without showing temporary files
+RequestExecutionLevel user
+SilentInstall normal
+SilentUnInstall normal
+
 # Ensure we're using the full build version with explicit fallback
 !ifndef buildVersion
-  !define buildVersion "1.0.27.1"
+  !define buildVersion "1.1.0.2"
 !endif
 
 # Define the version at compile time for consistent use
 # NOTE: Update this version number when creating new releases!
 # This should match the buildVersion in electron-builder.yml
-!define FULL_VERSION "1.0.27"
-!define BUILD_VERSION "1.0.27.1"
+!define FULL_VERSION "1.1.0"
+!define BUILD_VERSION "1.1.0.2"
 
 # Define publisher information with explicit fallback
 # Use the publisher name directly since COMPANY_NAME may not be set by electron-builder
@@ -44,7 +56,9 @@ FunctionEnd
 !macro customInit
   # Close any running ClipPAilot processes first
   DetailPrint "Checking for running ClipPAilot processes..."
-  nsExec::ExecToLog 'taskkill /f /im "ClipPAilot.exe" /t'
+  nsExec::ExecToStack 'taskkill /f /im "ClipPAilot.exe" /t'
+  Pop $0 # Get return code
+  Pop $1 # Get output (ignore it for cleaner install)
   
   # Check for existing installation and get version details
   ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
@@ -87,7 +101,9 @@ FunctionEnd
   ${EndIf}
   
   # Force close any remaining processes
-  nsExec::ExecToLog 'taskkill /f /im "ClipPAilot.exe" /t'
+  nsExec::ExecToStack 'taskkill /f /im "ClipPAilot.exe" /t'
+  Pop $0 # Get return code
+  Pop $1 # Get output (ignore it for cleaner uninstall)
   
   # Ask user about keeping data with clear explanation
   MessageBox MB_YESNO|MB_ICONQUESTION "Do you want to remove your personal data?$\r$\n$\r$\nThis includes:$\r$\n• Your ClipPAilot settings and preferences$\r$\n• Downloaded videos and audio files$\r$\n• Search history and bookmarks$\r$\n• Application logs and cache$\r$\n$\r$\nSelect 'Yes' to delete all your data$\r$\nSelect 'No' to keep your data for future installations" IDYES remove_data IDNO keep_data
@@ -159,6 +175,7 @@ FunctionEnd
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayIcon" "$INSTDIR\resources\icon.ico"
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "NoModify" 1
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "NoRepair" 1
+  WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "WindowsInstaller" 0
   
   # Calculate and write installation size (estimate in KB)
   # ClipPAilot with tools is approximately 350MB = 358400 KB

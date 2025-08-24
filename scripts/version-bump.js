@@ -39,6 +39,60 @@ function updateDocumentationFiles(oldVersion, newVersion) {
   })
 }
 
+function updateInstallerScript(newFullVersion) {
+  const installerScriptPath = path.join(__dirname, 'installer.nsh')
+  
+  if (fs.existsSync(installerScriptPath)) {
+    let content = fs.readFileSync(installerScriptPath, 'utf8')
+    
+    // Get the base version (without build number) for FULL_VERSION
+    const [major, minor, patch] = newFullVersion.split('.')
+    const baseVersion = `${major}.${minor}.${patch}`
+    
+    // Update all version references in installer.nsh
+    // Update the fallback buildVersion
+    content = content.replace(
+      /!define buildVersion "[\d\.]+"/g,
+      `!define buildVersion "${newFullVersion}"`
+    )
+    
+    // Update FULL_VERSION (3-part version)
+    content = content.replace(
+      /!define FULL_VERSION "[\d\.]+"/g,
+      `!define FULL_VERSION "${baseVersion}"`
+    )
+    
+    // Update BUILD_VERSION (4-part version)
+    content = content.replace(
+      /!define BUILD_VERSION "[\d\.]+"/g,
+      `!define BUILD_VERSION "${newFullVersion}"`
+    )
+    
+    // Update the install date to current date
+    const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+    content = content.replace(
+      /WriteRegStr HKCU "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\com\.ronled\.clippailot" "InstallDate" "\d+"/g,
+      `WriteRegStr HKCU "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\com.ronled.clippailot" "InstallDate" "${currentDate}"`
+    )
+    
+    // Update the finish page date
+    const currentDateFormatted = new Date().toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })
+    content = content.replace(
+      /• Date: [^$\r\n]+/g,
+      `• Date: ${currentDateFormatted}`
+    )
+    
+    fs.writeFileSync(installerScriptPath, content)
+    console.log(`📝 Updated installer.nsh with version ${newFullVersion}`)
+  } else {
+    console.warn(`⚠️ Installer script not found at: ${installerScriptPath}`)
+  }
+}
+
 function updateVersion(type = 'patch') {
   // Read current version.ts to get build number
   let currentBuild = 1
@@ -154,6 +208,9 @@ export const getAppInfo = () => ({
 
   fs.writeFileSync(versionFile, versionContent)
 
+  // Update installer script with new version
+  updateInstallerScript(newFullVersion)
+
   // Update documentation files if version changed
   if (versionChanged && oldVersion !== newVersion) {
     updateDocumentationFiles(oldVersion, newVersion)
@@ -161,11 +218,11 @@ export const getAppInfo = () => ({
 
   if (versionChanged) {
     console.log(`✅ Version updated to ${newFullVersion} (Chrome-style)`)
-    console.log(`📦 Updated package.json (${newVersion}), src/version.ts and electron-builder.yml (${newFullVersion})`)
+    console.log(`📦 Updated package.json (${newVersion}), src/version.ts, electron-builder.yml, and installer.nsh (${newFullVersion})`)
     console.log(`📚 Updated all documentation files`)
   } else {
     console.log(`✅ Build number updated to ${newFullVersion} (Chrome-style)`)
-    console.log(`📦 Updated src/version.ts and electron-builder.yml with new build number`)
+    console.log(`📦 Updated src/version.ts, electron-builder.yml, and installer.nsh with new build number`)
   }
   return versionChanged ? newVersion : oldVersion
 }
