@@ -1,32 +1,22 @@
 # Custom NSIS installer script for ClipPAilot
-# Simple approach: basic detection and standard installer behavior
+# Minimal approach to avoid orphan issues
 
-# Variables for existing installation detection
-Var PreviousInstallDir
-Var PreviousVersion
-
-# Custom installer initialization - simple detection only
+# Custom installer initialization - basic cleanup only
 !macro customInit
-  # Check for existing installation in registry
-  ReadRegStr $PreviousInstallDir HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
-  ReadRegStr $PreviousVersion HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion"
+  # Close any running ClipPAilot processes first
+  DetailPrint "Checking for running ClipPAilot processes..."
+  nsExec::ExecToLog 'taskkill /f /im "ClipPAilot.exe" /t'
   
-  # Also check HKLM for system-wide installations
-  ${If} $PreviousInstallDir == ""
-    ReadRegStr $PreviousInstallDir HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
-    ReadRegStr $PreviousVersion HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion"
-  ${EndIf}
-  
-  # If previous installation found, show simple warning
-  ${If} $PreviousInstallDir != ""
-    MessageBox MB_OKCANCEL|MB_ICONINFORMATION "ClipPAilot $PreviousVersion is already installed.$\r$\n$\r$\nPlease uninstall the existing version first using$\r$\nControl Panel > Programs and Features.$\r$\n$\r$\nContinue anyway?" IDCANCEL cancel_install
-    
+  # Simple check for existing installation
+  ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation"
+  ${If} $0 != ""
+    MessageBox MB_OKCANCEL "ClipPAilot is already installed.$\r$\nContinue with installation?" IDCANCEL cancel_install
     cancel_install:
       Abort
   ${EndIf}
 !macroend
 
-# Standard uninstaller - clean removal
+# Enhanced uninstaller - thorough cleanup
 !macro customUnInstall
   DetailPrint "Uninstalling ClipPAilot..."
   
@@ -42,7 +32,7 @@ Var PreviousVersion
   nsExec::ExecToLog 'taskkill /f /im "ClipPAilot.exe" /t'
   
   # Ask user about keeping data
-  MessageBox MB_YESNO|MB_ICONQUESTION "Remove ClipPAilot settings and downloaded files?$\r$\n$\r$\nYes = Remove all data$\r$\nNo = Keep data for future use" IDYES remove_data IDNO keep_data
+  MessageBox MB_YESNO "Remove settings and downloads?" IDYES remove_data IDNO keep_data
   
   remove_data:
     DetailPrint "Removing all user data..."
@@ -64,6 +54,12 @@ Var PreviousVersion
     Delete "$SMPROGRAMS\ClipPAilot.lnk"
     Delete "$SMPROGRAMS\ClipPAilot\*.*"
     RMDir "$SMPROGRAMS\ClipPAilot"
+    
+    # Clean up ALL possible registry entries to prevent orphans
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot"
+    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot"
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\{com.ronled.clippailot}"
+    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\{com.ronled.clippailot}"
     
     DetailPrint "Uninstallation completed."
 !macroend
