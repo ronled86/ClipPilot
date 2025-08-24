@@ -1,6 +1,6 @@
 {
   "name": "clippailot-desktop",
-  "version": "1.0.22",
+  "version": "1.0.29",
   "private": true,
   "description": "YouTube search, view, and download client with license-aware gating",
   "main": "dist/main/index.js",
@@ -11,7 +11,7 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "dev": "concurrently \"vite\" \"tsc -p tsconfig.node.json -w\" \"cross-env NODE_ENV=development DEV_SERVER_URL=http://localhost:5173 electron .\"",
+    "dev": "concurrently --kill-others --kill-others-on-fail \"vite\" \"tsc -p tsconfig.node.json -w\" \"cross-env NODE_ENV=development DEV_SERVER_URL=http://localhost:5173 electron .\"",
     "build": "vite build && tsc -p tsconfig.node.json",
     "pack": "electron-builder --dir",
     "dist": "npm run build && electron-builder --win nsis",
@@ -50,6 +50,8 @@
     "cross-env": "^10.0.0",
     "electron": "^32.2.6",
     "electron-builder": "^26.0.12",
+    "jimp": "^1.6.0",
+    "png-to-ico": "^3.0.1",
     "postcss": "^8.5.6",
     "sharp": "^0.34.3",
     "tailwindcss": "^3.4.17",

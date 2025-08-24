@@ -140,7 +140,8 @@
     "close": "Cerrar",
     "welcome": {
       "title": "Bienvenido a ClipPAilot",
-      "description": "ClipPAilot es una potente aplicación de escritorio que te permite buscar, previsualizar y descargar videos de YouTube y otras plataformas. Con soporte para múltiples formatos y calidades, seguimiento de progreso integrado e interfaz limpia, está diseñado para hacer la descarga de videos simple y eficiente."
+      "description": "ClipPAilot es una potente aplicación de escritorio que te permite buscar, previsualizar y descargar videos de YouTube y otras plataformas. Con soporte para múltiples formatos y calidades, seguimiento de progreso integrado e interfaz limpia, está diseñado para hacer la descarga de videos simple y eficiente.",
+      "platform_support": "Compatible con YouTube, Vimeo y muchas otras plataformas de video"
     },
     "version_info": {
       "title": "Información de Versión",

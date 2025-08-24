@@ -10,14 +10,31 @@ interface AboutModalProps {
 export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
   const { t } = useTranslation()
 
+  // Handle Escape key press
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          {/* Header */}
-          <div className="flex justify-between items-center mb-6">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+        {/* Header - Fixed */}
+        <div className="p-6 pb-4 border-b border-gray-200 flex-shrink-0">
+          <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
               📺 {t('about_modal.title')}
             </h2>
@@ -29,6 +46,10 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
               ×
             </button>
           </div>
+        </div>
+
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto flex-1 p-6 pt-4 pb-8">
 
           {/* App Introduction */}
           <div className="mb-6">

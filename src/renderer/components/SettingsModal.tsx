@@ -34,6 +34,23 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
     setSettings(currentSettings)
   }, [currentSettings])
 
+  // Handle Escape key press
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, onClose])
+
   const handleSave = () => {
     onSave(settings)
     onClose()
@@ -65,7 +82,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg w-[900px] max-w-[95vw] max-h-[95vh] flex flex-col">
+      <div className="bg-white rounded-lg w-[900px] max-w-[95vw] max-h-[95vh] flex flex-col overflow-hidden">
         {/* Fixed Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-200 flex-shrink-0">
           <h2 className="text-xl font-bold">{t('settings_modal.title')}</h2>
@@ -78,7 +95,7 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 pb-8">
           <div className="space-y-6">
           {/* Download Folder - Top Section */}
           <div className="border rounded-lg p-4 bg-gray-50">
@@ -95,8 +112,9 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                 type="text"
                 value={window.clippailot ? settings.downloadFolder : 'Browser default downloads folder'}
                 readOnly
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-white"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-white text-left"
                 placeholder="Choose download folder..."
+                dir="ltr"
               />
               <button
                 onClick={handleSelectFolder}
@@ -250,7 +268,8 @@ export default function SettingsModal({ isOpen, onClose, onSave, currentSettings
                         youtubeApiKey: e.target.value 
                       }))}
                       placeholder="Enter your YouTube Data API v3 key..."
-                      className="w-full px-3 py-2 pr-10 text-sm border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 pr-10 text-sm border border-gray-300 rounded-md text-left"
+                      dir="ltr"
                     />
                     <button
                       type="button"

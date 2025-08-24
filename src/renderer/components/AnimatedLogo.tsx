@@ -2,25 +2,97 @@ import React from 'react'
 
 export default function AnimatedLogo() {
   return (
-    <div aria-label="ClipPAilot logo" title="ClipPAilot" className="w-14 h-14">
-      <svg width="100%" height="100%" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img">
+    <div aria-label="ClipPAilot AI logo" title="ClipPAilot" className="w-14 h-14">
+      <svg width="100%" height="100%" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img">
         <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#6EE7F9"/>
-            <stop offset="100%" stopColor="#A78BFA"/>
+          <linearGradient id="logoVideoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4facfe" stopOpacity="1" />
+            <stop offset="100%" stopColor="#00f2fe" stopOpacity="1" />
+          </linearGradient>
+          <linearGradient id="logoAiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fa709a" stopOpacity="1" />
+            <stop offset="100%" stopColor="#fee140" stopOpacity="1" />
+          </linearGradient>
+          <linearGradient id="logoBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#667eea" stopOpacity="1" />
+            <stop offset="100%" stopColor="#764ba2" stopOpacity="1" />
           </linearGradient>
         </defs>
-        <circle cx="40" cy="40" r="36" fill="url(#g)" opacity="0.15"/>
-        <polygon id="p" points="32,26 56,40 32,54" fill="url(#g)">
-          <animate attributeName="points" dur="1.4s" repeatCount="indefinite"
-            values="32,26 56,40 32,54; 30,28 50,40 30,52; 32,26 56,40 32,54"/>
+        
+        {/* Background circle */}
+        <circle cx="60" cy="60" r="55" fill="url(#logoBgGrad)" stroke="#fff" strokeWidth="3"/>
+        
+        {/* Video frame with sliding animation */}
+        <rect x="20" y="35" width="80" height="50" rx="8" fill="url(#logoVideoGrad)" stroke="#fff" strokeWidth="2">
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+        </rect>
+        
+        {/* Play button with bounce */}
+        <polygon points="45,50 45,70 65,60" fill="white">
+          <animateTransform attributeName="transform" type="translate" values="0,0;0,-2;0,0" dur="1.5s" repeatCount="indefinite"/>
         </polygon>
-        <path d="M40 28 v16" stroke="#A78BFA" strokeWidth="3" strokeLinecap="round">
-          <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite"/>
-        </path>
-        <path d="M36 44 l4 4 l4 -4" fill="none" stroke="#A78BFA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-          <animateTransform attributeName="transform" type="translate" from="0 0" to="0 3" dur="1.4s" repeatCount="indefinite"/>
-        </path>
+        
+        {/* AI Brain with rotation */}
+        <g transform="translate(85, 25)">
+          <ellipse cx="0" cy="0" rx="12" ry="10" fill="url(#logoAiGrad)">
+            <animateTransform attributeName="transform" type="rotate" values="0;360" dur="4s" repeatCount="indefinite"/>
+          </ellipse>
+          
+          {/* Neural network nodes with pulsing */}
+          <g>
+            <circle cx="-6" cy="-3" r="1.5" fill="white">
+              <animate attributeName="r" values="1.5;2;1.5" dur="2s" repeatCount="indefinite" begin="0s"/>
+            </circle>
+            <circle cx="6" cy="-3" r="1.5" fill="white">
+              <animate attributeName="r" values="1.5;2;1.5" dur="2s" repeatCount="indefinite" begin="0.4s"/>
+            </circle>
+            <circle cx="0" cy="3" r="1.5" fill="white">
+              <animate attributeName="r" values="1.5;2;1.5" dur="2s" repeatCount="indefinite" begin="0.8s"/>
+            </circle>
+            <circle cx="-3" cy="6" r="1.5" fill="white">
+              <animate attributeName="r" values="1.5;2;1.5" dur="2s" repeatCount="indefinite" begin="1.2s"/>
+            </circle>
+            <circle cx="3" cy="6" r="1.5" fill="white">
+              <animate attributeName="r" values="1.5;2;1.5" dur="2s" repeatCount="indefinite" begin="1.6s"/>
+            </circle>
+          </g>
+          
+          {/* Neural connections with opacity animation */}
+          <g>
+            <line x1="-6" y1="-3" x2="0" y2="3" stroke="white" strokeWidth="0.5" opacity="0.7">
+              <animate attributeName="opacity" values="0.3;0.9;0.3" dur="3s" repeatCount="indefinite"/>
+            </line>
+            <line x1="6" y1="-3" x2="0" y2="3" stroke="white" strokeWidth="0.5" opacity="0.7">
+              <animate attributeName="opacity" values="0.9;0.3;0.9" dur="3s" repeatCount="indefinite"/>
+            </line>
+            <line x1="0" y1="3" x2="-3" y2="6" stroke="white" strokeWidth="0.5" opacity="0.7">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+            </line>
+            <line x1="0" y1="3" x2="3" y2="6" stroke="white" strokeWidth="0.5" opacity="0.7">
+              <animate attributeName="opacity" values="1;0.2;1" dur="2.5s" repeatCount="indefinite"/>
+            </line>
+          </g>
+        </g>
+        
+        {/* Download indicator with bounce */}
+        <g transform="translate(60, 95)">
+          <polygon points="-8,0 0,8 8,0" fill="#fff" opacity="0.9">
+            <animateTransform attributeName="transform" type="translate" values="0,0;0,-4;0,0" dur="1.8s" repeatCount="indefinite"/>
+          </polygon>
+          <rect x="-1" y="-8" width="2" height="8" fill="#fff" opacity="0.9">
+            <animateTransform attributeName="transform" type="translate" values="0,0;0,-4;0,0" dur="1.8s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+        
+        {/* Floating particles for tech feel */}
+        <circle cx="25" cy="20" r="1.5" fill="white" opacity="0.6">
+          <animate attributeName="cy" values="20;15;20" dur="3s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="95" cy="100" r="1" fill="white" opacity="0.5">
+          <animate attributeName="cy" values="100;95;100" dur="2.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
       </svg>
     </div>
   )

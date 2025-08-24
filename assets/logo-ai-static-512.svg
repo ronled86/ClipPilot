@@ -1,0 +1,59 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="videoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4facfe" stop-opacity="1" />
+            <stop offset="100%" stop-color="#00f2fe" stop-opacity="1" />
+        </linearGradient>
+        <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fa709a" stop-opacity="1" />
+            <stop offset="100%" stop-color="#fee140" stop-opacity="1" />
+        </linearGradient>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#667eea" stop-opacity="1" />
+            <stop offset="100%" stop-color="#764ba2" stop-opacity="1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Background circle -->
+    <circle cx="256" cy="256" r="235" fill="url(#bgGrad)" stroke="#fff" stroke-width="12"/>
+    
+    <!-- Video frame -->
+    <rect x="85" y="150" width="342" height="214" rx="34" fill="url(#videoGrad)" stroke="#fff" stroke-width="8"/>
+    
+    <!-- Play button -->
+    <polygon points="192,214 192,298 277,256" fill="white"/>
+    
+    <!-- AI Brain -->
+    <g transform="translate(363, 107)">
+        <ellipse cx="0" cy="0" rx="51" ry="43" fill="url(#aiGrad)"/>
+        
+        <!-- Neural network nodes -->
+        <g>
+            <circle cx="-26" cy="-13" r="6" fill="white"/>
+            <circle cx="26" cy="-13" r="6" fill="white"/>
+            <circle cx="0" cy="13" r="6" fill="white"/>
+            <circle cx="-13" cy="26" r="6" fill="white"/>
+            <circle cx="13" cy="26" r="6" fill="white"/>
+        </g>
+        
+        <!-- Neural connections -->
+        <g>
+            <line x1="-26" y1="-13" x2="0" y2="13" stroke="white" stroke-width="2" opacity="0.7"/>
+            <line x1="26" y1="-13" x2="0" y2="13" stroke="white" stroke-width="2" opacity="0.7"/>
+            <line x1="0" y1="13" x2="-13" y2="26" stroke="white" stroke-width="2" opacity="0.7"/>
+            <line x1="0" y1="13" x2="13" y2="26" stroke="white" stroke-width="2" opacity="0.7"/>
+        </g>
+    </g>
+    
+    <!-- Download indicator -->
+    <g transform="translate(256, 405)">
+        <polygon points="-34,0 0,34 34,0" fill="#fff" opacity="0.9"/>
+        <rect x="-4" y="-34" width="8" height="34" fill="#fff" opacity="0.9"/>
+    </g>
+    
+    <!-- Floating particles for tech feel -->
+    <circle cx="107" cy="85" r="6" fill="white" opacity="0.6"/>
+    <circle cx="405" cy="427" r="4" fill="white" opacity="0.5"/>
+    <circle cx="85" cy="405" r="5" fill="white" opacity="0.55"/>
+    <circle cx="427" cy="150" r="4.5" fill="white" opacity="0.45"/>
+</svg>

@@ -14,11 +14,51 @@ dotenv.config()
 const isDev = process.env.NODE_ENV === 'development'
 const devUrl = process.env.DEV_SERVER_URL || 'http://localhost:5173'
 
+// Fix Windows cache permission issues by setting command line switches before app ready
+if (process.platform === 'win32') {
+  // Clear problematic cache directories before startup
+  try {
+    const userDataPath = app.getPath('userData')
+    const problematicCaches = [
+      path.join(userDataPath, 'GPUCache'),
+      path.join(userDataPath, 'ShaderCache')
+    ]
+    
+    problematicCaches.forEach(cachePath => {
+      if (fs.existsSync(cachePath)) {
+        try {
+          fs.rmSync(cachePath, { recursive: true, force: true })
+          console.log(`Cleared problematic cache: ${cachePath}`)
+        } catch (error) {
+          console.warn(`Could not clear cache ${cachePath}:`, error)
+        }
+      }
+    })
+  } catch (error) {
+    console.warn('Cache cleanup failed:', error)
+  }
+  
+  // Disable GPU cache to avoid permission issues
+  app.commandLine.appendSwitch('--disable-gpu-cache')
+  app.commandLine.appendSwitch('--disable-gpu-shader-disk-cache')
+  
+  // Use in-memory cache instead of disk cache for GPU operations
+  app.commandLine.appendSwitch('--in-process-gpu')
+  
+  // Alternative cache location in user data directory
+  const userDataPath = app.getPath('userData')
+  app.commandLine.appendSwitch('--disk-cache-dir', path.join(userDataPath, 'DiskCache'))
+  
+  // Reduce cache size to minimize permission issues
+  app.commandLine.appendSwitch('--disk-cache-size', '50000000') // 50MB
+}
+
 // Helper function to get the correct tools path for both dev and production
 function getToolsPath(): string {
   if (isDev) {
     // In development, tools are in the project root
-    return path.join(process.cwd(), 'tools')
+    // __dirname points to dist/main, so go up two levels to reach project root
+    return path.join(__dirname, '..', '..', 'tools')
   } else {
     // In production, tools are in extraResources outside the asar archive
     return path.join(process.resourcesPath, 'tools')
@@ -40,7 +80,8 @@ function createWindow() {
   
   if (isDev) {
     // In development, use icon from project root assets folder
-    iconPath = path.join(process.cwd(), 'assets', 'icon.ico')
+    // __dirname points to dist/main, so go up two levels to reach project root
+    iconPath = path.join(__dirname, '..', '..', 'assets', 'icon.ico')
   } else {
     // In production, use icon from extraResources
     iconPath = path.join(process.resourcesPath, 'icon.ico')
@@ -72,17 +113,33 @@ function createWindow() {
   win = new BrowserWindow(windowOptions)
   logger.info('Main window created successfully')
 
-  // Explicitly set the icon for taskbar on Windows
+  // Explicitly set the icon for taskbar on Windows (must be done after window creation)
   if (process.platform === 'win32' && require('fs').existsSync(iconPath)) {
-    win.setIcon(iconPath)
-    logger.info('Windows taskbar icon set')
+    try {
+      win.setIcon(iconPath)
+      logger.info('Windows taskbar icon set')
+    } catch (error) {
+      logger.warn('Failed to set Windows taskbar icon:', error)
+    }
   }
 
   // Hide menu bar by default for cleaner interface
   win.setMenuBarVisibility(false)
   win.setAutoHideMenuBar(true)
 
-  win.on('ready-to-show', () => win?.show())
+  win.on('ready-to-show', () => {
+    win?.show()
+    
+    // Set icon again after window is ready for better Windows compatibility
+    if (process.platform === 'win32' && require('fs').existsSync(iconPath)) {
+      try {
+        win?.setIcon(iconPath)
+        logger.info('Windows taskbar icon set after ready-to-show')
+      } catch (error) {
+        logger.warn('Failed to set icon after ready-to-show:', error)
+      }
+    }
+  })
 
   if (isDev) {
     win.loadURL(devUrl)
@@ -111,17 +168,35 @@ app.whenReady().then(async () => {
   if (process.platform === 'win32') {
     app.setAppUserModelId('com.ronled.clippailot')
     logger.info('Windows App User Model ID set')
+    
+    // Fix Windows cache permission issues
+    try {
+      const userDataPath = app.getPath('userData')
+      const cachePath = path.join(userDataPath, 'GPUCache')
+      const shaderCachePath = path.join(userDataPath, 'ShaderCache')
+      
+      // Ensure cache directories exist with proper permissions
+      await fs.promises.mkdir(cachePath, { recursive: true }).catch(() => {})
+      await fs.promises.mkdir(shaderCachePath, { recursive: true }).catch(() => {})
+      
+      logger.info('Windows cache directories initialized')
+    } catch (error) {
+      logger.warn('Failed to initialize Windows cache directories:', error)
+    }
   }
   
   // Set app icon for the entire application
   const appIconPath = isDev 
-    ? path.join(process.cwd(), 'assets', 'icon.ico')
+    ? path.join(__dirname, '..', '..', 'assets', 'icon.ico')
     : path.join(process.resourcesPath, 'icon.ico')
   
   if (require('fs').existsSync(appIconPath)) {
     app.dock?.setIcon?.(appIconPath) // macOS
     if (process.platform === 'win32') {
       // Windows icon will be set via electron-builder config and per-window
+      // Also set the app user model ID for proper Windows taskbar behavior
+      app.setAppUserModelId('com.ronled.clippailot')
+      logger.info('Windows App User Model ID set')
     }
     logger.info(`App icon set: ${appIconPath}`)
   } else {
@@ -176,6 +251,32 @@ app.on('will-quit', () => {
   logger.info('Application shutting down...')
   // Unregister all shortcuts
   globalShortcut.unregisterAll()
+  
+  // Clear GPU cache on shutdown to prevent permission issues on next startup
+  if (process.platform === 'win32') {
+    try {
+      const userDataPath = app.getPath('userData')
+      const cachePaths = [
+        path.join(userDataPath, 'GPUCache'),
+        path.join(userDataPath, 'ShaderCache'),
+        path.join(userDataPath, 'DiskCache')
+      ]
+      
+      cachePaths.forEach(cachePath => {
+        if (fs.existsSync(cachePath)) {
+          try {
+            fs.rmSync(cachePath, { recursive: true, force: true })
+            logger.info(`Cleared cache directory: ${cachePath}`)
+          } catch (error) {
+            logger.warn(`Failed to clear cache directory ${cachePath}:`, error)
+          }
+        }
+      })
+    } catch (error) {
+      logger.warn('Failed to clear cache on shutdown:', error)
+    }
+  }
+  
   logger.cleanup()
 })
 

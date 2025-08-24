@@ -37,6 +37,7 @@ export default function App() {
   const [settingsModal, setSettingsModal] = useState(false)
   const [aboutModal, setAboutModal] = useState(false)
   const [exitConfirmationModal, setExitConfirmationModal] = useState(false)
+  const [viewMode, setViewMode] = useState<'cards' | 'list'>('cards')
   const [settings, setSettings] = useState<DownloadSettings>({
     downloadFolder: '',
     defaultFormat: 'mp4',
@@ -856,7 +857,7 @@ export default function App() {
       <main className="w-full px-4 py-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-medium">
-            {currentQuery ? `${t('results')} for "${currentQuery}"` : '🔥 Trending Videos'}
+            {currentQuery ? `${t('results')} for "${currentQuery}"` : `🔥 ${t('trendingVideos')}`}
           </h2>
           <div className="flex items-center space-x-3">
             {!currentQuery && !isBrowserMode && (
@@ -865,6 +866,27 @@ export default function App() {
                 onCategoryChange={handleCategoryChange}
               />
             )}
+            {/* View Mode Toggle */}
+            <div className="flex items-center bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('cards')}
+                className={`p-1.5 rounded transition-colors ${viewMode === 'cards' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'}`}
+                title="Card View"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z"/>
+                </svg>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-1.5 rounded transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'}`}
+                title="List View"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/>
+                </svg>
+              </button>
+            </div>
             {currentQuery && (
               <button
                 onClick={() => {
@@ -922,99 +944,336 @@ export default function App() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-          {results.map(v => (
-            <article key={v.id} className="border rounded-xl p-3 shadow-sm flex flex-col gap-2">
-              <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-                {v.thumbnail ? (
-                  <img 
-                    src={v.thumbnail} 
-                    alt={v.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback to play icon if image fails to load
-                      const target = e.target as HTMLImageElement
-                      target.style.display = 'none'
-                      target.parentElement!.innerHTML = '<div class="text-5xl">▶</div>'
+          viewMode === 'cards' ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+              {results.map(v => (
+              <article key={v.id} data-video-id={v.id} className="border rounded-xl p-3 shadow-sm flex flex-col gap-2">
+                <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer hover:opacity-80 transition-opacity" 
+                     onClick={() => {
+                       setPreviewModal({
+                         isOpen: true,
+                         videoId: v.id,
+                         title: v.title
+                       })
+                     }}
+                     title={t('main_screen.preview_tooltip')}>
+                  {v.thumbnail ? (
+                    <img 
+                      src={v.thumbnail} 
+                      alt={v.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to play icon if image fails to load
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        target.parentElement!.innerHTML = '<div class="text-5xl">▶</div>'
+                      }}
+                    />
+                  ) : (
+                    <div className="text-5xl">▶</div>
+                  )}
+                </div>
+                <div className="font-medium line-clamp-2" title={v.title}>{v.title}</div>
+                <div className="text-sm text-gray-600">{v.channel} • {v.duration}</div>
+                <div className="text-xs text-gray-500">{v.publishedAt}</div>
+                <div className="text-xs">
+                  {v.license === 'cc' && <span className="px-2 py-0.5 rounded-full bg-green-100 text-green-700">{t('license_cc')}</span>}
+                  {v.license === 'mine' && <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">{t('license_mine')}</span>}
+                </div>
+                {/* Line 1: Preview and Share Link */}
+                <div className="flex gap-2 mt-2">
+                  <button 
+                    className="flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-gray-50 transition-colors min-w-0" 
+                    onClick={() => {
+                      setPreviewModal({
+                        isOpen: true,
+                        videoId: v.id,
+                        title: v.title
+                      })
                     }}
-                  />
-                ) : (
-                  <div className="text-5xl">▶</div>
-                )}
-              </div>
-              <div className="font-medium line-clamp-2" title={v.title}>{v.title}</div>
-              <div className="text-sm text-gray-600">{v.channel} • {v.duration}</div>
-              <div className="text-xs text-gray-500">{v.publishedAt}</div>
-              <div className="text-xs">
-                {v.license === 'cc' && <span className="px-2 py-0.5 rounded-full bg-green-100 text-green-700">{t('license_cc')}</span>}
-                {v.license === 'mine' && <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">{t('license_mine')}</span>}
-                {v.license === 'standard' && <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">{t('license_standard')}</span>}
-              </div>
-              <div className="flex gap-2 mt-2">
-                <button 
-                  className="flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-gray-50 transition-colors min-w-0" 
-                  onClick={() => {
-                    setPreviewModal({
-                      isOpen: true,
-                      videoId: v.id,
-                      title: v.title
-                    })
-                  }}
-                  title={t('main_screen.preview_tooltip')}
-                >
-                  <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                  <span className="text-xs truncate">{t('main_screen.preview')}</span>
-                </button>
-                <button 
-                  className={`flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-blue-50 hover:border-blue-300 transition-colors min-w-0 ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
-                  disabled={downloadingVideos.has(v.id)}
-                  title={`Download ${settings.videoFormat.toUpperCase()} (Video)`} 
-                  onClick={() => handleDownload(v.id, 'mp4')}
-                >
-                  {downloadingVideos.has(v.id) ? (
-                    <>
-                      <svg className="w-4 h-4 animate-spin flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                      <span className="text-xs truncate">{t('main_screen.loading')}</span>
-                    </>
+                    title={t('main_screen.preview_tooltip')}
+                  >
+                    <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <span className="text-xs truncate">{t('main_screen.preview')}</span>
+                  </button>
+                  <button 
+                    className="flex-1 flex items-center justify-center gap-1 border border-gray-300 rounded-lg py-2 hover:bg-gray-50 hover:border-gray-400 transition-colors share-button" 
+                    title="Copy YouTube link to clipboard"
+                    onClick={async () => {
+                      const videoUrl = `https://www.youtube.com/watch?v=${v.id}`
+                      try {
+                        await navigator.clipboard.writeText(videoUrl)
+                        // Show a temporary success message
+                        const button = document.querySelector(`[data-video-id="${v.id}"] .share-button`) as HTMLButtonElement
+                        if (button) {
+                          const originalHTML = button.innerHTML
+                          button.innerHTML = `
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                            <span class="text-xs text-green-600 font-medium">Copied!</span>
+                          `
+                          setTimeout(() => {
+                            button.innerHTML = originalHTML
+                          }, 2000)
+                        }
+                      } catch (error) {
+                        console.error('Failed to copy to clipboard:', error)
+                        // Fallback: Create a temporary input element to copy the URL
+                        const tempInput = document.createElement('input')
+                        tempInput.value = videoUrl
+                        document.body.appendChild(tempInput)
+                        tempInput.select()
+                        document.execCommand('copy')
+                        document.body.removeChild(tempInput)
+                        
+                        // Show copied message
+                        const button = document.querySelector(`[data-video-id="${v.id}"] .share-button`) as HTMLButtonElement
+                        if (button) {
+                          const originalHTML = button.innerHTML
+                          button.innerHTML = `
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                            <span class="text-xs text-green-600 font-medium">Copied!</span>
+                          `
+                          setTimeout(() => {
+                            button.innerHTML = originalHTML
+                          }, 2000)
+                        }
+                      }
+                    }}
+                  >
+                    <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/>
+                    </svg>
+                    <span className="text-xs text-gray-600 font-medium">Share Link</span>
+                  </button>
+                </div>
+                {/* Line 2: MP4 and MP3 */}
+                <div className="flex gap-2 mt-1">
+                  <button 
+                    className={`flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-blue-50 hover:border-blue-300 transition-colors min-w-0 ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                    disabled={downloadingVideos.has(v.id)}
+                    title={`Download ${settings.videoFormat.toUpperCase()} (Video)`} 
+                    onClick={() => handleDownload(v.id, 'mp4')}
+                  >
+                    {downloadingVideos.has(v.id) ? (
+                      <>
+                        <svg className="w-4 h-4 animate-spin flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span className="text-xs truncate">{t('main_screen.loading')}</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                        </svg>
+                        <span className="text-xs text-blue-600 font-medium truncate">{settings.videoFormat.toUpperCase()}</span>
+                      </>
+                    )}
+                  </button>
+                  <button 
+                    className={`flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-green-50 hover:border-green-300 transition-colors ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                    disabled={downloadingVideos.has(v.id)}
+                    title={`Download ${settings.audioFormat.toUpperCase()} (Audio Only)`} 
+                    onClick={() => handleDownload(v.id, 'mp3')}
+                  >
+                    {downloadingVideos.has(v.id) ? (
+                      <>
+                        <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span className="text-xs">{t('main_screen.loading')}</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                        </svg>
+                        <span className="text-xs text-green-600 font-medium">{settings.audioFormat.toUpperCase()}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </article>
+            ))}
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {results.map(v => (
+              <article key={v.id} data-video-id={v.id} className="border rounded-lg p-4 shadow-sm flex gap-4 hover:shadow-md transition-shadow">
+                {/* Thumbnail */}
+                <div className="w-32 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0" 
+                     onClick={() => {
+                       setPreviewModal({
+                         isOpen: true,
+                         videoId: v.id,
+                         title: v.title
+                       })
+                     }}
+                     title={t('main_screen.preview_tooltip')}>
+                  {v.thumbnail ? (
+                    <img 
+                      src={v.thumbnail} 
+                      alt={v.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to play icon if image fails to load
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        target.parentElement!.innerHTML = '<div class="text-2xl">▶</div>'
+                      }}
+                    />
                   ) : (
-                    <>
-                      <svg className="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                      </svg>
-                      <span className="text-xs text-blue-600 font-medium truncate">{settings.videoFormat.toUpperCase()}</span>
-                    </>
+                    <div className="text-2xl">▶</div>
                   )}
-                </button>
-                <button 
-                  className={`flex-1 flex items-center justify-center gap-1 border rounded-lg py-2 hover:bg-green-50 hover:border-green-300 transition-colors ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
-                  disabled={downloadingVideos.has(v.id)}
-                  title={`Download ${settings.audioFormat.toUpperCase()} (Audio Only)`} 
-                  onClick={() => handleDownload(v.id, 'mp3')}
-                >
-                  {downloadingVideos.has(v.id) ? (
-                    <>
-                      <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                      <span className="text-xs">{t('main_screen.loading')}</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                      </svg>
-                      <span className="text-xs text-green-600 font-medium">{settings.audioFormat.toUpperCase()}</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900 line-clamp-2 leading-5" title={v.title}>{v.title}</h3>
+                      <div className="text-sm text-gray-600 mt-1">{v.channel} • {v.duration}</div>
+                      <div className="text-xs text-gray-500 mt-1">{v.publishedAt}</div>
+                      <div className="text-xs mt-2">
+                        {v.license === 'cc' && <span className="px-2 py-0.5 rounded-full bg-green-100 text-green-700">{t('license_cc')}</span>}
+                        {v.license === 'mine' && <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">{t('license_mine')}</span>}
+                      </div>
+                    </div>
+                    
+                    {/* Action Buttons - 2x2 Grid Layout */}
+                    <div className="flex flex-col gap-2 flex-shrink-0">
+                      {/* Line 1: Preview and Share Link */}
+                      <div className="flex gap-2">
+                        <button 
+                          className="w-20 flex items-center justify-center gap-1 border rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors" 
+                          onClick={() => {
+                            setPreviewModal({
+                              isOpen: true,
+                              videoId: v.id,
+                              title: v.title
+                            })
+                          }}
+                          title={t('main_screen.preview_tooltip')}
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                          <span className="text-xs">{t('main_screen.preview')}</span>
+                        </button>
+                        <button 
+                          className="w-20 flex items-center justify-center gap-1 border border-gray-300 rounded-lg px-3 py-1.5 hover:bg-gray-50 hover:border-gray-400 transition-colors share-button" 
+                          title="Copy YouTube link to clipboard"
+                          onClick={async () => {
+                            const videoUrl = `https://www.youtube.com/watch?v=${v.id}`
+                            try {
+                              await navigator.clipboard.writeText(videoUrl)
+                              // Show a temporary success message
+                              const button = document.querySelector(`[data-video-id="${v.id}"] .share-button`) as HTMLButtonElement
+                              if (button) {
+                                const originalHTML = button.innerHTML
+                                button.innerHTML = `
+                                  <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                  </svg>
+                                  <span class="text-xs text-green-600 font-medium">Copied!</span>
+                                `
+                                setTimeout(() => {
+                                  button.innerHTML = originalHTML
+                                }, 2000)
+                              }
+                            } catch (error) {
+                              console.error('Failed to copy to clipboard:', error)
+                              // Fallback: Create a temporary input element to copy the URL
+                              const tempInput = document.createElement('input')
+                              tempInput.value = videoUrl
+                              document.body.appendChild(tempInput)
+                              tempInput.select()
+                              document.execCommand('copy')
+                              document.body.removeChild(tempInput)
+                              
+                              // Show copied message
+                              const button = document.querySelector(`[data-video-id="${v.id}"] .share-button`) as HTMLButtonElement
+                              if (button) {
+                                const originalHTML = button.innerHTML
+                                button.innerHTML = `
+                                  <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                  </svg>
+                                  <span class="text-xs text-green-600 font-medium">Copied!</span>
+                                `
+                                setTimeout(() => {
+                                  button.innerHTML = originalHTML
+                                }, 2000)
+                              }
+                            }
+                          }}
+                        >
+                          <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/>
+                          </svg>
+                          <span className="text-xs text-gray-600 font-medium">Share</span>
+                        </button>
+                      </div>
+                      {/* Line 2: MP4 and MP3 */}
+                      <div className="flex gap-2">
+                        <button 
+                          className={`w-20 flex items-center justify-center gap-1 border rounded-lg px-3 py-1.5 hover:bg-blue-50 hover:border-blue-300 transition-colors ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                          disabled={downloadingVideos.has(v.id)}
+                          title={`Download ${settings.videoFormat.toUpperCase()} (Video)`} 
+                          onClick={() => handleDownload(v.id, 'mp4')}
+                        >
+                          {downloadingVideos.has(v.id) ? (
+                            <>
+                              <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                              <span className="text-xs">{t('main_screen.loading')}</span>
+                            </>
+                          ) : (
+                            <>
+                              <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                              </svg>
+                              <span className="text-xs text-blue-600 font-medium">{settings.videoFormat.toUpperCase()}</span>
+                            </>
+                          )}
+                        </button>
+                        <button 
+                          className={`w-20 flex items-center justify-center gap-1 border rounded-lg px-3 py-1.5 hover:bg-green-50 hover:border-green-300 transition-colors ${downloadingVideos.has(v.id) ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                          disabled={downloadingVideos.has(v.id)}
+                          title={`Download ${settings.audioFormat.toUpperCase()} (Audio Only)`} 
+                          onClick={() => handleDownload(v.id, 'mp3')}
+                        >
+                          {downloadingVideos.has(v.id) ? (
+                            <>
+                              <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                              <span className="text-xs">{t('main_screen.loading')}</span>
+                            </>
+                          ) : (
+                            <>
+                              <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                              </svg>
+                              <span className="text-xs text-green-600 font-medium">{settings.audioFormat.toUpperCase()}</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+              ))}
+            </div>
+          )
         )}
         
         {/* Loading indicator */}

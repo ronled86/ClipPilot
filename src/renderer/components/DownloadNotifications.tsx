@@ -157,7 +157,7 @@ export default function DownloadNotifications({ downloads, onDismiss, onCancel }
             
             <button
               onClick={() => onDismiss(download.id)}
-              className="text-gray-400 hover:text-gray-600 text-sm p-1"
+              className="text-gray-400 hover:text-gray-600 text-lg p-2"
               title="Dismiss"
             >
               ×

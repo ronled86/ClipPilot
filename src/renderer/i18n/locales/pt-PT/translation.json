@@ -126,5 +126,15 @@
     "loading": "A carregar...",
     "loading_more": "A carregar mais vídeos...",
     "no_more_results": "Não há mais resultados para carregar"
+  },
+
+  "about_modal": {
+    "title": "Acerca do ClipPAilot",
+    "close": "Fechar",
+    "welcome": {
+      "title": "Bem-vindo ao ClipPAilot",
+      "description": "ClipPAilot é uma aplicação de ambiente de trabalho poderosa que permite pesquisar, pré-visualizar e transferir vídeos do YouTube e outras plataformas. Com suporte para múltiplos formatos e qualidades, rastreamento de progresso integrado e interface limpa, foi concebido para tornar a transferência de vídeos simples e eficiente.",
+      "platform_support": "Suporta YouTube, Vimeo e muitas outras plataformas de vídeo"
+    }
   }
 }

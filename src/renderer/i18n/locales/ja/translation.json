@@ -126,5 +126,15 @@
     "loading": "読み込み中...",
     "loading_more": "さらに動画を読み込み中...",
     "no_more_results": "読み込める結果がありません"
+  },
+
+  "about_modal": {
+    "title": "ClipPAilotについて",
+    "close": "閉じる",
+    "welcome": {
+      "title": "ClipPAilotへようこそ",
+      "description": "ClipPAilotは、YouTubeやその他のプラットフォームから動画を検索、プレビュー、ダウンロードできる強力なデスクトップアプリケーションです。複数のフォーマットと品質のサポート、内蔵の進行状況追跡、クリーンなインターフェースにより、動画ダウンロードをシンプルで効率的にするよう設計されています。",
+      "platform_support": "YouTube、Vimeo、その他多くの動画プラットフォームに対応"
+    }
   }
 }

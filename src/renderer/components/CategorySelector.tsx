@@ -33,8 +33,8 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
   ]
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
-      <label htmlFor="category-select" className="text-sm font-medium text-gray-600 dark:text-gray-300 whitespace-nowrap">
+    <div className={`flex items-center space-x-2 rtl:space-x-reverse rtl:space-s-2 ${className}`}>
+      <label htmlFor="category-select" className="text-sm font-medium text-gray-600 dark:text-gray-300 whitespace-nowrap rtl:ml-3 ltr:mr-2">
         {t('categories.label')}
       </label>
       <select

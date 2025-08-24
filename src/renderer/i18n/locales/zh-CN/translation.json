@@ -126,5 +126,15 @@
     "loading": "加载中...",
     "loading_more": "加载更多视频...",
     "no_more_results": "没有更多结果可加载"
+  },
+
+  "about_modal": {
+    "title": "关于ClipPAilot",
+    "close": "关闭",
+    "welcome": {
+      "title": "欢迎使用ClipPAilot",
+      "description": "ClipPAilot是一个强大的桌面应用程序，让您可以搜索、预览和下载来自YouTube和其他平台的视频。支持多种格式和质量，内置进度跟踪和简洁界面，旨在使视频下载变得简单高效。",
+      "platform_support": "支持YouTube、Vimeo和许多其他视频平台"
+    }
   }
 }

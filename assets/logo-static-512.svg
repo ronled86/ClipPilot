@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="100%" stop-color="#764ba2"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f093fb"/>
+      <stop offset="100%" stop-color="#f5576c"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#mainGrad)"/>
+  
+  <!-- White border for clarity -->
+  <circle cx="256" cy="256" r="240" fill="none" stroke="white" stroke-width="12"/>
+  
+  <!-- Main play triangle -->
+  <polygon points="180,150 180,362 390,256" fill="white" opacity="0.95"/>
+  
+  <!-- Download arrow -->
+  <g transform="translate(390, 390)">
+    <circle cx="0" cy="0" r="76" fill="url(#accentGrad)"/>
+    <polygon points="-32,-12 0,32 32,-12" fill="white"/>
+    <rect x="-6" y="-40" width="12" height="40" fill="white"/>
+  </g>
+  
+  <!-- Decorative elements -->
+  <circle cx="120" cy="120" r="16" fill="white" opacity="0.7"/>
+  <circle cx="420" cy="150" r="12" fill="white" opacity="0.6"/>
+  <circle cx="140" cy="420" r="14" fill="white" opacity="0.5"/>
+</svg>
