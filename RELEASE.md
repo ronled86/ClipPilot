@@ -16,7 +16,7 @@ This guide explains how to create and publish releases of ClipPAilot with automa
 # Create a patch release (1.0.3 → 1.0.4)
 npm run release:patch
 
-# Create a minor release (1.0.3 → 1.1.0)
+# Create a minor release (1.0.3 → 1.1.1)
 npm run release:minor
 
 # Create a major release (1.0.3 → 2.0.0)

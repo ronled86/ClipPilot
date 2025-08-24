@@ -2,7 +2,7 @@
 
 **A powerful YouTube search, preview, and download client with intelligent features and license-aware content filtering.**
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)](package.json)
 [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](#)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 
@@ -96,7 +96,7 @@ Creates a Windows installer in the `release/` directory.
 # Bump patch version (1.0.0 → 1.0.1)
 npm run version:patch
 
-# Bump minor version (1.0.0 → 1.1.0)  
+# Bump minor version (1.0.0 → 1.1.1)  
 npm run version:minor
 
 # Bump major version (1.0.0 → 2.0.0)

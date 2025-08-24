@@ -18,14 +18,14 @@ SilentUnInstall normal
 
 # Ensure we're using the full build version with explicit fallback
 !ifndef buildVersion
-  !define buildVersion "1.1.0.2"
+  !define buildVersion "1.1.1.1"
 !endif
 
 # Define the version at compile time for consistent use
 # NOTE: Update this version number when creating new releases!
 # This should match the buildVersion in electron-builder.yml
-!define FULL_VERSION "1.1.0"
-!define BUILD_VERSION "1.1.0.2"
+!define FULL_VERSION "1.1.1"
+!define BUILD_VERSION "1.1.1.1"
 
 # Define publisher information with explicit fallback
 # Use the publisher name directly since COMPANY_NAME may not be set by electron-builder
