@@ -64,7 +64,18 @@
     DetailPrint "Uninstallation completed."
 !macroend
 
-# Standard installation completion
+# Enhanced installation completion with version info
 !macro customInstall
   DetailPrint "Installation completed successfully!"
+  DetailPrint "Installed ClipPAilot version: ${VERSION}"
+  DetailPrint "Installation directory: $INSTDIR"
+  
+  # Add complete version info to registry
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayVersion" "${VERSION}"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "Publisher" "Ron Lederer"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "InstallLocation" "$INSTDIR"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.ronled.clippailot" "DisplayName" "ClipPAilot"
+  
+  # Show completion message with detailed version info on the final wizard step
+  MessageBox MB_OK "Installation Complete!$\r$\n$\r$\nClipPAilot version ${VERSION} has been successfully installed.$\r$\n$\r$\nInstalled to: $INSTDIR$\r$\nDate: August 24, 2025$\r$\n$\r$\nClick OK to finish. You can now launch ClipPAilot from your desktop or Start menu."
 !macroend

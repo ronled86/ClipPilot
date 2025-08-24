@@ -35,7 +35,7 @@ Before installing ClipPAilot, make sure your system meets these requirements:
 
 ### **Option 2: Direct Download**
 
-Latest stable release: **[ClipPAilot v1.0.20](https://github.com/ronled86/ClipPAilot/releases/latest)**
+Latest stable release: **[ClipPAilot v1.0.22](https://github.com/ronled86/ClipPAilot/releases/latest)**
 
 ## 🚀 Installation Steps
 
@@ -62,7 +62,7 @@ Latest stable release: **[ClipPAilot v1.0.20](https://github.com/ronled86/ClipPA
 For automated deployment:
 
 ```cmd
-ClipPAilot-Setup-1.0.20.exe /S
+ClipPAilot-Setup-1.0.22.exe /S
 ```
 
 **Parameters:**
@@ -138,7 +138,7 @@ After installation:
 
 **Custom Installation Directory:**
 ```cmd
-ClipPAilot-Setup-1.0.20.exe /D=C:\CustomPath\ClipPAilot
+ClipPAilot-Setup-1.0.22.exe /D=C:\CustomPath\ClipPAilot
 ```
 
 **Corporate Environment:**
