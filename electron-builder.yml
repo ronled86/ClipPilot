@@ -2,7 +2,7 @@ appId: com.ronled.clippailot
 productName: ClipPAilot
 copyright: "Copyright © 2025 Ron Lederer"
 # Use custom build version for proper Chrome-style versioning
-buildVersion: "1.0.20.1"
+buildVersion: "1.0.20.2"
 # Explicitly disable publishing
 publish: false
 afterSign: false
